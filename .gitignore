@@ -1,0 +1,11 @@
+# Compiled source #
+###################
+*.pyc
+usr/bin/uxdgmenud
+usr/share/locale/*
+*.mo
+
+# OS generated files #
+######################
+*~
+*.swp
