@@ -1,0 +1,310 @@
+# ~/test is an empty dir
+#----------------------------------------------------------
+inotifywait -m ~/test && cd ~/test
+
+touch foo :
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ ATTRIB foo
+
+  /home/ju1ius/test/ CLOSE_WRITE,CLOSE foo
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foo
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foo
+
+rm foo :
+  /home/ju1ius/test/ DELETE foo
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+
+touch bar
+
+mv bar .. :
+  /home/ju1ius/test/ MOVED_FROM bar
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+
+mv ../bar bar :
+  /home/ju1ius/test/ MOVED_TO bar
+  /home/ju1ius/test/ OPEN bar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE bar
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN bar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE bar
+
+mv bar foo :
+  /home/ju1ius/test/ MOVED_FROM bar
+  /home/ju1ius/test/ MOVED_TO foo
+
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foo
+
+# this time foo amready exists
+touch foo :
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ ATTRIB foo
+  /home/ju1ius/test/ CLOSE_WRITE,CLOSE foo
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foo
+  /home/ju1ius/test/ OPEN foo
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foo
+
+create foobar with nautilus:
+  /home/ju1ius/test/ CREATE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_WRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+  /home/ju1ius/test/ OPEN nouveau fichier
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE nouveau fichier
+
+  /home/ju1ius/test/ MOVED_FROM nouveau fichier
+  /home/ju1ius/test/ MOVED_TO foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+
+delete foobar with nautilus:
+  /home/ju1ius/test/ DELETE foobar
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+
+move foobar to .. with nautilus :
+  /home/ju1ius/test/ MOVED_FROM foobar
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+
+
+move ../foobar to foobar with nautilus :
+  /home/ju1ius/test/ MOVED_TO foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+  /home/ju1ius/test/ OPEN foobar
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE foobar
+
+rename foobar to barbaz with nautilus :
+  /home/ju1ius/test/ MOVED_FROM foobar
+  /home/ju1ius/test/ MOVED_TO barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+
+open barbaz with gvim:
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+close without saving:
+  nothing
+edit and save:
+  /home/ju1ius/test/ MODIFY barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ MODIFY barbaz
+  /home/ju1ius/test/ CLOSE_WRITE,CLOSE barbaz
+  /home/ju1ius/test/ ATTRIB barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+
+
+open barbaz with gedit:
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ OPEN,ISDIR 
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+close:
+  /home/ju1ius/test/ OPEN barbaz
+  /home/ju1ius/test/ ACCESS barbaz
+  /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+edit & save:
+  first_edit:
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ ACCESS barbaz
+    /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+  save:
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ CREATE .goutputstream-9W6WZV
+    /home/ju1ius/test/ OPEN .goutputstream-9W6WZV
+    /home/ju1ius/test/ ATTRIB .goutputstream-9W6WZV
+    /home/ju1ius/test/ ATTRIB .goutputstream-9W6WZV
+    /home/ju1ius/test/ CLOSE_WRITE,CLOSE barbaz
+    /home/ju1ius/test/ MODIFY .goutputstream-9W6WZV
+    /home/ju1ius/test/ MOVED_FROM .goutputstream-9W6WZV
+    /home/ju1ius/test/ MOVED_TO barbaz
+    /home/ju1ius/test/ CLOSE_WRITE,CLOSE barbaz
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ ACCESS barbaz
+    /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ ACCESS barbaz
+    /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ ACCESS barbaz
+    /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ ACCESS barbaz
+    /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+    /home/ju1ius/test/ OPEN barbaz
+    /home/ju1ius/test/ ACCESS barbaz
+    /home/ju1ius/test/ CLOSE_NOWRITE,CLOSE barbaz
+ 
+
+#----------------------------------------------------------
+inotifywait -m /usr/share/applications
+
+sudo apt-get install zim:
+  /usr/share/applications/ CREATE zim.desktop.dpkg-new
+  /usr/share/applications/ OPEN zim.desktop.dpkg-new
+  /usr/share/applications/ MODIFY zim.desktop.dpkg-new
+  /usr/share/applications/ ATTRIB zim.desktop.dpkg-new
+  /usr/share/applications/ ATTRIB zim.desktop.dpkg-new
+  /usr/share/applications/ CLOSE_WRITE,CLOSE zim.desktop.dpkg-new
+  /usr/share/applications/ ATTRIB zim.desktop.dpkg-new
+  /usr/share/applications/ MOVED_FROM zim.desktop.dpkg-new
+  /usr/share/applications/ MOVED_TO zim.desktop
+  /usr/share/applications/ OPEN,ISDIR 
+
+  /usr/share/applications/ OPEN onboard-settings.desktop
+  /usr/share/applications/ ACCESS onboard-settings.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE onboard-settings.desktop
+  ...idem with all .desktop files !!!
+
+  /usr/share/applications/ OPEN zim.desktop
+  /usr/share/applications/ ACCESS zim.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE zim.desktop
+
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /usr/share/applications/ CREATE .mimeinfo.cache.PWJ6ZV
+  /usr/share/applications/ OPEN .mimeinfo.cache.PWJ6ZV
+  /usr/share/applications/ ATTRIB .mimeinfo.cache.PWJ6ZV
+  /usr/share/applications/ MODIFY .mimeinfo.cache.PWJ6ZV
+  /usr/share/applications/ CLOSE_WRITE,CLOSE .mimeinfo.cache.PWJ6ZV
+  /usr/share/applications/ MOVED_FROM .mimeinfo.cache.PWJ6ZV
+  /usr/share/applications/ MOVED_TO mimeinfo.cache
+  /usr/share/applications/ OPEN,ISDIR 
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /usr/share/applications/ DELETE desktop.fr_FR.utf8.cache
+  /usr/share/applications/ CREATE desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ OPEN desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ OPEN,ISDIR 
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR
+
+  /usr/share/applications/ OPEN gdebi.desktop
+  /usr/share/applications/ ACCESS gdebi.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE gdebi.desktop
+  /usr/share/applications/ MODIFY desktop.fr_FR.utf8.cache.dpkg-new
+
+  /usr/share/applications/ OPEN gnome-network-properties.desktop
+  /usr/share/applications/ ACCESS gnome-network-properties.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE gnome-network-properties.desktop
+  /usr/share/applications/ MODIFY desktop.fr_FR.utf8.cache.dpkg-new
+
+  /usr/share/applications/ OPEN,ISDIR screensavers
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR screensavers
+  /usr/share/applications/ MODIFY desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ MODIFY desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ MODIFY desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ CLOSE_WRITE,CLOSE desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ MOVED_FROM desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ MOVED_TO desktop.fr_FR.utf8.cache
+  /usr/share/applications/ OPEN mimeinfo.cache
+  /usr/share/applications/ ACCESS mimeinfo.cache
+  /usr/share/applications/ ACCESS mimeinfo.cache
+  /usr/share/applications/ ACCESS mimeinfo.cache
+  /usr/share/applications/ ACCESS mimeinfo.cache
+  /usr/share/applications/ ACCESS mimeinfo.cache
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE mimeinfo.cache
+
+
+sudo apt-get remove zim
+  /usr/share/applications/ DELETE zim.desktop
+  /usr/share/applications/ OPEN,ISDIR 
+  /usr/share/applications/ OPEN onboard-settings.desktop
+  /usr/share/applications/ ACCESS onboard-settings.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE onboard-settings.desktop
+  etc...
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /usr/share/applications/ CREATE .mimeinfo.cache.UHM2ZV
+  /usr/share/applications/ OPEN .mimeinfo.cache.UHM2ZV
+  /usr/share/applications/ ATTRIB .mimeinfo.cache.UHM2ZV
+  /usr/share/applications/ MODIFY .mimeinfo.cache.UHM2ZV
+  /usr/share/applications/ CLOSE_WRITE,CLOSE .mimeinfo.cache.UHM2ZV
+  /usr/share/applications/ MOVED_FROM .mimeinfo.cache.UHM2ZV
+  /usr/share/applications/ MOVED_TO mimeinfo.cache
+  /usr/share/applications/ OPEN,ISDIR 
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /usr/share/applications/ DELETE desktop.fr_FR.utf8.cache
+  /usr/share/applications/ CREATE desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ OPEN desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ OPEN,ISDIR 
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE,ISDIR 
+  /usr/share/applications/ OPEN onboard-settings.desktop
+  /usr/share/applications/ ACCESS onboard-settings.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE onboard-settings.desktop
+  etc...
+  /usr/share/applications/ MODIFY desktop.fr_FR.utf8.cache.dpkg-new
+  /usr/share/applications/ OPEN system-config-printer.desktop
+  /usr/share/applications/ ACCESS system-config-printer.desktop
+  /usr/share/applications/ CLOSE_NOWRITE,CLOSE system-config-printer.desktop
+

@@ -1,0 +1,83 @@
+from xml.sax.saxutils import escape, quoteattr
+from . import TYPE_TREE
+from .. import base
+
+class Formatter(base.Formatter):
+
+    supports_dynamic_menus = True
+    supports_includes = False
+    supports_icons = True
+
+    def get_type(self):
+        return TYPE_TREE
+
+    def format_rootmenu(self, content):
+        return """<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu xmlns="http://openbox.org/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://openbox.org/
+                file:///usr/share/openbox/menu.xsd">
+
+<menu id="root-menu" label="Openbox 3">
+%s</menu>
+</openbox_menu>""" % content
+
+    def format_menu(self, id, content):
+      return """<?xml version="1.0" encoding="UTF-8"?>
+<openbox_pipe_menu>\n%s</openbox_pipe_menu>""" % content
+
+    def format_text_item(self, txt, level=0):
+        indent = "  " * level
+        return "%s<item label=%s />\n" % (indent, quoteattr(txt))
+
+    def format_dynamic_menu(self, id, label, cmd, icon, level=0):
+        return "%(i)s<menu id=%(id)s label=%(n)s execute=%(cmd)s icon=%(icn)s/>\n" % {
+            "i": "  " * level, "id": quoteattr(id), "n": quoteattr(label),
+            "cmd": quoteattr(cmd), "icn": quoteattr(icon)
+        }
+
+    def format_separator(self, level=0):
+        return "%s<separator/>\n" % ("  " * level)
+
+    def format_application(self, name, cmd, icon, level=0):
+        return """%(i)s<item label=%(n)s icon=%(icn)s>
+%(i)s  <action name='Execute'>
+%(i)s    <command>%(c)s</command>
+%(i)s  </action>
+%(i)s</item>
+""" % {
+            "i": "  " * level, "n": quoteattr(name.encode('utf-8')),
+            "icn": quoteattr(icon), "c": escape(cmd)
+        }
+
+    def format_submenu(self, id, name, icon, submenu, level=0):
+        return """%(i)s<menu id=%(id)s label=%(n)s icon=%(icn)s>
+%(sub)s%(i)s</menu>
+""" % {
+            "i": "  " * level, "id": quoteattr(id),
+            "n": quoteattr(name.encode('utf-8')),
+            "icn": quoteattr(icon), "sub": submenu
+        }
+
+    def format_wm_menu(self, id, name, icon, level=0):
+        return """%(i)s<menu id=%(name)s label=%(icon)s>
+%(i)s  <item label="ObConf">
+%(i)s    <action name="Execute">
+%(i)s      <execute>obconf</execute>
+%(i)s    </action>
+%(i)s  </item>
+%(i)s  <item label="Reconfigure">
+%(i)s    <action name="Reconfigure" />
+%(i)s  </item>
+%(i)s  <item label="Restart">
+%(i)s    <action name="Restart" />
+%(i)s  </item>
+%(i)s  <item label="Exit">
+%(i)s    <action name="Exit" />
+%(i)s  </item>
+%(i)s</menu>
+""" % {
+            "name": quoteattr(name), "icon": quoteattr(icon),
+            "i": "  " * level
+        }
+

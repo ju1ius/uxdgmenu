@@ -1,0 +1,74 @@
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+ "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+
+  <DefaultAppDirs/>
+  <DefaultDirectoryDirs/>
+  <DefaultMergeDirs/>
+
+  <Include>
+    <!-- filemanager -->
+    <Filename>nautilus-browser.desktop</Filename>
+    <Filename>thunar.desktop</Filename>
+    <Filename>pcmanfm.desktop</Filename>
+    <!-- Web Browser -->
+    <Filename>firefox.desktop</Filename>
+    <Filename>chromium-browser.desktop</Filename>
+    <!-- Terminal Emulator -->
+    <Filename>gnome-terminal.desktop</Filename>
+    <Filename>terminator.desktop</Filename>
+    <Filename>lxterminal.desktop</Filename>
+    <!-- Package Manager -->
+    <Filename>synaptic.desktop</Filename>
+  </Include>
+
+  <Menu>
+    <Name>fxm-applications</Name>
+	  <Directory>fxm-menu-applications.directory</Directory>
+    <DefaultLayout show_empty="true">
+      <Merge type="all"/>
+    </DefaultLayout>
+  </Menu>
+
+  <Menu>
+    <Name>fxm-bookmarks</Name>
+	  <Directory>fxm-menu-bookmarks.directory</Directory>
+    <DefaultLayout show_empty="true">
+      <Merge type="all"/>
+    </DefaultLayout>
+  </Menu>
+
+  <Menu>
+    <Name>fluxbox</Name>
+	  <Directory>fxm-menu-fluxbox.directory</Directory>
+    <DefaultLayout show_empty="true">
+      <Merge type="all"/>
+    </DefaultLayout>
+  </Menu>
+
+	<Layout>
+    <!-- filemanager -->
+    <Filename>nautilus-browser.desktop</Filename>
+    <Filename>thunar.desktop</Filename>
+    <Filename>pcmanfm.desktop</Filename>
+    <!-- Web Browser -->
+    <Or>
+      <Filename>firefox.desktop</Filename>
+      <Filename>chromium-browser.desktop</Filename>
+    </Or>
+    <!-- Terminal Emulator -->
+    <Filename>gnome-terminal.desktop</Filename>
+    <Filename>terminator.desktop</Filename>
+    <Filename>lxterminal.desktop</Filename>
+    <!-- Package Manager -->
+    <Filename>synaptic.desktop</Filename>
+		<Separator/>
+    <Menuname>fxm-bookmarks</Menuname>
+		<Separator/>
+    <Menuname>fxm-applications</Menuname>
+		<Separator/>
+    <Menuname>fluxbox</Menuname>
+	</Layout>
+
+</Menu> <!-- End Applications -->
