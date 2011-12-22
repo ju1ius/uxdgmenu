@@ -1,4 +1,6 @@
-import os, optparse
+import os, optparse, ConfigParser
+import cStringIO as StringIO
+from . import utils, icon_finder
 
 class OptionParser(optparse.OptionParser):
     """Custom Option parser for better help formatting"""
@@ -12,8 +14,10 @@ MENU_FILE = "uxm-applications.menu"
 ROOTMENU_FILE = "uxm-rootmenu.menu"
 TRIGGERS_DB = "/var/lib/dpkg/triggers/File"
 
-CACHE_DIR = os.path.expanduser('~/.cache/%s' % PKG_NAME)
-CONFIG_DIR = os.path.expanduser('~/.config/%s' % PKG_NAME)
+HOME = os.path.expanduser('~')
+CACHE_DIR = os.path.join(HOME, '.cache', PKG_NAME)
+CONFIG_DIR = os.path.join(HOME, '.config', PKG_NAME)
+
 for d in [CACHE_DIR, CONFIG_DIR]:
     if not os.path.isdir(d):
         try:
@@ -29,7 +33,7 @@ BOOKMARKS_CACHE = os.path.join(CACHE_DIR, 'bookmarks')
 RECENTLY_USED_CACHE = os.path.join(CACHE_DIR, 'recently-used')
 
 # List of directories to monitor
-# fxm-watch will only respond to events on files
+# uxm-watch will only respond to events on files
 # having one of these extensions: .desktop|.directory|.menu
 MONITORED = [
     # .directory files
@@ -69,4 +73,37 @@ default: application-default-icon
 bookmarks: user-bookmarks
 folders: folder
 files: gtk-file
+[Places]
+show_files: yes
 """
+
+def get():
+    """Returns the config parser"""
+    return __parser
+
+def check():
+    for d in [CONFIG_DIR, CACHE_DIR]:
+        if not os.path.isdir(d):
+            try:
+                os.makedirs(d)
+            except OSError, why:
+                sys.exit("Could not create %s: %s" % (d, why))
+    if not os.path.isfile(USER_CONFIG_FILE):
+        guess()
+        #with open(CONFIG_FILE, 'w') as f:
+            #__parser.write(f)
+
+def guess():
+    open_cmd = utils.guess_open_cmd()
+    __parser.set('Menu', 'open_cmd', open_cmd)
+    fm = utils.guess_file_manager()
+    __parser.set('Menu', 'filemanager', fm)
+    theme = icon_finder.get_gtk_theme()
+    __parser.set('Icons', 'theme', theme)
+
+######################################################
+#
+__parser = ConfigParser.RawConfigParser()
+__parser.readfp(StringIO.StringIO(DEFAULT_CONFIG))
+#__parser.read('/etc/marchobmenu/menu.conf')
+check()

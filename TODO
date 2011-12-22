@@ -1,0 +1,13 @@
+daemon:
+  check passing cmdline options to functions
+  check getting the right formatter
+  detect WM for GUI updater ???:
+    - pgrep.py (6x faster !!!)
+    - python-xlib
+  dpkg_triggers => killed
+
+Locale
+GUI config editor
+Plugin system (events) ?
+Progress dialogs => DONE
+rootmenu ???

@@ -8,6 +8,19 @@ try:
 except:
     HAS_GIO = False
 
+try:
+    import pygtk
+    pygtk.require('2.0')
+    import gtk
+    HAS_GTK = True
+except:
+    HAS_GTK = False
+
+def get_gtk_theme():
+    if HAS_GTK:
+        gtk_settings = gtk.settings_get_default()
+        return gtk_settings.get_property('gtk-icon-theme-name')
+
 class IconFinder(object):
     """Finds and cache icons"""
 

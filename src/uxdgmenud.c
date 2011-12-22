@@ -9,32 +9,39 @@
 #include <inotifytools/inotifytools.h>
 #include <inotifytools/inotify.h>
 
-/*
+/**
  * Compile with: gcc -linotifytools mom-watch.c -o mom-watch -W -Wall -pedantic
- */
+ **/
 
-#define DAEMON_NAME "uxdgmenud"
-#define DESKTOP_FILE_EXT ".desktop"
-#define DIRECTORY_FILE_EXT ".directory"
-#define MENU_FILE_EXT ".menu"
-#define EVENTS_MASK IN_CLOSE_WRITE|IN_DELETE|IN_MOVE
-#define HOME getenv("HOME")
+#define DAEMON_NAME           "uxdgmenud"
+#define DESKTOP_FILE_EXT      ".desktop"
+#define DIRECTORY_FILE_EXT    ".directory"
+#define MENU_FILE_EXT         ".menu"
+#define BOOKMARKS_FILE        ".gtk-bookmarks"
+#define RECENTLY_USED_FILE    ".recently-used.xbel"
+#define APPS_EVENTS           IN_CLOSE_WRITE|IN_DELETE|IN_MOVE
+#define BOOKMARKS_EVENTS      IN_CLOSE_WRITE
+#define HOME                  getenv("HOME")
 
 void signal_handler(int signum);
 void cleanup(void);
 int str_has_suffix(const char *str, const char *suffix);
 
-
+/**
+ * MAIN
+ **/
 int main(int argc, char **argv)
 {
   int i;
   int next_option;
   /* list of short options */
-  const char *short_options = "a:e:dv";
+  const char *short_options = "a:b:r:e:dv";
   /* An array listing valid long options */
   static const struct option long_options[] =
   {
     {"apps-command", required_argument, NULL, 'a'},
+    {"bookmarks-command", required_argument, NULL, 'b'},
+    {"recently-used-command", required_argument, NULL, 'r'},
     {"exclude", required_argument, NULL, 'e'},
     {"daemon", no_argument, NULL, 'd'},
     {"verbose", no_argument, NULL, 'v'},
@@ -47,22 +54,42 @@ int main(int argc, char **argv)
   int daemonize = 0;
   /* verbose output ? */
   int verbose = 0;
-  /*
+  /* watch gtk bookmarks ? */
+  int watch_bookmarks = 0;
+  /* watch recently_used ? */
+  int watch_recently_used = 0;
+  /* HOME watch descriptor */
+  int home_wd = -1;
+  /**
    * exclude pattern for inotify events
    **/
   char *exclude_pattern = NULL;
-  /*
+  /**
    * commands to execute on notification
    **/
   char *apps_command;
+  char *bookmarks_command;
+  char *recently_used_command;
 
+  /* ---------- VARS ---------- */
 
   /* log message */
   char message[1024];
-  /*
+  /**
    * the notified event
    **/
   struct inotify_event *event;
+
+  size_t length = strlen(HOME) + 1;
+  char *home = (char*) malloc(length);
+
+  strncat(home, HOME, length);
+  if(!str_has_suffix(HOME, "/"))
+  {
+    length += 2;
+    home = (char*) realloc(home, length);
+    strncat(home, "/", length);
+  }
 
   /*****************************************
    * Process Command line args
@@ -74,6 +101,14 @@ int main(int argc, char **argv)
     {
       case 'a':
         apps_command = optarg;
+        break;
+      case 'b':
+        watch_bookmarks = 1;
+        bookmarks_command = optarg;
+        break;
+      case 'r':
+        watch_recently_used = 1;
+        recently_used_command = optarg;
         break;
       case 'd':
         daemonize = 1;
@@ -118,10 +153,10 @@ int main(int argc, char **argv)
    *  Core Functionnalities
    ****************************************/
 
-  /*
+  /**
    * initialize and watch the entire directory tree from the current working
    * directory downwards for all events
-   */
+   **/
   if(!inotifytools_initialize())
   {
     syslog( LOG_ERR, "%s", strerror(inotifytools_error()) );
@@ -143,9 +178,9 @@ int main(int argc, char **argv)
     }
   }
 
-  /*
+  /**
    * Loop on the remaining command-line args
-   */
+   **/
   for (i = optind; i < argc; i++)
   {
     if(!inotifytools_watch_recursively(argv[i], EVENTS_MASK))
@@ -158,34 +193,84 @@ int main(int argc, char **argv)
     }
   }
 
-  /*)
+  /**
+   * Add a watch on ~/.gtk-bookmarks
+   **/
+  if(watch_bookmarks || watch_recently_used)
+  {
+    if(!inotifytools_watch_file(home, BOOKMARKS_EVENTS))
+    {
+      syslog( LOG_ERR, "%s: %s", home, strerror(inotifytools_error()) );
+    }
+    else
+    {
+      home_wd = inotifytools_wd_from_filename(home);
+      if (verbose)
+      {
+        syslog(LOG_INFO, "Watching %s", home);
+      }
+    }
+  }
+
+  /**
    * Main event loop
    * Output events as "<timestamp> <events> <path>"
-   */
+   **/
   event = inotifytools_next_event(-1);
   while (event)
   {
-    if(str_has_suffix(event->name, DESKTOP_FILE_EXT)
+    if(
+        (watch_bookmarks || watch_recently_used)
+        && event->wd == home_wd
+    ){
+      if(strcmp(event->name, RECENTLY_USED_FILE) == 0)
+      {
+        if (verbose)
+        {
+          inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
+          syslog(LOG_INFO, "%s >>> %s", message_buf, recently_used_command);
+        }
+        system(recently_used_command);
+      }
+      else if(strcmp(event->name, BOOKMARKS_FILE) == 0)
+      {
+        if (verbose)
+        {
+          inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
+          syslog(LOG_INFO, "%s >>> %s", message_buf, bookmarks_command);
+        }
+        system(bookmarks_command);
+      }
+    }
+    else if(
+      event->wd != home_wd
+      && (str_has_suffix(event->name, DESKTOP_FILE_EXT)
         || str_has_suffix(event->name, DIRECTORY_FILE_EXT)
         || str_has_suffix(event->name, MENU_FILE_EXT)
+      )
     ){
-      if(verbose)
+      if (verbose)
       {
-        inotifytools_snprintf(message, 1024, event, "%T %e %w%f\n");
-        syslog(LOG_INFO, "%s", message);
+        inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
+          syslog(LOG_INFO, "%s >>> %s", message_buf, apps_command);
       }
       system(apps_command);
     }
     event = inotifytools_next_event(-1);
   }
 
-  /*
+  /**
    * Cleanup
-   */
+   **/
+  free(home);
   cleanup();
 
   return 0;
 }
+
+/**
+ * Functions
+ **/
 
 void cleanup(void)
 {

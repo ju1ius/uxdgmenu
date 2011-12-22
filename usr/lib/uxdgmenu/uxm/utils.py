@@ -1,6 +1,11 @@
 import os, re, pwd, subprocess
 import xdg.BaseDirectory
-from . import config
+
+EXE_REGEX = re.compile(r' [^ ]*%[fFuUdDnNickvm]')
+
+def clean_exec(cmd):
+    """Cleans commands found in Desktop entries"""
+    return EXE_REGEX.sub('', cmd)
 
 def sort_ci(inlist, minisort=True):
     """
@@ -93,14 +98,30 @@ def get_options_for_progress(options):
         opt_str.append('-r ')
     return ' '.join(opt_list)
 
-def get_default_filemanager():
-    """Tries to get the default application for the inode/directory mime type,
-    which should be the default file manager..."""
+def guess_open_cmd():
+    """Tries to guess the command to open files
+    with their associated application.
+    If it fails, defaults to xdg-open"""
+    for cmd in ['gnome-open', 'exo-open', 'kde-open']:
+        if which(cmd):
+            return cmd
+    return 'xdg-open'
+
+def guess_file_manager():
+    """Tries to get the default application
+    for the inode/directory mime type,
+    which should be the default file manager...
+    If it fails, we try a list of known filemanagers,
+    or default to xdg-open"""
     desktop_file_name = find_desktop_file_by_mime_type('inode/directory')
     if desktop_file_name:
         desktop_file = find_desktop_file(desktop_file_name)
         if desktop_file:
             return desktop_file_get_exec(desktop_file)
+    for fm in ['thunar', 'pcmanfm', 'nautilus', 'dolphin']:
+        if which(fm):
+            return fm
+    return 'xdg-open'
 
 def find_desktop_file(filename):
     if os.path.isabs(filename):
@@ -137,3 +158,34 @@ def desktop_file_get_exec(filename):
                 fm = l.strip().split('=')[1]
                 return re.sub(r'%[a-zA-Z]+', '', fm)
             l = f.readline()
+
+def detect_de():
+    if os.getenv('KDE_FULL_SESSION'):
+        return 'kde'
+    elif check_gnome():
+        return 'gnome'
+    elif check_xfce():
+        return 'xfce'
+    else:
+        return os.getenv('DESKTOP_SESSION', '').lower()
+
+def check_gnome():
+    if os.getenv('GNOME_DESKTOP_SESSION_ID'):
+        return True
+    args = shlex.split(
+        "dbus-send --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.GetNameOwner string:org.gnome.SessionManager > /dev/null 2>&1"        
+    )
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    r = p.communicate()
+    if not r[1]:
+        return True
+
+def check_xfce():
+    args = shlex.split("xprop -root _DT_SAVE_MODE")
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    r = p.communicate()
+    if r[1]:
+        return False
+    if ' = "xfce4"' in r[0]:
+        return True
+
