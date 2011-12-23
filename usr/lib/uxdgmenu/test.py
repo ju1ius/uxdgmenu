@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-import os, subprocess
+import os, subprocess, time
 
 #USER = os.environ['USER']
 #if USER == 'root':
@@ -13,9 +13,13 @@ import os, subprocess
 #menu = uxm.base.Menu('foobar')
 
 import uxm.applications
-menu = uxm.applications.ApplicationsMenu('awesome')
+menu = uxm.applications.ApplicationsMenu('openbox')
+
+start_t = time.time()
+
 print menu.parse_menu_file('uxm-applications.menu')
 
+print ">>> ", time.time() - start_t
 #import uxm.rootmenu
 #menu = uxm.rootmenu.RootMenu('awesome')
 #print menu.parse_menu_file('uxm-rootmenu.menu')
