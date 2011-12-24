@@ -1,15 +1,10 @@
-from . import TYPE_FLAT
-from .. import base
+from . import base
 
-class Formatter(base.Formatter):
+class Formatter(base.FlatFormatter):
 
     supports_dynamic_menus = False
     supports_includes = True
     supports_icons = True
-    submenus_first = True
-
-    def get_type(self):
-        return TYPE_FLAT
 
     def escape_id(self, id):
         return "uxdgmenu_%s" % id.lower().replace(' ', '_').replace('-', '_')
@@ -20,43 +15,50 @@ class Formatter(base.Formatter):
 local main_menu = awful.menu.new({ items = uxdgmenu_rootmenu })    
 """ % content
 
-    def format_menu(self, id, content):
-      return """
+    def format_menu(self, data):
+        entries = self.get_children(data, True)
+        return """
 %s
 return %s
-""" % (content, self.escape_id(id))
+""" % (
+        "\n".join(entries),
+        self.escape_id(data['id'])
+    )
 
-    def format_text_item(self, txt, level=0):
+    def format_text_item(self, data, level=0):
         return self.format_application(
-            txt, 'nil', '', level
+            data['label'].encode('utf-8'), 'nil', '', level
         )
 
-    def format_include(self, id, filepath, level=0):
-        return """local %(id)s = dofile("%(file)s")\n""" % {
-            "id": self.escape_id(id),
-            "file": filepath.encode('utf-8')
+    def format_include(self, data, level=0):
+        return """local %(id)s = dofile("%(file)s")""" % {
+            "id": self.escape_id(data['id']),
+            "file": data['file'].encode('utf-8')
         }
 
-    def format_separator(self, level=0):
-        return """  { "--------------------", nil },\n"""
+    def format_separator(self, data, level=0):
+        return """  { "--------------------", nil }"""
 
-    def format_application(self, name, cmd, icon, level=0):
-        return '  { "%s", "%s", "%s" },\n' % (
-            name.encode('utf-8'), cmd, icon
+    def format_application(self, data, level=0):
+        return '  { "%s", "%s", "%s" }' % (
+            data['label'].encode('utf-8'), data['command'], data['icon']
         )
 
-    def format_directory(self, id, name, icon, content, level=0):
-        return """local %s = {\n%s}\n""" % (
-            self.escape_id(id), content
+    def format_submenu(self, data, entries, level=0):
+        return """local %s = {
+%s
+}""" % (
+            self.escape_id(data['id']), ",\n".join(entries)
         )
 
-    def format_submenu(self, id, name, icon, submenu, level=0):
-        id = self.escape_id(id)
-        return '  { "%s", %s, "%s" },\n' % (
-            name.encode('utf-8'), id, icon
+    def format_submenu_entry(self, data, level=0):
+        return '  { "%s", %s, "%s" }' % (
+            data['label'].encode('utf-8'),
+            self.escape_id(data['id']),
+            data['icon']
         )
 
-    def format_wm_menu(self, id, name, icon, level=0):
+    def format_wm_menu(self, data, level=0):
         return """local %(id)s = {
   { "Manual", "x-terminal-emulator -e 'man awesome'" },
   { "Edit Config", "x-terminal-emulator -e  'nano ~/.config/awesome/rc.lua'" },
@@ -64,6 +66,6 @@ return %s
   { "Quit", awesome.quit }
 }
 """ % {
-            "id": self.escape_id(id), "i": "  " * level
+            "id": self.escape_id(data['id'])
         }
 
