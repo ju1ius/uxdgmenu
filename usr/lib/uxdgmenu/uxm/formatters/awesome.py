@@ -27,13 +27,13 @@ return %s
 
     def format_text_item(self, data, level=0):
         return self.format_application(
-            data['label'].encode('utf-8'), 'nil', '', level
+            data['label'], 'nil', '', level
         )
 
     def format_include(self, data, level=0):
         return """local %(id)s = dofile("%(file)s")""" % {
             "id": self.escape_id(data['id']),
-            "file": data['file'].encode('utf-8')
+            "file": data['file']
         }
 
     def format_separator(self, data, level=0):
@@ -41,7 +41,7 @@ return %s
 
     def format_application(self, data, level=0):
         return '  { "%s", "%s", "%s" }' % (
-            data['label'].encode('utf-8'), data['command'], data['icon']
+            data['label'], data['command'], data['icon']
         )
 
     def format_submenu(self, data, entries, level=0):
@@ -53,7 +53,7 @@ return %s
 
     def format_submenu_entry(self, data, level=0):
         return '  { "%s", %s, "%s" }' % (
-            data['label'].encode('utf-8'),
+            data['label'],
             self.escape_id(data['id']),
             data['icon']
         )

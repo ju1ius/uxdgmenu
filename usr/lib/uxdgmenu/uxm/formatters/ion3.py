@@ -1,25 +1,37 @@
 from . import base
 
-class Menu(base.FlatMenu):
+class Formatter(base.FlatFormatter):
 
     supports_icons = True
     submenus_first = False
 
-    def format_menu(self,content):
-        return content
+    def escape_id(self, id):
+        return "uxdgmenu_%s" % id.lower().replace(' ', '_').replace('-', '_')
 
-    def format_directory(self, id, name, icon, entries, level):
+    def format_menu(self, data):
+        return self.format_submenu(data)
+
+    def format_submenu(self, data, level=0):
         return """defmenu("%s",
 {
-%s})
-""" % ( name, entries )
+%s
+})
+""" % (
+            self.escape_id(data['id']),
+            ",\n".join(self.get_children(data, True))
+        )
 
     def format_separator(self, level=0):
         return '' 
 
-    def format_application(self, name, cmd, icon, level=0):
-        return '  menuentry("%s", "ioncore.exec_on(_, \'%s\')"),\n' % (name, cmd)
+    def format_application(self, data, level=0):
+        return """  menuentry("%s", "ioncore.exec_on(_, '%s')")""" % (
+            data['label'], data['command']
+        )
 
-    def format_submenu(self, id, name, icon, level=0):
-        return '  submenu("%s", "%s"),\n' % (name, name)
+    def format_submenu_entry(self, data, level=0):
+        return '  submenu("%s", "%s")' % (
+            self.escape_id(data['id']),
+            data['label']
+        )
 

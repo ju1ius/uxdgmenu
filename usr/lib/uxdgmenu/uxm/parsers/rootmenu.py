@@ -1,15 +1,16 @@
 import os
-from . import config, applications, formatters
-from .adapters import SHOW_EMPTY
+from . import base
+from .. import config
+from ..adapters import SHOW_EMPTY
         
 import gettext
-__t = gettext.translation("fluxdgmenu", "/usr/share/locale")
+__t = gettext.translation("uxdgmenu", "/usr/share/locale")
 _ = __t.ugettext      
 
-class RootMenu(applications.ApplicationsMenu):
+class Parser(applications.Parser):
 
     def parse_config(self):
-        super(RootMenu, self).parse_config()
+        super(Parser, self).parse_config()
         self.as_submenu = self.config.getboolean("Menu", "as_submenu")
 
     def parse_menu_file(self, menu_file):

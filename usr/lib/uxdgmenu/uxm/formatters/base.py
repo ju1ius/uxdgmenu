@@ -3,6 +3,11 @@ from pprint import pprint as pp
 
 class Formatter(object):
 
+    indent_str = "  "
+
+    def indent(self, level=0):
+        return self.indent_str * level
+
     def get_name(self):
         return self.__module__.split('.')[-1]
     

@@ -6,12 +6,12 @@ from . import config, utils, cache
 #
 def start(opts):
     """starts the daemon"""
-    wm = opts.window_manager
+    fmt = opts.formatter
     check_triggers()
     stop()
     update(opts)
     cmd = [config.APP_WATCH, '--daemon',
-        '--apps-command', '%s update -w %s' % (config.APP_DAEMON, wm)
+        '--apps-command', '%s update -f %s' % (config.APP_DAEMON, fmt)
     ]
     # Add exclude patterns
     cmd.extend(['--exclude', "|".join(config.EXCLUDED)])
@@ -22,13 +22,13 @@ def start(opts):
     if opts.with_bookmarks:
         cmd.extend([
             '--bookmarks-command',
-            '%s update-bookmarks -w %s' % (config.APP_DAEMON, wm)
+            '%s update-bookmarks -f %s' % (config.APP_DAEMON, fmt)
         ])
     # Recently Used items
     if opts.with_recently_used:
         cmd.extend([
             '--recently-used-command',
-            '%s update-recently-used -w %s' % (config.APP_DAEMON, wm)
+            '%s update-recently-used -f %s' % (config.APP_DAEMON, fmt)
         ])
     # Add monitored dirs
     for d in config.MONITORED:
@@ -44,22 +44,23 @@ def stop():
     subprocess.call(['pkill', '-u', os.environ['USER'], config.APP_WATCH])
 
 def show(opts):
-    wm = opts.window_manager
-    cache = get_menu_cache(wm, 'applications')
+    fmt = opts.formatter
+    cache = get_menu_cache(fmt, 'applications')
     with open(cache, 'r') as f:
         for l in f:
             print l
 
 def update(opts):
     """updates the menu"""
-    wm = opts.window_manager
+    fmt = opts.formatter
     menu_file = opts.menu_file
-    cache = get_menu_cache(wm, menu_file)
-    formatter = get_formatter(wm)
-    import uxm.applications
-    menu = uxm.applications.ApplicationsMenu(formatter)
+    cache = get_menu_cache(fmt, menu_file)
+    formatter = get_formatter(fmt)
+    from uxm.parsers.applications import Parser
+    parser = Parser()
+    data = parser.parse_menu_file(opts.menu_file)
     with open(cache, 'w+') as fp:
-        fp.write(menu.parse_menu_file(opts.menu_file))
+        fp.write(formatter.format_menu(data))
     if opts.with_bookmarks:
         update_bookmarks(opts)
     if opts.with_recently_used:
@@ -76,22 +77,24 @@ def clear_cache(opts):
     update_recently_used(opts)
 
 def update_bookmarks(opts):
-    wm = opts.window_manager
-    cache = get_menu_cache(wm, 'bookmarks')
-    formatter = get_formatter(wm)
-    import uxm.bookmarks
-    menu = uxm.bookmarks.BookmarksMenu(formatter)
+    fmt = opts.formatter
+    formatter = get_formatter(fmt)
+    cache = get_menu_cache(fmt, 'bookmarks')
+    from uxm.parsers.bookmarks import Parser
+    parser = Parser()
+    data = parser.parse_bookmarks()
     with open(cache, 'w+') as fp:
-        fp.write(menu.parse_bookmarks())
+        fp.write(formatter.format_menu(data))
 
 def update_recently_used(opts):
-    wm = opts.window_manager
-    cache = get_menu_cache(wm, 'recently_used')
-    formatter = get_formatter(wm)
-    import uxm.recently_used
-    menu = uxm.recently_used.RecentlyUsedMenu(formatter)
+    fmt = opts.formatter
+    formatter = get_formatter(fmt)
+    cache = get_menu_cache(fmt, 'recently_used')
+    from uxm.parsers.recently_used import Parser
+    parser = Parser()
+    data = parser.parse_bookmarks()
     with open(cache, 'w+') as fp:
-        fp.write(menu.parse_bookmarks())
+        fp.write(formatter.format_menu(data))
 
 def clear_recently_used(opts):
     with open(os.path.expanduser('~/.recently-used.xbel'), 'w') as f:
@@ -113,10 +116,13 @@ def generate_rootmenu(opts):
             os.rename(rootmenu, "%s.bak" % rootmenu)
         except OSError, why:
             sys.exit("Could not backup previous rootmenu: %s" % why)
-    import fxm.rootmenu
-    menu = fxm.rootmenu.RootMenu()
+    fmt = opts.formatter
+    formatter = get_formatter(fmt)
+    from uxm.parsers.rootmenu import Parser
+    parser = Parser()
+    data = parser.parse_menu_file(config.ROOTMENU_FILE)
     with open(rootmenu, 'w+') as fp:
-        fp.write(menu.parse_menu_file(config.ROOTMENU_FILE))
+        fp.write(formatter.format_rootmenu(data))
 
 def disable_triggers():
     if not os.path.isfile(config.TRIGGERS_DB):
@@ -174,7 +180,7 @@ def get_formatter(name):
     try:
         return uxm.formatters.get_formatter(name)
     except ImportError, why:
-        sys.exit("No Formatter named %s (%s)" % (wm, why))
+        sys.exit("No Formatter named %s (%s)" % (fmt, why))
 
-def get_menu_cache(wm, menu_file):
-    return os.path.join(config.CACHE_DIR, '%s-%s' % (wm, menu_file))
+def get_menu_cache(fmt, menu_file):
+    return os.path.join(config.CACHE_DIR, '%s.%s' % (menu_file, fmt))

@@ -1,9 +1,8 @@
-import os, sys, stat, re
-from abc import ABCMeta, abstractmethod
+import re
 import xdg.IconTheme as IconTheme
-from . import config, cache, icon_finder, formatters
+from .. import config, cache, icon_finder, formatters
 
-class Menu(object):
+class Parser(object):
 
     def __init__(self):
         self.config = config.get()
@@ -31,4 +30,3 @@ class Menu(object):
             self.icon_size = self.config.getint('Icons', 'size')
             self.use_gtk_theme = self.config.getboolean('Icons', 'use_gtk_theme')
             self.theme = self.config.get('Icons','theme')
-

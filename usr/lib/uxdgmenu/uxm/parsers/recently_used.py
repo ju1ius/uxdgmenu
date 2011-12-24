@@ -16,15 +16,16 @@ BOOKMARK_EXPR = 'info/metadata/{%(ns)s}applications/{%(ns)s}application' % {
     "ns": BOOKMARK_NS
 }
 
-class RecentlyUsedMenu(base.Menu):
+class Parser(base.Parser):
 
-    def __init__(self, formatter):
-        super(RecentlyUsedMenu, self).__init__(formatter)
+    def __init__(self):
+        super(Parser, self).__init__()
         self.exe_regex = re.compile(r"'(.*) %[a-zA-Z]'")
-
-    def parse_config(self):
-        super(RecentlyUsedMenu, self).parse_config()
         self.max_items = self.config.getint("Recently Used", "max_items")
+        if self.show_icons:
+            self.clear_icon = self.icon_finder.find_by_name('gtk-clear')
+        else:
+            self.clear_icon = ''
 
     def parse_bookmarks(self):
         source = os.path.expanduser("~/.recently-used.xbel")
@@ -32,16 +33,23 @@ class RecentlyUsedMenu(base.Menu):
         last_index = - (self.max_items -1)
         bookmarks = tree.findall('/bookmark')[last_index:-1]
         bookmarks.reverse()
-        output = map(self.parse_item, bookmarks)
-        output.extend([
-            self.formatter.format_separator(0),
-            self.formatter.format_application(
-                _('Clear List'), 'uxm-daemon clear-recently-used',
-                self.icon_finder.find_by_name('gtk-clear') if self.show_icons else '', 
-                0
-            )
+        items = map(self.parse_item, bookmarks)
+        items.extend([
+            { "type": "separator" },
+            {
+                "type": "application",
+                "label": _('Clear List'),
+                "command": "uxm-daemon clear-recently-used",
+                "icon": self.clear_icon
+            }
         ])
-        return self.formatter.format_menu("recently-used", "".join(output) )
+        return {
+            "type": "menu",
+            "label": "Recent Files",
+            "id": "uxdgmenu-recently-used",
+            "icon": "",
+            "items": items
+        }
 
     def parse_item(self, el):
         href = el.get('href')
@@ -51,4 +59,9 @@ class RecentlyUsedMenu(base.Menu):
         cmd = '%s "%s"' % (cmd, href)
         mime_type = el.find(MIME_EXPR).get('type')
         icon = self.icon_finder.find_by_mime_type(mime_type) if self.show_icons else ''
-        return self.formatter.format_application(label, cmd, icon)
+        return {
+            "type": "application",
+            "label": label.encode('utf-8'),
+            "icon": icon.encode('utf-8'),
+            "command": cmd.encode('utf-8')
+        }

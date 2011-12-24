@@ -6,11 +6,11 @@ import uxm.daemon as daemon
 import uxm.utils as utils
 
 
-def check_wm(fatal=True):
-    if not options.window_manager:
+def check_formatter(fatal=True):
+    if not options.formatter:
         if fatal:
             parser.print_usage()
-            sys.exit("You must provide the a valid window manager with this command")
+            sys.exit("You must provide a valid formatter with this command")
         else:
             pass
 
@@ -39,19 +39,19 @@ if __name__ == '__main__':
         help="be verbose and log inotify events to syslog"
     )
     parser.add_option(
-        '-w', '--window-manager', type='choice',
+        '-f', '--formatter', type='choice',
         choices=[
             'fluxbox','openbox','blackbox','windowmaker','twm','fvwm2','ion3',
             'awesome','icewm','pekwm','json'
         ],
-        help="The window manager for which to generate a menu"
+        help="The formatter for the menu"
     )
     parser.add_option(
         '-d', '--detect', action='store_true',
         help="Tries to detect the current window manager"
     )
     parser.add_option(
-        '-f', '--menu-file', default="uxm-applications.menu",
+        '-m', '--menu-file', default="uxm-applications.menu",
         help="Choose an alternate menu file. Defaults to 'uxm-applications.menu'"
     )
     parser.add_option(
@@ -96,16 +96,16 @@ if __name__ == '__main__':
         pids = utils.pgrep(pattern, user=os.environ['USER'], name=True)
         if pids:
             # There should be only one WM for the same user
-            options.window_manager = pids[0][1]
+            options.formatter = pids[0][1]
 
     command = args[0]
     if command == 'start' or command == 'restart':
-        check_wm()
+        check_formatter()
         daemon.start(options)
     elif command == 'stop':
         daemon.stop()
     elif command == 'update':
-        check_wm()
+        check_formatter()
         if options.progress:
             import uxm.dialogs.progress as progress
             def update():
@@ -118,25 +118,25 @@ if __name__ == '__main__':
         else:
             daemon.update(options)
     elif command == 'update-bookmarks':
-        check_wm()
+        check_formatter()
         if options.progress:
             utils.zenity_progress(command)
         else:
             daemon.update_bookmarks()
     elif command == 'update-recently-used':
-        check_wm()
+        check_formatter()
         if options.progress:
             utils.zenity_progress(command)
         else:
             daemon.update_recently_used()
     elif command == 'clear-recently-used':
-        check_wm()
+        check_formatter()
         if options.progress:
             utils.zenity_progress(command)
         else:
             daemon.clear_recently_used()
     elif command == 'generate-rootmenu':
-        check_wm()
+        check_formatter()
         if options.progress:
             utils.zenity_progress(command)
         else:

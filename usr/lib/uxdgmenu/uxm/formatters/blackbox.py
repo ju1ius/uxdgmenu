@@ -1,54 +1,53 @@
-from . import TYPE_TREE
-from .. import base
+from . import base
 
 class Formatter(base.Formatter):
-
-    supports_dynamic_menus = False
-    supports_includes = True
-    supports_icons = false
-
-    def get_type(self):
-        return TYPE_TREE
 
     def escape_label(self, label):
         return label.replace('(', ':: ').replace(')', ' ::')
 
-    def format_rootmenu(self, content):
-        return """[begin]\n%s[end]""" % content
+    def format_rootmenu(self, data):
+        contents = "\n".join(self.get_children(data))
+        return """[begin]
+%s
+[end]""" % contents
 
-    def format_menu(self, id, content):
-      return content
+    def format_menu(self, data):
+      return "\n".join(self.get_children(data))
 
-    def format_text_item(self, txt, level=0):
-        return "%s[nop] (%s)\n" % (
-            "  " * level,
-            self.escape_label(txt.encode('utf-8'))
+    def format_text_item(self, data, level=0):
+        return "%s[nop] (%s)" % (
+            self.indent(level),
+            self.escape_label(data['label'])
         )
 
-    def format_include(self, filepath, level=0):
-        return "%s[include] (%s)\n" % (
-            "  " * level,
-            self.escape_label(filepath.encode('utf-8'))
+    def format_include(self, data, level=0):
+        return "%s[include] (%s)" % (
+            self.indent(level),
+            self.escape_label(data['file'])
         )
 
-    def format_separator(self, level=0):
-        return "%s[separator] (---------------------)\n" % ("  " * level)
+    def format_separator(self, data, level=0):
+        return "%s[separator] (---------------------)" % (self.indent(level))
 
-    def format_application(self, name, cmd, icon, level=0):
-        return "%s[exec] (%s) {%s}\n" % (
-            "  " * level, self.escape_label(name.encode('utf-8')),
-            cmd.encode('utf-8')
+    def format_application(self, data, level=0):
+        return "%s[exec] (%s) {%s}" % (
+            self.indent(level),
+            self.escape_label(data['label']),
+            data['command']
         )
 
-    def format_submenu(self, id, name, icon, submenu, level=0):
-        return """%(i)s[submenu] (%(n)s)\n%(sub)s%(i)s[end]\n""" % {
-            "i": "  " * level,
-            "n": self.escape_label(name.encode('utf-8')),
-            "sub": submenu
+    def format_submenu(self, data, level=0):
+        items = "\n".join(self.get_children(data, level))
+        return """%(i)s[submenu] (%(n)s)
+%(items)s
+%(i)s[end]""" % {
+            "i": self.indent(level),
+            "n": self.escape_label(data['label']),
+            "items": items
         }
 
-    def format_wm_menu(self, id, name, icon, level=0):
-        return """%(i)s[submenu] (%(name)s)
+    def format_wm_menu(self, data, level=0):
+        return """%(i)s[submenu] (%(name)s) <%(icon)s>
 %(i)s  [config] (%(conf)s)
 %(i)s  [submenu] (%(styles)s)
 %(i)s    [stylesdir] (/usr/share/fluxbox/styles)
@@ -59,10 +58,10 @@ class Formatter(base.Formatter):
 %(i)s  [exit]
 %(i)s[end]
 """ % {
-            "name": name,
+            "name": data['label'], "icon": data['icon'],
             "conf": 'Configuration',
             "styles": 'Themes',
-            "i": "  " * level
+            "i": self.indent(level)
         }
 
 

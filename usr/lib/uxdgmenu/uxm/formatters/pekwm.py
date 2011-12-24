@@ -1,20 +1,26 @@
 from . import base
 
-class Menu(base.TreeMenu):
-
-    supports_icons = False
+class Formatter(base.TreeFormatter):
 
     def format_menu(self, content):
-        return content
+        return "\n".join(self.get_children(data))
 
-    def format_separator(self, level=0):
-        indent = "  " * level
-        return "%sSeparator{}\n" % indent
+    def format_separator(self, data, level=0):
+        return "%sSeparator{}" % self.indent(level)
 
-    def format_application(self, name, cmd, icon, level=0):
-        indent = "  " * level
-        return '%sEntry = "%s" { Actions = "Exec %s &" }\n' % (indent, name, cmd)
+    def format_application(self, data, level=0):
+        return '%sEntry = "%s" { Actions = "Exec %s &" }' % (
+            self.indent(level),
+            data['label'],
+            data['command']
+        )
 
-    def format_submenu(self, id, name, icon, submenu, level=0):
-        indent = "  " * level
-        return '%sSubmenu = "%s" {\n%s%s}\n' % (indent, name, submenu, indent)
+    def format_submenu(self, data, level=0):
+        indent = self.indent(level)
+        return """%(i)sSubmenu = "%(n)s" {
+%(items)s
+%(i)s}""" % {
+                "i": self.indent(level),
+                "n": data['label'],
+                "items": "\n".join(self.get_children(data, level+1))
+            }

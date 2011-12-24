@@ -1,15 +1,16 @@
 import os, sys, re
-from . import base, adapters, formatters
+from . import base
+from .. import adapters
 
-class ApplicationsMenu(base.Menu):
+class Parser(base.Parser):
 
     def __init__(self):
-        super(ApplicationsMenu, self).__init__()
+        super(Parser, self).__init__()
         self.adapter = self.get_default_adapter()
         self.filter_debian = os.path.isfile('/usr/bin/update-menus')
 
     def parse_config(self):
-        super(ApplicationsMenu, self).parse_config()
+        super(Parser, self).parse_config()
         show_all = self.config.getboolean('Menu', 'show_all')
         if show_all:
             self.show_flags = adapters.SHOW_EMPTY
@@ -19,7 +20,7 @@ class ApplicationsMenu(base.Menu):
         root = self.adapter.get_root_directory(menu_file, self.show_flags)
         return {
             "type": "menu",
-            "id": root.get_menu_id(),
+            "id": root.get_menu_id().encode('utf-8'),
             "items": [ i for i in self.parse_directory(root) ]
         }
 
@@ -43,9 +44,9 @@ class ApplicationsMenu(base.Menu):
         icon = self.icon_finder.find_by_name(entry.get_icon()) if self.show_icons else ''
         return {
             "type": "menu",
-            "id": id,
-            "label": name,
-            "icon": icon,
+            "id": id.encode('utf-8'),
+            "label": name.encode('utf-8'),
+            "icon": icon.encode('utf-8'),
             "items": [ i for i in self.parse_directory(entry) ]
         }
 
@@ -65,9 +66,9 @@ class ApplicationsMenu(base.Menu):
 
         return {
             "type": "application",
-            "label": name,
-            "command": cmd,
-            "icon": icon
+            "label": name.encode('utf-8'),
+            "command": cmd.encode('utf-8'),
+            "icon": icon.encode('utf-8')
         }
 
     def get_default_adapter(self):

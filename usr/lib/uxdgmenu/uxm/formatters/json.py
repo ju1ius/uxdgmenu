@@ -1,66 +1,56 @@
-from . import TYPE_TREE
-from .. import base
+import json
+from . import base
 
-class Formatter(base.Formatter):
-
-    supports_dynamic_menus = False
-    supports_includes = False
-    supports_icons = True
-
-    def get_type(self):
-        return TYPE_TREE
+class Formatter(base.TreeFormatter):
 
     def escape_label(self, label):
         return label.replace('"', '\\"')
 
-    def format_rootmenu(self, content):
-        return """{
-  "type": "menu",
-  "items": [
-%s
-  ]
-}\n""" % content
+    def format_rootmenu(self, data):
+        return self.format_submenu(data, 0)
 
-    def format_menu(self, id, content):
-      return content
+    def format_menu(self, data):
+      return json.dumps(data)
 
-    def format_text_item(self, txt, level=0):
-        return """%s{ "type": "text", "label": "%s" }\n""" % (
-            "  " * level,
-            self.escape_label(txt.encode('utf-8'))
+    def format_text_item(self, data, level=0):
+        return """%s{ "type": "text", "label": "%s" }""" % (
+            self.indent(level),
+            self.escape_label(data['label'])
         )
 
-    def format_include(self, filepath, level=0):
-        return """%s{ "type": "include", "file": "%s" }\n""" % (
-            "  " * level,
-            self.escape_label(filepath.encode('utf-8'))
+    def format_include(self, data, level=0):
+        return """%s{ "type": "include", "file": "%s" }""" % (
+            self.indent(level),
+            self.escape_label(data['file'])
         )
 
-    def format_separator(self, level=0):
-        return '%s{ "type": "separator" }\n' % ("  " * level)
+    def format_separator(self, data, level=0):
+        return '%s{ "type": "separator" }' % (self.indent(level))
 
-    def format_application(self, name, cmd, icon, level=0):
-        return '%s{ "type": "application", "label": "%s", "command": "%s", "icon": "%s" },\n' % (
-            "  " * level, self.escape_label(name.encode('utf-8')),
-            cmd.encode('utf-8'),
-            icon.encode('utf-8')
+    def format_application(self, data, level=0):
+        return """%s{ "type": "application", "label": "%s", "command": "%s", "icon": "%s" }""" % (
+            self.indent(level), self.escape_label(data['label']),
+            data['command'],
+            data['icon']
         )
 
-    def format_submenu(self, id, name, icon, submenu, level=0):
+    def format_submenu(self, data, level=0):
+        items = ",\n".join(self.get_children(data, level+1))
         return """%(i)s{
-  "type": "menu",
-  "label": "%(n)s",
-  "icon": "%(icn)s",
-  "items": [
-%(sub)s%(i)s  ]
-%(i)s}\n""" % {
-            "i": "  " * level,
-            "n": self.escape_label(name.encode('utf-8')),
-            "icn": icon.encode('utf-8'),
-            "sub": submenu
+%(i)s  "type": "menu",
+%(i)s  "label": "%(n)s",
+%(i)s  "icon": "%(icn)s",
+%(i)s  "items": [
+%(items)s
+%(i)s  ]
+%(i)s}""" % {
+            "i": self.indent(level),
+            "n": self.escape_label(data['label']),
+            "icn": data['icon'],
+            "items": items
         }
 
-    def format_wm_menu(self, id, name, icon, level=0):
+    def format_wm_menu(self, data, level=0):
         return """%(i)s[submenu] (%(name)s) <%(icon)s>
 %(i)s  [config] (%(conf)s)
 %(i)s  [submenu] (%(styles)s)
@@ -72,8 +62,8 @@ class Formatter(base.Formatter):
 %(i)s  [exit]
 %(i)s[end]
 """ % {
-            "name": name, "icon": icon,
+            "name": data['name'], "icon": data['icon'],
             "conf": 'Configuration',
             "styles": 'Themes',
-            "i": "  " * level
+            "i": self.indent(level)
         }

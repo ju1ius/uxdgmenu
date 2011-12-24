@@ -60,6 +60,9 @@ class IconFinder(object):
         return self.lookup(default).encode('utf-8')
 
     def find_by_file_path(self, filepath):
+        #if HAS_GIO:
+            #mime_type = gio.content_type_guess(filepath)
+        #else:
         mime_type = xdg.Mime.get_type(filepath)
         return self.find_by_mime_type(str(mime_type))
 

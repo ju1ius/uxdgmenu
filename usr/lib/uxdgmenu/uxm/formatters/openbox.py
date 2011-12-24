@@ -27,25 +27,24 @@ class Formatter(base.TreeFormatter):
 </openbox_pipe_menu>""" % output
 
     def format_text_item(self, data, level=0):
-        indent = "  " * level
-        return "%s<item label=%s />" % (indent, quoteattr(data['label']))
+        return "%s<item label=%s />" % (self.indent(level), quoteattr(data['label']))
 
-    def format_dynamic_menu(self, id, label, cmd, icon, level=0):
-        return "%(i)s<menu id=%(id)s label=%(n)s execute=%(cmd)s icon=%(icn)s/>\n" % {
-            "i": "  " * level, "id": quoteattr(id), "n": quoteattr(label),
+    def format_pipemenu(self, data, level=0):
+        return "%(i)s<menu id=%(id)s label=%(n)s execute=%(cmd)s icon=%(icn)s/>" % {
+            "i": self.indent(level), "id": quoteattr(id), "n": quoteattr(label),
             "cmd": quoteattr(cmd), "icn": quoteattr(icon)
         }
 
     def format_separator(self, level=0):
-        return "%s<separator/>" % ("  " * level)
+        return "%s<separator/>" % (self.indent(level))
 
     def format_submenu(self, data, level=0):
         submenu = "\n".join(self.get_children(data, level+1))
         return """%(i)s<menu id=%(id)s label=%(n)s icon=%(icn)s>
 %(sub)s
 %(i)s</menu>""" % {
-            "i": "  " * level, "id": quoteattr(data['id']),
-            "n": quoteattr(data['label'].encode('utf-8')),
+            "i": self.indent(level), "id": quoteattr(data['id']),
+            "n": quoteattr(data['label']),
             "icn": quoteattr(data['icon']), "sub": submenu
         }
 
@@ -55,7 +54,7 @@ class Formatter(base.TreeFormatter):
 %(i)s    <command>%(c)s</command>
 %(i)s  </action>
 %(i)s</item>""" % {
-            "i": "  " * level, "n": quoteattr(data['label'].encode('utf-8')),
+            "i": self.indent(level), "n": quoteattr(data['label']),
             "icn": quoteattr(data['icon']), "c": escape(data['command'])
         }
 
@@ -78,6 +77,6 @@ class Formatter(base.TreeFormatter):
 %(i)s</menu>
 """ % {
             "name": quoteattr(name), "icon": quoteattr(icon),
-            "i": "  " * level
+            "i": self.indent(level)
         }
 
