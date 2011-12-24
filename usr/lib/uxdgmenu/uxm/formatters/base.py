@@ -1,14 +1,28 @@
-from collections import deque
-from pprint import pprint as pp
+import yapsy.IPlugin
 
-class Formatter(object):
+class Formatter(yapsy.IPlugin.IPlugin):
+    
+    _supports_pipemenus = False
+    @property
+    def supports_pipemenus(self):
+        return self._supports_pipemenus
 
-    indent_str = "  "
+    _supports_includes = True
+    @property
+    def supports_includes(self):
+        return self._supports_includes
 
+    _supports_icons = True
+    @property
+    def supports_icons(self):
+        return self._supports_pipemenus
+    
+    _indent_str = "  "
     def indent(self, level=0):
-        return self.indent_str * level
+        return self._indent_str * level
 
-    def get_name(self):
+    @property
+    def name(self):
         return self.__module__.split('.')[-1]
     
     def format_rootmenu(self, content):
