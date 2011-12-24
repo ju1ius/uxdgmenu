@@ -1,28 +1,20 @@
 #! /usr/bin/env python
 import os, subprocess, time
 
-#USER = os.environ['USER']
-#if USER == 'root':
-    #print os.environ['SUDO_USER']
-#print os.environ['USER']
-#print os.path.expanduser('~')
+#import uxm.applications, uxm.formatters.openbox as formatter
+import uxm.applications, uxm.formatters.awesome as formatter
+menu = uxm.applications.ApplicationsMenu()
+data = menu.parse_menu_file('uxm-applications.menu')
+f = formatter.Formatter()
 
-#ret = subprocess.call(['pkill', 'foo'])
-#print ret
-#import uxm.base
-#menu = uxm.base.Menu('foobar')
+def bench(c):
+    start_t = time.time()
+    for i in xrange(c):
+        output = f.format_menu(data)
+    end_t = time.time()
+    total = end_t - start_t
+    pc = total // c
+    print output
+    print ">>> total=%.8f percall=%.12f" % (total, pc)
 
-import uxm.applications
-menu = uxm.applications.ApplicationsMenu('openbox')
-
-start_t = time.time()
-
-print menu.parse_menu_file('uxm-applications.menu')
-
-print ">>> ", time.time() - start_t
-#import uxm.rootmenu
-#menu = uxm.rootmenu.RootMenu('awesome')
-#print menu.parse_menu_file('uxm-rootmenu.menu')
-#import uxm.bookmarks
-#menu = uxm.bookmarks.BookmarksMenu('openbox')
-#print menu.parse_bookmarks()
+bench(10000)

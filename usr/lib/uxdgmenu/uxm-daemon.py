@@ -12,6 +12,7 @@ def check_wm(fatal=True):
             parser.print_usage()
             sys.exit("You must provide the a valid window manager with this command")
         else:
+            pass
 
 
 if __name__ == '__main__':
@@ -41,7 +42,7 @@ if __name__ == '__main__':
         '-w', '--window-manager', type='choice',
         choices=[
             'fluxbox','openbox','blackbox','windowmaker','twm','fvwm2','ion3',
-            'awesome','icewm','pekwm'
+            'awesome','icewm','pekwm','json'
         ],
         help="The window manager for which to generate a menu"
     )
