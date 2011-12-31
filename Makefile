@@ -10,8 +10,13 @@ LDFLAGS=-linotifytools
 EXEC=usr/bin/uxdgmenud
 SRC=src/uxdgmenud.c
 
-uxm-watch:
+all: uxdgmenud locale
+
+uxdgmenud:
 	${CC} ${SRC} -o ${EXEC} ${LDFLAGS} ${CFLAGS}
+
+locale:
+	./scripts/make-locale.sh
 
 .PHONY: clean install uninstall
 
@@ -20,6 +25,10 @@ clean:
 	rm -rf usr/share/locale/* 2> /dev/null
 
 install:
+	# Modify config paths
+	sed -i -e 's/PREFIX = ".*"/PREFIX = "${prefix}"/' \
+		-e 's/SYSCONFDIR = ".*"/SYSCONFDIR = "${sysconfdir}"/' \
+		usr/lib/uxdgmenu/uxm/config.py
 	# lib
 	install -d ${prefix}/lib/uxdgmenu/uxm/adapters
 	install -d ${prefix}/lib/uxdgmenu/uxm/formatters
@@ -31,6 +40,7 @@ install:
 	install -d ${prefix}/bin
 	install -m 0755 usr/bin/* ${prefix}/bin
 	ln -sf -T ${prefix}/lib/uxdgmenu/uxm-daemon.py ${prefix}/bin/uxm-daemon
+	ln -sf -T ${prefix}/lib/uxdgmenu/uxm-places.py ${prefix}/bin/uxm-places
 	# share
 	install -d ${prefix}/share/applications
 	install -m 0755 usr/share/applications/* ${prefix}/share/applications
@@ -52,4 +62,5 @@ uninstall:
 	-rm -f ${sysconfdir}/xdg/menus/uxm-applications.menu
 	-rm -f ${sysconfdir}/xdg/menus/uxm-rootmenu.menu
 	-rm -f ${prefix}/bin/uxm-daemon
+	-rm -f ${prefix}/bin/uxm-places
 	-rm -f ${prefix}/bin/uxdgmenud

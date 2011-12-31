@@ -1,10 +1,6 @@
-from . import base
+import uxm.formatter as base
 
-class Formatter(base.FlatFormatter):
-
-    supports_dynamic_menus = False
-    supports_includes = True
-    supports_icons = True
+class AwesomeFormatter(base.FlatFormatter):
 
     def escape_id(self, id):
         return "uxdgmenu_%s" % id.lower().replace(' ', '_').replace('-', '_')

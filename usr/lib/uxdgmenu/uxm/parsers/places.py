@@ -1,8 +1,7 @@
 import os, xdg.Mime
-from . import base
-from .. import utils
+from .. import utils, parser
 
-class Parser(base.Parser):
+class Parser(parser.BaseParser):
 
     def __init__(self):
         super(Parser, self).__init__()

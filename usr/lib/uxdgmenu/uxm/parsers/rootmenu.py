@@ -1,10 +1,10 @@
 import os
-from . import base
 from .. import config
 from ..adapters import SHOW_EMPTY
+from . import applications
         
 import gettext
-__t = gettext.translation("uxdgmenu", "/usr/share/locale")
+__t = gettext.translation("fluxdgmenu", "/usr/share/locale")
 _ = __t.ugettext      
 
 class Parser(applications.Parser):
@@ -13,47 +13,29 @@ class Parser(applications.Parser):
         super(Parser, self).parse_config()
         self.as_submenu = self.config.getboolean("Menu", "as_submenu")
 
-    def parse_menu_file(self, menu_file):
-        root = self.adapter.get_root_directory(menu_file, SHOW_EMPTY)
-        t = self.formatter_type
-        if t == formatters.TYPE_TREE:
-            entries = self.parse_directory(root, 1)
-        elif t == formatters.TYPE_FLAT:
-            entries = self.parse_directory_flat(root, 1)
-        output = "".join( entries )
-        return self.formatter.format_rootmenu(output)
+    #def parse_menu_file(self, menu_file):
+        #root = self.adapter.get_root_directory(menu_file, self.show_flags)
+        #return {
+            #"type": "menu",
+            #"id": root.get_menu_id().encode('utf-8'),
+            #"items": [ i for i in self.parse_directory(root) ]
+        #}
 
-    def parse_submenu(self, entry, level=1):
-        id = entry.get_menu_id()
-        if id == 'uxm-applications':
-            return self.parse_applications_menu(entry, level)
-        if id == 'uxm-bookmarks':
-            return self.parse_bookmarks_menu(entry, level)
-        if id == 'uxm-recently-used':
-            return self.parse_recently_used_menu(entry, level)
-        elif id == 'uxm-custom-entries':
-            return self.parse_custom_entries(entry, level)
-        elif id == 'uxm-menu':
-            return self.parse_uxm_menu(entry, level)
-        elif id == 'uxm-wm-config':
-            return self.parse_wm_menu(entry, level)
-        return super(RootMenu, self).parse_submenu(entry, level)
-
-    def parse_directory_flat(self, entry, level=1):
-        id = entry.get_menu_id()
-        if id == 'uxm-applications':
-            return self.parse_applications_menu(entry, level)
-        if id == 'uxm-bookmarks':
-            return self.parse_bookmarks_menu(entry, level)
-        if id == 'uxm-recently-used':
-            return self.parse_recently_used_menu(entry, level)
-        elif id == 'uxm-custom-entries':
-            return self.parse_custom_entries(entry, level)
-        elif id == 'uxm-menu':
-            return self.parse_uxm_menu(entry, level)
-        elif id == 'uxm-wm-config':
-            return self.parse_wm_menu(entry, level)
-        return super(RootMenu, self).parse_directory_flat(entry, level)
+    #def parse_submenu(self, entry, level=1):
+        #id = entry.get_menu_id()
+        #if id == 'uxm-applications':
+            #return self.parse_applications_menu(entry, level)
+        #if id == 'uxm-bookmarks':
+            #return self.parse_bookmarks_menu(entry, level)
+        #if id == 'uxm-recently-used':
+            #return self.parse_recently_used_menu(entry, level)
+        #elif id == 'uxm-custom-entries':
+            #return self.parse_custom_entries(entry, level)
+        #elif id == 'uxm-menu':
+            #return self.parse_uxm_menu(entry, level)
+        #elif id == 'uxm-wm-config':
+            #return self.parse_wm_menu(entry, level)
+        #return super(RootMenu, self).parse_submenu(entry, level)
 
     def parse_applications_menu(self, entry, level):
         id = entry.get_menu_id()

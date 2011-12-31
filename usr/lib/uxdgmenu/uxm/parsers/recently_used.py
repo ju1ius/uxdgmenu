@@ -1,5 +1,6 @@
 import os, sys, re, urllib
-from . import base
+from .. import parser
+
 try:
     from xml.etree import cElementTree as ElementTree
 except:
@@ -16,7 +17,7 @@ BOOKMARK_EXPR = 'info/metadata/{%(ns)s}applications/{%(ns)s}application' % {
     "ns": BOOKMARK_NS
 }
 
-class Parser(base.Parser):
+class Parser(parser.BaseParser):
 
     def __init__(self):
         super(Parser, self).__init__()

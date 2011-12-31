@@ -1,8 +1,7 @@
 import os, sys, re
-from . import base
-from .. import adapters
+from .. import parser, adapters
 
-class Parser(base.Parser):
+class Parser(parser.BaseParser):
 
     def __init__(self):
         super(Parser, self).__init__()

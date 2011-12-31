@@ -1,53 +1,58 @@
-Tiling WMs [312]:
-  XMonad [71]
-  Awesome [69]
-  dwm [52]
-  i3 [21]
-  Musca [19]
-  wmii [16]
-  Ratpoison [17]
-  ScrotWM [11]
-  subtle [12]
-  PyTyle [8]
-  StumpWM [5]
-  wmfs [4]
-  euclid-wm [2]
-  ion [2]
-  catwm [1]
-  echinus [1]
-  evilwm [1]
+Tiling WMs [335]
 
-Floating WMs [228]:
-  Openbox [154]
-  Fluxbox [20]
-  e17 [14]
-  pekwm [9]
-  fvwm [9]
-  twm [4]
-  Window Maker [4]
-  IceWM [3]
-  JWM [3]
-  rio [2]
-  Blackbox [2]
-  Openbox Multihead [1]
-  e16 [1]
-  cwm [1]
-  Sawfish [1]
+* Awesome [78] !
+* XMonad [74] !
+* dwm [53]
+* i3 [25]
+* Musca [19]
+* Ratpoison [18]
+* wmii [17]
+* subtle [12]
+* ScrotWM [11]
+* PyTyle [8]
+* StumpWM [5]
+* wmfs [5]
+* herbstluftwm [3]
+* euclid-wm [2]
+* ion [2]
+* catwm [1]
+* echinus [1]
+* dminiwm [1]
 
-Compositing WMs [50]:
-  compiz [46]
-  Gnome Shell [3]
-  Ecomorph/Ecomp [1]
+Floating WMs [241]
 
-DEs [185]:
-  KDE [71]
-  Xfce [56]
-  GNOME [40]
-  LXDE [18]
-  No DE [727]
+* Openbox [160] !
+* Fluxbox [20] !
+* e17 [15]
+* pekwm [12]
+* fvwm [11] !
+* twm [4]
+* Window Maker [4] !
+* IceWM [3] !
+* JWM [3]
+* rio [2]
+* Blackbox [2] !
+* Openbox Multihead [1]
+* e16 [1]
+* evilwm [1]
+* cwm [1]
+* Sawfish [1]
 
-Others [80]:
-  Screen [35]
-  tmux [30]
-  TTY [11]
-  dvtm [4]
+Compositing WMs [52]
+* compiz [46]
+* Gnome Shell [5]
+* Ecomorph/Ecomp [1]
+
+DEs [193]
+* KDE [73]
+* Xfce [59]
+* GNOME [41]
+* LXDE [19]
+* Mate [1]
+
+Others [83]
+* Screen [37]
+* tmux [31]
+* TTY [11]
+* dvtm [4]
+

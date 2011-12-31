@@ -1,6 +1,29 @@
-import yapsy.IPlugin
+import sys, imp, inspect
+from . import config
 
-class Formatter(yapsy.IPlugin.IPlugin):
+def get_formatter(name):
+    """Load a formatter based on it's name"""
+    try:
+        fp, path, desc = imp.find_module(name, config.PLUGINS_DIRS)
+    except:
+        raise RuntimeError('No formatter named "%s" found in %s' % (
+            name, str(config.PLUGINS_DIRS)
+        ))
+    try:
+        module = imp.load_module(name, fp, path, desc)
+        formatter = None
+        for key, item in module.__dict__.iteritems():
+            if inspect.isclass(item) and issubclass(item, Formatter):
+                formatter = item
+        if formatter:
+            del sys.modules[name]
+            sys.modules["uxm.formatters.%s"%name] = module
+            return formatter()
+    finally:
+        if fp: fp.close()
+
+
+class Formatter(object):
     
     _supports_pipemenus = False
     @property
@@ -25,22 +48,22 @@ class Formatter(yapsy.IPlugin.IPlugin):
     def name(self):
         return self.__module__.split('.')[-1]
     
-    def format_rootmenu(self, content):
+    def format_rootmenu(self, data):
         self._implement_error("format_rootmenu")
 
-    def format_menu(self, id, content):
+    def format_menu(self, data):
         self._implement_error("format_menu")
 
-    def format_text_item(self, txt, level=0):
+    def format_text_item(self, data, level=0):
         self._implement_error("format_text_item")
 
-    def format_separator(self, level=0):
+    def format_separator(self, data, level=0):
         self._implement_error("format_separator")
 
-    def format_application(self, name, cmd, icon, level=0):
+    def format_application(self, data, level=0):
         self._implement_error("format_application")
 
-    def format_submenu(self, id, name, icon, submenu, level=0):
+    def format_submenu(self, data, level=0):
         self._implement_error("format_submenu")
 
     def _implement_error(self, method):
@@ -58,7 +81,7 @@ class TreeFormatter(Formatter):
             if item['type'] == 'application':
                 yield self.format_application(item, level+1)
             elif item['type'] == 'separator':
-                yield self.format_separator(level+1)
+                yield self.format_separator(item, level+1)
             elif item['type'] == 'menu':
                 yield self.format_submenu(item, level+1)
             elif item['type'] == 'text':

@@ -39,11 +39,7 @@ if __name__ == '__main__':
         help="be verbose and log inotify events to syslog"
     )
     parser.add_option(
-        '-f', '--formatter', type='choice',
-        choices=[
-            'fluxbox','openbox','blackbox','windowmaker','twm','fvwm2','ion3',
-            'awesome','icewm','pekwm','json'
-        ],
+        '-f', '--formatter', default="JSON",
         help="The formatter for the menu"
     )
     parser.add_option(
@@ -80,11 +76,9 @@ if __name__ == '__main__':
         import time
         start_t = time.clock()
 
-    if options.progress:
-        if not utils.which('zenity'):
-            options.progress = False
-        else:
-            progress_opts = utils.get_options_for_progress(options)
+    #if options.progress:
+        #if not config.HAS_GTK:
+            #options.progress = False
 
     if options.all:
         options.with_bookmarks = True
@@ -140,16 +134,12 @@ if __name__ == '__main__':
         if options.progress:
             utils.zenity_progress(command)
         else:
-            daemon.generate_rootmenu()
+            daemon.generate_rootmenu(options)
     elif command == 'clear-cache':
         if options.progress:
             utils.zenity_progress(command)
         else:
             daemon.clear_cache()
-    elif command == 'enable-triggers':
-        daemon.enable_triggers()
-    elif command == 'disable-triggers':
-        daemon.disable_triggers()
     else:
         parser.print_help()
         sys.exit(1)

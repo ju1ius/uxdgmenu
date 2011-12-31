@@ -1,7 +1,7 @@
 import re
-from .. import config, cache, icon_finder
+from . import config, cache, icon_finder
 
-class Parser(object):
+class BaseParser(object):
 
     def __init__(self):
         self.config = config.get()

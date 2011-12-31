@@ -1,39 +1,45 @@
 import os, optparse, ConfigParser
 import cStringIO as StringIO
+
 from . import utils, icon_finder
 
-class OptionParser(optparse.OptionParser):
-    """Custom Option parser for better help formatting"""
-    def format_epilog(self, formatter):
-        return "\n%s\n" % self.expand_prog_name(self.epilog)
+#########################################################
+#                                                       #
+# -------------------- Config vars -------------------- #
+#                                                       #
+#########################################################
 
+# These two might be replaced by make install
+PREFIX = "/usr"
+SYSCONFDIR = "/etc"
+#
+
+PKG_NAME = "uxdgmenu"
 APP_DAEMON = "uxm-daemon"
 APP_WATCH = "uxdgmenud"
-PKG_NAME = "uxdgmenu"
 MENU_FILE = "uxm-applications.menu"
 ROOTMENU_FILE = "uxm-rootmenu.menu"
-TRIGGERS_DB = "/var/lib/dpkg/triggers/File"
 
 HOME = os.path.expanduser('~')
 CACHE_DIR = os.path.join(HOME, '.cache', PKG_NAME)
 CONFIG_DIR = os.path.join(HOME, '.config', PKG_NAME)
 
-for d in [CACHE_DIR, CONFIG_DIR]:
-    if not os.path.isdir(d):
-        try:
-            os.makedirs(d)
-        except OSError, why:
-            sys.exit("Could not create %s: %s" % (d, why))
-
-SYSTEM_CONFIG_FILE = '/etc/%s/menu.conf' % PKG_NAME
+SYSTEM_CONFIG_FILE = os.path.join(SYSCONFDIR, PKG_NAME, 'menu.conf')
 USER_CONFIG_FILE = os.path.join(CONFIG_DIR, 'menu.conf')
+
 CACHE_DB = os.path.join(CACHE_DIR, 'cache.db')
 MENU_CACHE = os.path.join(CACHE_DIR, 'applications')
 BOOKMARKS_CACHE = os.path.join(CACHE_DIR, 'bookmarks')
 RECENTLY_USED_CACHE = os.path.join(CACHE_DIR, 'recently-used')
 
+PLUGINS_DIRS = [
+    os.path.expanduser('~/.local/share/%s/formatters' % PKG_NAME),
+    os.path.join(PREFIX,'share',PKG_NAME,'formatters'),
+    os.path.join(os.path.dirname(__file__), "formatters"),
+]
+
 # List of directories to monitor
-# uxm-watch will only respond to events on files
+# uxdgmenud will only respond to events on files
 # having one of these extensions: .desktop|.directory|.menu
 MONITORED = [
     # .directory files
@@ -77,6 +83,18 @@ files: gtk-file
 show_files: yes
 """
 
+############################################################
+#                                                          #
+# -------------------- Config methods -------------------- #
+#                                                          #
+############################################################
+
+
+class OptionParser(optparse.OptionParser):
+    """Custom Option parser for better help formatting"""
+    def format_epilog(self, formatter):
+        return "\n%s\n" % self.expand_prog_name(self.epilog)
+
 def get():
     """Returns the config parser"""
     return __parser
@@ -101,9 +119,17 @@ def guess():
     theme = icon_finder.get_gtk_theme()
     __parser.set('Icons', 'theme', theme)
 
-######################################################
-#
+
+########################################################
+#                                                      #
+# -------------------- Config Run -------------------- #
+#                                                      #
+########################################################
+
+# Parse uxdgmenu default config
 __parser = ConfigParser.RawConfigParser()
 __parser.readfp(StringIO.StringIO(DEFAULT_CONFIG))
-#__parser.read('/etc/marchobmenu/menu.conf')
+# Create working dirs & config files if needed
 check()
+# Parse config files
+#__parser.read([SYSTEM_CONFIG_FILE, USER_CONFIG_FILE])
