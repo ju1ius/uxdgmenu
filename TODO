@@ -1,13 +1,23 @@
-daemon:
-  check passing cmdline options to functions
-  check getting the right formatter
-  detect WM for GUI updater ???:
-    - pgrep.py (6x faster !!!)
-    - python-xlib
-  dpkg_triggers => killed
+menus:
+  Wine category
+  compatibility with gnome categories
 
-Locale
-GUI config editor
-Plugin system (events) ?
-Progress dialogs => DONE
-rootmenu ???
+daemon:
+  check passing cmdline options to daemon
+  check getting the right formatter
+
+GUI launcher:
+  path checks on launch
+
+GUI config editor:
+
+GUI menu editor:
+  fork alacarte...
+
+l10n...
+
+update wiki...
+
+unit tests...
+
+deployment solutions...

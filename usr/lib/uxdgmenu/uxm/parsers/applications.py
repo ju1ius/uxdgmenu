@@ -59,7 +59,7 @@ class Parser(parser.BaseParser):
         # Strip command arguments
         cmd = self.exe_regex.sub('', entry.get_exec())
         if entry.get_launch_in_terminal():
-            cmd = self.terminal_emulator % {"title": name, "command": cmd}
+            cmd = '%s -e "%s"' % (self.terminal_emulator, cmd)
         # Get icon
         icon = self.icon_finder.find_by_name(entry.get_icon()) if self.show_icons else ''
 

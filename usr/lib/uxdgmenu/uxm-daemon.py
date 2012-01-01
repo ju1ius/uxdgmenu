@@ -14,6 +14,14 @@ def check_formatter(fatal=True):
         else:
             pass
 
+def progress_dialog(msg, func, *args, **kwargs):
+    import uxm.dialogs.progress as progress
+    progress.indeterminate(msg, func, *args, **kwargs)
+
+def die():
+    parser.print_help()
+    sys.exit(1)
+
 
 if __name__ == '__main__':
     usage = "%prog [options] command"
@@ -21,14 +29,15 @@ if __name__ == '__main__':
   help                  prints the help message and exits
   start                 starts the menu daemon
   stop                  stops the menu daemon
-  update                regenerates the applications menu
-  update-bookmarks      regenerates the bookmarks menu
-  update-recently-used  regenerates the recently used files menu
-  clear-recently-used   clears the recently used files menu
-  clear-cache           regenerates the icon cache,
+  update:applications   regenerates the applications menu
+  update:all
+  update:bookmarks      regenerates the bookmarks menu
+  update:recently-used  regenerates the recently used files menu
+  clear:recently-used   clears the recently used files menu
+  clear:cache           regenerates the icon cache,
                         then updates applications, bookmarks,
                         and recently used files menus.
-  generate-rootmenu     generates a rootmenu
+  update:rootmenu       generates a rootmenu
 """
     
     parser = config.OptionParser(
@@ -39,7 +48,7 @@ if __name__ == '__main__':
         help="be verbose and log inotify events to syslog"
     )
     parser.add_option(
-        '-f', '--formatter', default="JSON",
+        '-f', '--formatter', default="pckl",
         help="The formatter for the menu"
     )
     parser.add_option(
@@ -64,13 +73,12 @@ if __name__ == '__main__':
     )
     parser.add_option(
         '-p', '--progress', action='store_true',
-        help="display a progress bar if zenity is installed"
+        help="display a progress bar"
     )
     ( options, args ) = parser.parse_args()
 
     if len(args) == 0:
-        parser.print_usage()
-        sys.exit(1)
+        die()
 
     if options.verbose:
         import time
@@ -92,57 +100,30 @@ if __name__ == '__main__':
             # There should be only one WM for the same user
             options.formatter = pids[0][1]
 
-    command = args[0]
-    if command == 'start' or command == 'restart':
-        check_formatter()
-        daemon.start(options)
-    elif command == 'stop':
-        daemon.stop()
-    elif command == 'update':
-        check_formatter()
-        if options.progress:
-            import uxm.dialogs.progress as progress
-            def update():
-                daemon.update(options)
-            progress.indeterminate(
-                "Progress ;-)",
-                update
-            )
-            #utils.zenity_progress(command, progress_opts)
-        else:
-            daemon.update(options)
-    elif command == 'update-bookmarks':
-        check_formatter()
-        if options.progress:
-            utils.zenity_progress(command)
-        else:
-            daemon.update_bookmarks()
-    elif command == 'update-recently-used':
-        check_formatter()
-        if options.progress:
-            utils.zenity_progress(command)
-        else:
-            daemon.update_recently_used()
-    elif command == 'clear-recently-used':
-        check_formatter()
-        if options.progress:
-            utils.zenity_progress(command)
-        else:
-            daemon.clear_recently_used()
-    elif command == 'generate-rootmenu':
-        check_formatter()
-        if options.progress:
-            utils.zenity_progress(command)
-        else:
-            daemon.generate_rootmenu(options)
-    elif command == 'clear-cache':
-        if options.progress:
-            utils.zenity_progress(command)
-        else:
-            daemon.clear_cache()
+    command = args[0].split(':')
+
+    if len(command) == 1:
+        action = command[0]
+        if action == 'restart':
+            action = 'start'
+        elif action == 'update':
+            action = 'update_all'
     else:
-        parser.print_help()
-        sys.exit(1)
+        ns, action = command[0:2]
+        if ns == 'update':
+            if action == 'apps':
+                action = 'applications'
+        action = "_".join([ns, action])
+
+    try:
+        action = getattr(daemon, action.replace('-', '_'))
+    except:
+        die()
+
+    if options.progress:
+        progress_dialog("", action, options)
+    else:
+        action(options)
 
     if options.verbose:
         end_t = time.clock()

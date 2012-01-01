@@ -6,8 +6,7 @@ import multiprocessing, threading, Queue
 
 
 class Queueable(object):
-    def __init(self):
-        super(Queueable, self).__init__()
+
     @property
     def queue(self):
         return self._queue
@@ -87,24 +86,39 @@ gobject.type_register(Listener)
 
 
 class BlockingWorker(Queueable):
-    def __init__(self, task):
-        self.task = task
+
+    def __init__(self, task, *args, **kwargs):
+        self.set_task(task, *args, **kwargs)
+
+    def set_task(self, func, *args, **kwargs):
+        self.task = {
+            'callable': func,
+            'args': args,
+            'kwargs': kwargs
+        }
+
+    def run_task(self):
+        t = self.task['callable']
+        a = self.task['args']
+        k = self.task['kwargs']
+        t(*a, **k)
 
     def run(self, *args, **kwargs):
         if self.queue is None:
             raise RuntimeError('Listener must be associated with a Queue')
         self.queue.put((0.0, "Queue Starting..."))
         try:
-            self.task(*args, **kwargs)
+            self.run_task(*args, **kwargs)
         except Exception, msg:
             self.queue.put(("error", str(msg)))
         self.queue.put((1.0, "Queue finished"))
 
 
 class GeneratorWorker(BlockingWorker):
-    def run(self, *args, **kwargs):
+
+    def run(self):
         self.queue.put((0.0, "Queue Starting..."))
-        for obj in self.task(*args, **kwargs):
+        for obj in self.run_task():
             self.queue.put((proportion, "working..."))
         self.queue.put((1.0, "Queue finished"))
 
@@ -149,6 +163,7 @@ class Dialog(gtk.Window):
 
     def set_worker(self, worker):
         self.worker = worker
+
     def set_listener(self, listener):
         self.listener = listener
 
@@ -212,8 +227,8 @@ class Dialog(gtk.Window):
         gtk.gdk.threads_leave()
 
 
-def indeterminate(message, task):
-    worker = BlockingWorker(task)
+def indeterminate(message, task, *args, **kwargs):
+    worker = BlockingWorker(task, *args, **kwargs)
     listener = IndeterminateListener()
     gui = Dialog(message, worker, listener)
     gui.start()

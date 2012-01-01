@@ -65,7 +65,7 @@ EXCLUDED = [
 DEFAULT_CONFIG = """
 [Menu]
 filemanager: thunar
-terminal: x-terminal-emulator -T '%(title)s' -e '%(command)s'
+terminal: x-terminal-emulator
 show_all: yes
 as_submenu: no
 [Recently Used]
@@ -77,7 +77,7 @@ theme: Mint-X
 size: 24
 default: application-default-icon
 bookmarks: user-bookmarks
-folders: folder
+folders: gtk-directory
 files: gtk-file
 [Places]
 show_files: yes

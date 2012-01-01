@@ -1,5 +1,5 @@
-import re
-from . import config, cache, icon_finder
+import re, imp
+from . import config, cache, icon_finder   
 
 class BaseParser(object):
 

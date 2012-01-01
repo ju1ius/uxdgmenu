@@ -84,6 +84,8 @@ class TreeFormatter(Formatter):
                 yield self.format_separator(item, level+1)
             elif item['type'] == 'menu':
                 yield self.format_submenu(item, level+1)
+            elif item['type'] == 'menu':
+                yield self.format_menu(item, level+1)
             elif item['type'] == 'text':
                 yield self.format_text_item(item, level+1)
 
