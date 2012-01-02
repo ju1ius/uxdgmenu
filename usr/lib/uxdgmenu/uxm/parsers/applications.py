@@ -10,10 +10,10 @@ class Parser(parser.BaseParser):
 
     def parse_config(self):
         super(Parser, self).parse_config()
-        show_all = self.config.getboolean('Menu', 'show_all')
+        show_all = self.config.getboolean('Applications', 'show_all')
         if show_all:
             self.show_flags = adapters.SHOW_EMPTY
-        self.terminal_emulator = self.config.get('Menu', 'terminal')
+        self.terminal_emulator = self.config.get('General', 'terminal')
 
     def parse_menu_file(self, menu_file):
         root = self.adapter.get_root_directory(menu_file, self.show_flags)

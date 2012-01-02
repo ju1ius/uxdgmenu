@@ -11,7 +11,7 @@ class Parser(applications.Parser):
 
     def parse_config(self):
         super(Parser, self).parse_config()
-        self.as_submenu = self.config.getboolean("Menu", "as_submenu")
+        self.as_submenu = self.config.getboolean("Applications", "as_submenu")
 
     #def parse_menu_file(self, menu_file):
         #root = self.adapter.get_root_directory(menu_file, self.show_flags)

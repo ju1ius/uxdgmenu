@@ -10,6 +10,7 @@ GUI launcher:
   path checks on launch
 
 GUI config editor:
+  exception handling...
 
 GUI menu editor:
   fork alacarte...

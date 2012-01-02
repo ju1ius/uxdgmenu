@@ -25,7 +25,7 @@ class BaseParser(object):
         show_icons = self.config.getboolean('Icons', 'show')
         self.show_icons = show_icons
         if self.show_icons:
-            self.default_icon = self.config.get('Icons', 'default')
+            self.default_icon = self.config.get('Icons', 'application')
             self.icon_size = self.config.getint('Icons', 'size')
             self.use_gtk_theme = self.config.getboolean('Icons', 'use_gtk_theme')
             self.theme = self.config.get('Icons','theme')

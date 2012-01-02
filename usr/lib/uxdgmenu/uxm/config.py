@@ -63,24 +63,32 @@ EXCLUDED = [
 ]
 
 DEFAULT_CONFIG = """
-[Menu]
+[General]
 filemanager: thunar
 terminal: x-terminal-emulator
+open_cmd: gnome-open
+
+[Applications]
 show_all: yes
 as_submenu: no
+
+[Bookmarks]
+
 [Recently Used]
 max_items: 20
+
+[Places]
+show_files: yes
+
 [Icons]
 show: yes
 use_gtk_theme: yes
 theme: Mint-X
 size: 24
-default: application-default-icon
-bookmarks: user-bookmarks
-folders: gtk-directory
-files: gtk-file
-[Places]
-show_files: yes
+application: application-x-executable
+bookmark: user-bookmarks
+folder: gtk-directory
+file: gtk-file
 """
 
 ############################################################
@@ -113,9 +121,9 @@ def check():
 
 def guess():
     open_cmd = utils.guess_open_cmd()
-    __parser.set('Menu', 'open_cmd', open_cmd)
+    __parser.set('General', 'open_cmd', open_cmd)
     fm = utils.guess_file_manager()
-    __parser.set('Menu', 'filemanager', fm)
+    __parser.set('General', 'filemanager', fm)
     theme = icon_finder.get_gtk_theme()
     __parser.set('Icons', 'theme', theme)
 

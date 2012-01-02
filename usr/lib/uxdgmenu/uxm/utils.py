@@ -1,6 +1,10 @@
 import os, re, pwd, subprocess
 import xdg.BaseDirectory
 
+def round_base(x, base=8):
+    """Returns the nearest integer which is a multiple of base"""
+    return int(base * round(float(x)/base))
+
 EXE_REGEX = re.compile(r' [^ ]*%[fFuUdDnNickvm]')
 
 def clean_exec(cmd):
@@ -74,29 +78,6 @@ def which(program):
             if is_exe(exe_file):
                 return exe_file
     return None
-
-def zenity_progress(cmd, opts_str=' '):
-    """Displays a zenity progress bar for the given command"""
-    subprocess.call(
-        "(%s%s%s) | zenity --progress --pulsate --auto-close" % (
-            config.APP_DAEMON, opts_str, cmd
-        ),
-        shell=True
-    )
-
-def get_options_for_progress(options):
-    # Remember to leave spaces around options !!!
-    opt_list = []
-    if options.window_manager:
-        opt_list.append('-w %s' % options.window_manager)
-    if options.all:
-         opt_list.append('-a')
-         return ' '.join(opt_list)
-    if options.with_bookmarks:
-        opt_list.append('-b')
-    if options.with_recently_used:
-        opt_str.append('-r ')
-    return ' '.join(opt_list)
 
 def guess_open_cmd():
     """Tries to guess the command to open files
