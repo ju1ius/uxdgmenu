@@ -1,8 +1,6 @@
-from . import base
+import uxm.formatter as base
 
 class Formatter(base.TreeFormatter):
-
-    supports_icons = False
 
     def format_menu(self, data):
         return "\n".join(self.get_children(data))

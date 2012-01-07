@@ -1,5 +1,5 @@
 import os, sqlite3, stat
-from . import config
+import uxm.config as config
 
 class Cache(object):
 

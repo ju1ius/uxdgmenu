@@ -6,9 +6,25 @@ import gtk
 
 import cPickle as pickle
 
+import uxm.config as config
 import uxm.parsers.places
 from uxm.formatter import TreeFormatter
 import uxm.dialogs.error
+
+
+ROOT_MENU =   os.path.join(config.CACHE_DIR, 'rootmenu.pckl')
+APPS_MENU =   os.path.join(config.CACHE_DIR, 'applications.pckl')
+BOOK_MENU =   os.path.join(config.CACHE_DIR, 'bookmarks.pckl')
+RECENT_MENU = os.path.join(config.CACHE_DIR, 'recently-used.pckl')
+
+def clear_cache():
+    for f in [ROOT_MENU, APPS_MENU, BOOK_MENU, RECENT_MENU]:
+        if os.path.exists(f):
+            try:
+                os.remove(f)
+            except OSError, why:
+                uxm.dialogs.error.Dialog(why)
+
 
 class GtkFormatter(TreeFormatter):
 
@@ -64,31 +80,63 @@ class GtkFormatter(TreeFormatter):
 
 class Menu(gtk.Menu):
 
+    standalone = False
+    applications_menu_file = config.MENU_FILE
+
     def __init__(self):
         super(Menu, self).__init__()
+        self.config = config.get()
+        self.apps_as_submenu = self.config.getboolean('Applications', 'as_submenu')
+
         self.formatter = GtkFormatter()
         self.formatter.set_launch_callback(self.exec_command)
         self.places_parser = uxm.parsers.places.Parser()
         self.path_cache = {}
 
-    def start(self):
+    def set_applications_menu_file(self,filename):
+        self.applications_menu_file = filename
+
+    def open(self):
+        self.check_paths()
         self.load_menu()
-        self.connect('hide', gtk.main_quit)
+        self.connect('hide', self.on_hide)
         self.show_all()
         self.popup(None, None, None, 0, 0)
+
+    def main(self):
+        self.standalone = True
+        gtk.gdk.threads_init()
+        gtk.gdk.threads_enter()
+        self.open()
         gtk.main()
+        gtk.gdk.threads_leave()
+
+    def close(self):
+        self.popdown()
+        if self.standalone:
+            gtk.main_quit()
+
+    def on_hide(self, widget, data=None):
+        self.close()
 
     def load_menu(self):
-        data = self.load_data('~/.cache/uxdgmenu/rootmenu.pckl')
+        data = self.load_data(ROOT_MENU)
         for item in self.formatter.format_menu(data):
             name = item.get_name()
             if name == 'uxm-applications':
-                self.load_submenu(item, '~/.cache/uxdgmenu/applications.pckl')
+                if self.apps_as_submenu:
+                    self.load_submenu(item, APPS_MENU)
+                else:
+                    data = self.load_data(APPS_MENU)
+                    apps = self.formatter.format_menu(data)
+                    for a in apps[0:-1]:
+                        self.append(a)
+                    item = apps[-1]
             elif name == 'uxm-bookmarks':
-                self.load_submenu(item, '~/.cache/uxdgmenu/bookmarks.pckl')
+                self.load_submenu(item, BOOK_MENU)
                 self.load_places_menu()
             elif name == 'uxm-recently-used':
-                self.load_submenu(item, '~/.cache/uxdgmenu/recently-used.pckl')
+                self.load_submenu(item, RECENT_MENU)
             elif name == 'uxm-menu':
                 self.load_uxm_menu(item)
             elif name == 'uxm-wm-config':
@@ -157,4 +205,21 @@ class Menu(gtk.Menu):
         except Exception, e:
             d = uxm.dialogs.error.Dialog(str(e))
         finally:
-            gtk.main_quit()
+            self.close()
+
+    def check_paths(self):
+        generate = False
+        for f in [ROOT_MENU, APPS_MENU, BOOK_MENU, RECENT_MENU]:
+            if not os.path.exists(f):
+                generate = True
+                break
+        if generate:
+            import uxm.daemon as daemon
+            import uxm.dialogs.progress as progress
+            class Options:
+                formatter = 'pckl'
+                menu_file = self.applications_menu_file
+            dlg = progress.indeterminate(
+                "Generating menus", daemon.update_all, Options()
+            )
+            print 'I shouldnt be there...'

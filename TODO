@@ -3,6 +3,7 @@ menus:
   compatibility with gnome categories
 
 daemon:
+  should it watch bookmarks/recent is they don't exist ?
   check passing cmdline options to daemon
   check getting the right formatter
 

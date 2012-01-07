@@ -1,5 +1,7 @@
 import os, sys, re
-from .. import parser, adapters
+
+import uxm.parser as parser
+import uxm.adapters as adapters
 
 class Parser(parser.BaseParser):
 

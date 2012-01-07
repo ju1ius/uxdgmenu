@@ -1,7 +1,8 @@
 import os
-from uxm.formatter import TreeFormatter
 
-class FluxboxFormatter(TreeFormatter):
+import uxm.formatter
+
+class FluxboxFormatter(uxm.formatter.TreeFormatter):
 
     def get_rootmenu_path(self):
         return os.path.expanduser('~/.cache/uxdgmenu/rootmenu.fluxbox')

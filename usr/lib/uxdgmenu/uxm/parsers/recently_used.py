@@ -1,5 +1,6 @@
 import os, sys, re, urllib
-from .. import parser
+
+import uxm.parser as parser
 
 try:
     from xml.etree import cElementTree as ElementTree

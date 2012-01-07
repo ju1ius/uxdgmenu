@@ -4,7 +4,9 @@ import os, sys, optparse
 
 from uxm.dialogs.menu import Menu
 
-menu = Menu()
-menu.start()
+if __name__ == "__main__":
 
-sys.exit(0)
+    menu = Menu()
+    menu.main()
+
+    sys.exit(0)

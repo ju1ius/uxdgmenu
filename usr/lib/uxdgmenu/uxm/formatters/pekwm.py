@@ -1,4 +1,4 @@
-from . import base
+import uxm.formatter as base
 
 class Formatter(base.TreeFormatter):
 

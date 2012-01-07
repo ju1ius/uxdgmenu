@@ -1,7 +1,8 @@
 import json
-from uxm.formatter import TreeFormatter
 
-class Formatter(TreeFormatter):
+import uxm.formatter
+
+class Formatter(uxm.formatter.TreeFormatter):
 
     def format_rootmenu(self, data):
         return json.dumps(data)

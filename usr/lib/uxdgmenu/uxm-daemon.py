@@ -27,17 +27,27 @@ if __name__ == '__main__':
     usage = "%prog [options] command"
     description = """Commands:
   help                  prints the help message and exits
+
   start                 starts the menu daemon
   stop                  stops the menu daemon
+
+  update                regenerates menus specified in the config file
+  update:all            regenerates all menus
   update:applications   regenerates the applications menu
-  update:all
+  update:apps           alias for update:applications
   update:bookmarks      regenerates the bookmarks menu
-  update:recently-used  regenerates the recently used files menu
-  clear:recently-used   clears the recently used files menu
-  clear:cache           regenerates the icon cache,
-                        then updates applications, bookmarks,
-                        and recently used files menus.
-  update:rootmenu       generates a rootmenu
+  update:recent-files   regenerates the recent files menu
+  update:rootmenu       regenerates the rootmenu
+
+  clear:recent-files    clears and regenerates the recent files menu
+  clear:cache           clears the icon cache, then regenerates menus
+
+  debug:config          outputs the computed config values
+  debug:applications    outputs a representation of the parsed data
+  debug:bookmarks
+  debug:recent-files
+  debug:rootmenu
+
 """
     
     parser = config.OptionParser(
@@ -52,28 +62,13 @@ if __name__ == '__main__':
         help="The formatter for the menu"
     )
     parser.add_option(
-        '-d', '--detect', action='store_true',
-        help="Tries to detect the current window manager"
-    )
-    parser.add_option(
         '-m', '--menu-file', default="uxm-applications.menu",
-        help="Choose an alternate menu file. Defaults to 'uxm-applications.menu'"
-    )
-    parser.add_option(
-        '-a', '--all', action='store_true',
-        help="equivalent to -br"
-    )
-    parser.add_option(
-        '-b', '--with-bookmarks', action='store_true',
-        help="monitor GTK bookmarks"
-    )
-    parser.add_option(
-        '-r', '--with-recently-used', action='store_true',
-        help="monitor recently used files"
+        help="""Choose an alternate applications menu file.
+Defaults to 'uxm-applications.menu'"""
     )
     parser.add_option(
         '-p', '--progress', action='store_true',
-        help="display a progress bar"
+        help="Display a GTK progress bar dialog"
     )
     ( options, args ) = parser.parse_args()
 
@@ -84,30 +79,12 @@ if __name__ == '__main__':
         import time
         start_t = time.clock()
 
-    #if options.progress:
-        #if not config.HAS_GTK:
-            #options.progress = False
-
-    if options.all:
-        options.with_bookmarks = True
-        options.with_recently_used = True
-
-    if options.detect:
-        wms = ['fluxbox','openbox','blackbox','windowmaker','twm','fvwm2','ion3', 'awesome','icewm','pekwm']
-        pattern = "^(%s)$" % "|".join(wms)
-        pids = utils.pgrep(pattern, user=os.environ['USER'], name=True)
-        if pids:
-            # There should be only one WM for the same user
-            options.formatter = pids[0][1]
-
     command = args[0].split(':')
 
     if len(command) == 1:
         action = command[0]
         if action == 'restart':
             action = 'start'
-        elif action == 'update':
-            action = 'update_all'
     else:
         ns, action = command[0:2]
         if ns == 'update':

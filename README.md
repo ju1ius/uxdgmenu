@@ -2,10 +2,12 @@ About
 =====
 
 uxdgmenu is an automated XDG Menu system for alternative Linux window managers.
-It currently supports fluxbox, openbox, blackbox, windowmaker, twm, fvwm2, ion3, awesome, icewm, and pekwm.
+It supports currently fluxbox, openbox, awesome, and is easily extensible.
 
 uxdgmenu monitors for newly installed/removed applications,
 and maintains a submenu, listing and categorizing them like the Gnome/Xfce/Lxde menu.
+It can also monitor your gtk bookmarks and recent files,
+and comes with a standalone GTK app-launcher and a GUI for configuration.
 
 uxdgmenu is written in C and Python and only requires the following packages:
 
@@ -15,7 +17,7 @@ uxdgmenu is written in C and Python and only requires the following packages:
 Install
 =======
 
-Install dependencies (assuming you already have fluxbox bash and python...):
+Install dependencies:
 
     sudo aptitude install libinotifytools0 libinotifytools0-dev python-xdg
 

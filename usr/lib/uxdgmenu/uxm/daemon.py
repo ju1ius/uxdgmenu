@@ -1,5 +1,9 @@
 import os, sys, subprocess
-from . import config, utils, cache, formatter
+
+import uxm.config as config
+import uxm.utils as utils
+import uxm.cache as cache
+import uxm.formatter as formatter
 
 ############################################
 # API
@@ -18,20 +22,21 @@ def start(opts):
     if opts.verbose:
         cmd.append('--verbose')
     # Gtk Bookmarks
-    if opts.with_bookmarks:
+    cfg = config.get()
+    if cfg.getboolean('Daemon', 'monitor_bookmarks'):
         cmd.extend([
             '--bookmarks-command',
             '%s update:bookmarks -f %s' % (config.APP_DAEMON, fmt)
         ])
     # Recently Used items
-    if opts.with_recently_used:
+    if cfg.getboolean('Daemon', 'monitor_recent_files'):
         cmd.extend([
             '--recently-used-command',
-            '%s update:recently-used -f %s' % (config.APP_DAEMON, fmt)
+            '%s update:recent-files -f %s' % (config.APP_DAEMON, fmt)
         ])
     # Add monitored dirs
     for d in config.MONITORED:
-        cmd.append(os.path.expanduser(d))
+        cmd.append(d)
 
     if opts.verbose:
         print "Starting daemon..."
@@ -42,17 +47,19 @@ def stop(opts):
     """stops the daemon"""
     subprocess.call(['pkill', '-u', os.environ['USER'], config.APP_WATCH])
 
-def show(opts):
-    cache = get_menu_cache(opts.formatter, 'applications')
-    with open(cache, 'r') as f:
-        for l in f:
-            print l
+def update(opts):
+    cfg = config.get()
+    update_applications(opts)
+    if cfg.getboolean('Daemon', 'monitor_bookmarks'):
+        update_bookmarks(opts)
+    if cfg.getboolean('Daemon', 'monitor_recent_files'):
+        update_recent_files(opts)
 
 def update_all(opts):
     """Updates all menus"""
     update_applications(opts)
     update_bookmarks(opts)
-    update_recently_used(opts)
+    update_recent_files(opts)
     update_rootmenu(opts)
     
 def update_applications(opts):
@@ -76,18 +83,18 @@ def update_bookmarks(opts):
     with open(cache, 'w+') as fp:
         fp.write(output)
 
-def update_recently_used(opts):
+def update_recent_files(opts):
     from uxm.parsers.recently_used import Parser
     parser = Parser()
     data = parser.parse_bookmarks()
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    cache = get_menu_cache(opts.formatter, 'recently-used')
+    cache = get_menu_cache(opts.formatter, 'recent-files')
     with open(cache, 'w+') as fp:
         fp.write(output)
 
 def update_rootmenu(opts):
-    from uxm.parsers.applications import Parser
+    from uxm.parsers.rootmenu import Parser
     parser = Parser()
     data = parser.parse_menu_file(config.ROOTMENU_FILE)
     fmt = formatter.get_formatter(opts.formatter)
@@ -102,7 +109,7 @@ def clear_cache(opts):
         cache.clear()
     except OSError, why:
         sys.exit("Could not remove %s: %s" % (config.CACHE_DB, why))
-    update_all(opts)
+    update(opts)
 
 def clear_recently_used(opts):
     with open(os.path.expanduser('~/.recently-used.xbel'), 'w') as f:
@@ -114,6 +121,42 @@ def clear_recently_used(opts):
 </xbel>""")
     update_recently_used(opts)
 
+def show(opts):
+    cache = get_menu_cache(opts.formatter, 'applications')
+    with open(cache, 'r') as f:
+        for l in f:
+            print l
+
+def debug_config(opts):
+    print config.to_string()
+
+def debug_applications(opts):
+    from pprint import pprint
+    from uxm.parsers.applications import Parser
+    parser = Parser()
+    data = parser.parse_menu_file(opts.menu_file)
+    pprint(data)
+
+def debug_bookmarks(opts):
+    from pprint import pprint
+    from uxm.parsers.bookmarks import Parser
+    parser = Parser()
+    data = parser.parse_bookmarks()
+    pprint(data)
+
+def debug_recent_files(opts):
+    from pprint import pprint
+    from uxm.parsers.recently_used import Parser
+    parser = Parser()
+    data = parser.parse_bookmarks()
+    pprint(data)
+
+def debug_rootmenu(opts):
+    from pprint import pprint
+    from uxm.parsers.rootmenu import Parser
+    parser = Parser()
+    data = parser.parse_menu_file(config.ROOTMENU_FILE)
+    pprint(data)
 
 ######################################
 # Utilities

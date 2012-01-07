@@ -1,5 +1,7 @@
 import re, imp
-from . import config, cache, icon_finder   
+import uxm.config as config
+import uxm.cache as cache
+import uxm.icon_finder as icon_finder   
 
 class BaseParser(object):
 

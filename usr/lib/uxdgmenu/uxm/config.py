@@ -1,7 +1,10 @@
 import os, optparse, ConfigParser
 import cStringIO as StringIO
 
-from . import utils, icon_finder
+import xdg.BaseDirectory
+
+import uxm.utils as utils
+import uxm.icon_finder as icon_finder
 
 #########################################################
 #                                                       #
@@ -9,7 +12,7 @@ from . import utils, icon_finder
 #                                                       #
 #########################################################
 
-# These two might be replaced by make install
+# These will be replaced by make install
 PREFIX = "/usr"
 SYSCONFDIR = "/etc"
 #
@@ -21,8 +24,15 @@ MENU_FILE = "uxm-applications.menu"
 ROOTMENU_FILE = "uxm-rootmenu.menu"
 
 HOME = os.path.expanduser('~')
-CACHE_DIR = os.path.join(HOME, '.cache', PKG_NAME)
-CONFIG_DIR = os.path.join(HOME, '.config', PKG_NAME)
+CACHE_DIR = os.path.join(xdg.BaseDirectory.xdg_cache_home, PKG_NAME)
+CONFIG_DIR = os.path.join(xdg.BaseDirectory.xdg_config_home, '.config', PKG_NAME)
+
+APP_DIRS = [d for d in xdg.BaseDirectory.load_data_paths('applications')]
+DIR_DIRS = [d for d in xdg.BaseDirectory.load_data_paths('desktop-directories')]
+MENU_DIRS = [
+    os.path.join(SYSCONFDIR, 'xdg', 'menus'),
+    os.path.join(CONFIG_DIR, 'menus')
+]
 
 SYSTEM_CONFIG_FILE = os.path.join(SYSCONFDIR, PKG_NAME, 'menu.conf')
 USER_CONFIG_FILE = os.path.join(CONFIG_DIR, 'menu.conf')
@@ -32,28 +42,16 @@ MENU_CACHE = os.path.join(CACHE_DIR, 'applications')
 BOOKMARKS_CACHE = os.path.join(CACHE_DIR, 'bookmarks')
 RECENTLY_USED_CACHE = os.path.join(CACHE_DIR, 'recently-used')
 
-PLUGINS_DIRS = [
-    os.path.expanduser('~/.local/share/%s/formatters' % PKG_NAME),
-    os.path.join(PREFIX,'share',PKG_NAME,'formatters'),
-    os.path.join(os.path.dirname(__file__), "formatters"),
-]
+PLUGINS_DIRS = [d for d in xdg.BaseDirectory.load_data_paths(PKG_NAME,'formatters')]
+PLUGINS_DIRS.append(os.path.join(os.path.dirname(__file__), "formatters"))
 
 # List of directories to monitor
 # uxdgmenud will only respond to events on files
 # having one of these extensions: .desktop|.directory|.menu
-MONITORED = [
-    # .directory files
-    "/usr/share/desktop-directories",
-    "/usr/local/share/desktop-directories",
-    "~/.local/share/desktop-directories",
-    # .desktop files
-    "/usr/share/applications",
-    "/usr/local/share/applications",
-    "~/.local/share/applications",
-    # .menu files
-    "/etc/xdg/menus",
-    "~/.config/menus"
-]
+MONITORED = []
+MONITORED.extend(DIR_DIRS)
+MONITORED.extend(APP_DIRS)
+MONITORED.extend(MENU_DIRS)
 # List of regex patterns to exclude
 # note that theses are C POSIX extended regex patterns,
 # so literal special characters must be double escaped !
@@ -68,6 +66,10 @@ filemanager: thunar
 terminal: x-terminal-emulator
 open_cmd: gnome-open
 
+[Daemon]
+monitor_bookmarks: yes
+monitor_recent_files: yes
+
 [Applications]
 show_all: yes
 as_submenu: no
@@ -78,6 +80,7 @@ as_submenu: no
 max_items: 20
 
 [Places]
+start_dir: ~
 show_files: yes
 
 [Icons]
@@ -126,6 +129,13 @@ def guess():
     __parser.set('General', 'filemanager', fm)
     theme = icon_finder.get_gtk_theme()
     __parser.set('Icons', 'theme', theme)
+
+def to_string():
+    buf = StringIO.StringIO()
+    __parser.write(buf)
+    val = buf.getvalue()
+    buf.close()
+    return val
 
 
 ########################################################

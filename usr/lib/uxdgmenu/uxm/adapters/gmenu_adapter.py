@@ -1,5 +1,6 @@
 import gmenu
-from . import NONE, TYPE_DIRECTORY, TYPE_ENTRY, TYPE_SEPARATOR
+
+from uxm.adapters import NONE, TYPE_DIRECTORY, TYPE_ENTRY, TYPE_SEPARATOR
 
 class GmenuAdapter(object):
     def get_type(self):

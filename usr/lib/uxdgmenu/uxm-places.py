@@ -1,17 +1,30 @@
 #! /usr/bin/env python
 
 import os, sys, optparse
-import uxm.places, uxm.utils
+
+from uxm.parsers.places import Parser
+import uxm.config
+import uxm.formatter
 
 if __name__ == "__main__":
-    usage = """%prog window_manager start_directory"""
+    usage = """%prog [options] start_directory"""
     parser = optparse.OptionParser(usage=usage)
+    parser.add_option(
+        '-f', '--formatter',
+        help="The formatter for the menu"
+    )
     options, args = parser.parse_args()
-    
-    if len(args) < 2:
-        parser.print_help()
-        sys.exit(1)
 
-    path = os.path.abspath(os.path.expanduser(args[1]))
-    menu = uxm.places.PlacesMenu(args[0])
-    print menu.parse_path(path)
+    if not options)formatter:
+        parser.print_usage()
+        sys.exit(1)
+    
+    if len(args) < 1:
+        start_dir = uxm.config.get().get('Places', 'start_dir')
+    else:
+        start_dir = args[1]
+
+    path = os.path.expanduser(start_dir)
+    parser = Parser()
+    data = parser.parse_path(path)
+    print uxm.formatter.get_formatter(options.formatter).format_menu(data)

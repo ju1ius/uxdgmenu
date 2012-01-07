@@ -1,5 +1,6 @@
 import os, urllib
-from .. import parser
+
+import uxm.parser as parser
 
 class Parser(parser.BaseParser):
 

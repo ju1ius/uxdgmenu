@@ -1,5 +1,6 @@
 import sys, imp, inspect
-from . import config
+
+import uxm.config as config
 
 def get_formatter(name):
     """Load a formatter based on it's name"""

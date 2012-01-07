@@ -1,7 +1,8 @@
 from xml.sax.saxutils import escape, quoteattr
-from uxm.formatter import TreeFormatter
 
-class OpenboxFormatter(TreeFormatter):
+import uxm.formatter
+
+class OpenboxFormatter(uxm.formatter.TreeFormatter):
 
     def get_rootmenu_path(self):
         return "~/.config/openbox/menu.xml"

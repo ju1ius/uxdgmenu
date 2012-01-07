@@ -18,7 +18,7 @@
 #define DIRECTORY_FILE_EXT    ".directory"
 #define MENU_FILE_EXT         ".menu"
 #define BOOKMARKS_FILE        ".gtk-bookmarks"
-#define RECENTLY_USED_FILE    ".recently-used.xbel"
+#define RECENT_FILES_FILE     ".recently-used.xbel"
 #define APPS_EVENTS           IN_CLOSE_WRITE|IN_DELETE|IN_MOVE
 #define BOOKMARKS_EVENTS      IN_CLOSE_WRITE
 #define HOME                  getenv("HOME")
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
   {
     {"apps-command", required_argument, NULL, 'a'},
     {"bookmarks-command", required_argument, NULL, 'b'},
-    {"recently-used-command", required_argument, NULL, 'r'},
+    {"recent-files-command", required_argument, NULL, 'r'},
     {"exclude", required_argument, NULL, 'e'},
     {"daemon", no_argument, NULL, 'd'},
     {"verbose", no_argument, NULL, 'v'},
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
   /* watch gtk bookmarks ? */
   int watch_bookmarks = 0;
   /* watch recently_used ? */
-  int watch_recently_used = 0;
+  int watch_recent_files = 0;
   /* HOME watch descriptor */
   int home_wd = -1;
   /**
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
    **/
   char *apps_command;
   char *bookmarks_command;
-  char *recently_used_command;
+  char *recent_files_command;
 
   /* ---------- VARS ---------- */
 
@@ -107,8 +107,8 @@ int main(int argc, char **argv)
         bookmarks_command = optarg;
         break;
       case 'r':
-        watch_recently_used = 1;
-        recently_used_command = optarg;
+        watch_recent_files = 1;
+        recent_files_command = optarg;
         break;
       case 'd':
         daemonize = 1;
@@ -194,9 +194,9 @@ int main(int argc, char **argv)
   }
 
   /**
-   * Add a watch on ~/.gtk-bookmarks
+   * Add a watch on $HOME
    **/
-  if(watch_bookmarks || watch_recently_used)
+  if(watch_bookmarks || watch_recent_files)
   {
     if(!inotifytools_watch_file(home, BOOKMARKS_EVENTS))
     {
@@ -220,17 +220,17 @@ int main(int argc, char **argv)
   while (event)
   {
     if(
-        (watch_bookmarks || watch_recently_used)
+        (watch_bookmarks || watch_recent_files)
         && event->wd == home_wd
     ){
-      if(strcmp(event->name, RECENTLY_USED_FILE) == 0)
+      if(strcmp(event->name, RECENT_FILES_FILE) == 0)
       {
         if (verbose)
         {
           inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
-          syslog(LOG_INFO, "%s >>> %s", message_buf, recently_used_command);
+          syslog(LOG_INFO, "%s >>> %s", message_buf, recent_files_command);
         }
-        system(recently_used_command);
+        system(recent_files_command);
       }
       else if(strcmp(event->name, BOOKMARKS_FILE) == 0)
       {

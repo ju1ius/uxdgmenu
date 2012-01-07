@@ -1,5 +1,9 @@
-import os, xdg.Mime
-from .. import utils, parser
+import os
+
+import xdg.Mime
+
+import uxm.utils as utils
+import uxm.parser as parser
 
 class Parser(parser.BaseParser):
 

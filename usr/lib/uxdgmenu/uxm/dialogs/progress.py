@@ -1,8 +1,11 @@
+import multiprocessing, threading, Queue
+
 import pygtk
 pygtk.require('2.0')
 import gtk
 import gobject
-import multiprocessing, threading, Queue
+
+import uxm.dialogs.error
 
 
 class Queueable(object):
@@ -123,38 +126,25 @@ class GeneratorWorker(BlockingWorker):
         self.queue.put((1.0, "Queue finished"))
 
 
-class Dialog(gtk.Window):
+class Dialog(gtk.MessageDialog):
 
-    def __init__(self, message, worker, listener):
-        super(Dialog, self).__init__(gtk.WINDOW_TOPLEVEL)
-        self.set_border_width(10)
-        #self.set_default_size(400, 250)
-        self.label = gtk.Label()
-        self.label.set_use_markup(True)
-        self.label.set_markup(message)
-        
+    autoclose = True
+    standalone = False
+
+    def __init__(self, message, worker, listener, parent=None):
+        flags = gtk.DIALOG_MODAL if parent else 0
+        super(Dialog, self).__init__(
+            parent, flags, gtk.MESSAGE_INFO, gtk.BUTTONS_CANCEL, message
+        )
         self.progress = gtk.ProgressBar()
         self.progress.set_pulse_step(0.05)
-
-        self.button_ok = gtk.Button(stock=gtk.STOCK_OK)
-        self.button_cancel = gtk.Button(stock=gtk.STOCK_CANCEL)
-
-        buttonbox = gtk.HButtonBox()
-        buttonbox.set_spacing(5)
-        buttonbox.pack_start(self.button_cancel)
-        buttonbox.pack_start(self.button_ok)
-
-        self.vbox = gtk.VBox(spacing=10)
-        self.vbox.pack_start(self.label)
-        self.vbox.pack_start(self.progress)
-        self.vbox.pack_start(buttonbox)
-
-        self.add(self.vbox)
+        self.progress.show()
+        self.get_message_area().pack_end(self.progress)
 
         # SIGNALS
-        self.connect("destroy", self.destroy)
-        self.button_ok.connect("clicked", self.on_click_ok)
-        self.button_cancel.connect("clicked", self.on_click_cancel)
+        self.connect("destroy", self.on_close)
+        self.connect("response", self.on_response)
+        self.connect("close", self.on_close)
 
         # LOGIC
         self.process = None
@@ -167,44 +157,17 @@ class Dialog(gtk.Window):
     def set_listener(self, listener):
         self.listener = listener
 
-    def destroy(self, widget, data=None):
-        if self.process:
-            self.process.terminate()
-        self.listener.stop()
-        self.queue.close()
-        gtk.main_quit()
-
-    def on_click_ok(self, widget, data=None):
-        gtk.main_quit()
-
-    def on_click_cancel(self, widget, data=None):
-        self.destroy(widget, data)
-
-    def on_progress_update(self, obj, fraction, text, data=None):
-        self.progress.pulse()
-        self.progress.set_text(text)
-        #self.progress.set_fraction(fraction)
-
-    def on_progress_finished(self, obj, data=None):
-        if self.process is None:
-            raise RuntimeError("No worker process started")
-        # All done: joining worker process"
-        self.listener.stop()
-        self.process.join()
-        self.process = None
-        self.progress.set_fraction(1.0)
-        self.progress.set_text("Done")
-        self.button_ok.set_sensitive(True)
-
-    def on_progress_error(self, obj, msg, data=None):
-        from . import error
-        d = error.Dialog(msg)
-        self.destroy(None)
+    def open(self):
+        gtk.gdk.threads_init()
+        gtk.gdk.threads_enter()
+        self.start()
+        r = self.run()
+        gtk.gdk.threads_leave()
+        return r
 
     def start(self):   
         if self.process is not None:
             return
-        self.button_ok.set_sensitive(False)
         # Creating shared Queue
         self.queue = multiprocessing.Queue()
         self.worker.queue = self.queue
@@ -219,16 +182,50 @@ class Dialog(gtk.Window):
         # Starting Listener
         self.thread = threading.Thread(target=self.listener.run, args=())
         self.thread.start()
-        # Start GTK main loop
+        # Show window
         self.show_all()
-        gtk.gdk.threads_init()
-        gtk.gdk.threads_enter()
-        gtk.main()
-        gtk.gdk.threads_leave()
+
+    def close(self, widget, data=None):
+        if self.process:
+            self.process.terminate()
+        self.listener.stop()
+        self.queue.close()
+        self.destroy()
+
+    def on_response(self, widget, response_id, data=None):
+        if response_id == gtk.RESPONSE_CANCEL:
+            self.close(widget)
+        elif response_id == gtk.RESPONSE_DELETE_EVENT:
+            self.close(widget)
+
+    def on_close(self, widget, data=None):
+        self.close(widget)
+
+    def on_progress_update(self, obj, fraction, text, data=None):
+        self.progress.pulse()
+        self.progress.set_text(text)
+        #self.progress.set_fraction(fraction)
+
+    def on_progress_finished(self, obj, data=None):
+        if self.process is None:
+            raise RuntimeError("No worker process started")
+        # All done: joining worker process"
+        self.listener.stop()
+        self.process.join()
+        #self.process = None
+        self.progress.set_fraction(1.0)
+        self.progress.set_text("Done")
+        if self.autoclose:
+            self.close()
+
+    def on_progress_error(self, obj, msg, data=None):
+        d = uxm.dialogs.error.Dialog(msg)
+        self.close(None)
+
 
 
 def indeterminate(message, task, *args, **kwargs):
     worker = BlockingWorker(task, *args, **kwargs)
     listener = IndeterminateListener()
-    gui = Dialog(message, worker, listener)
-    gui.start()
+    dlg = Dialog(message, worker, listener)
+    dlg.open()
