@@ -15,7 +15,7 @@ import uxm.dialogs.error
 ROOT_MENU =   os.path.join(config.CACHE_DIR, 'rootmenu.pckl')
 APPS_MENU =   os.path.join(config.CACHE_DIR, 'applications.pckl')
 BOOK_MENU =   os.path.join(config.CACHE_DIR, 'bookmarks.pckl')
-RECENT_MENU = os.path.join(config.CACHE_DIR, 'recently-used.pckl')
+RECENT_MENU = os.path.join(config.CACHE_DIR, 'recent-files.pckl')
 
 def clear_cache():
     for f in [ROOT_MENU, APPS_MENU, BOOK_MENU, RECENT_MENU]:
@@ -80,11 +80,12 @@ class GtkFormatter(TreeFormatter):
 
 class Menu(gtk.Menu):
 
-    standalone = False
-    applications_menu_file = config.MENU_FILE
 
     def __init__(self):
         super(Menu, self).__init__()
+        self.standalone = False
+        self.applications_menu_file = config.MENU_FILE
+
         self.config = config.get()
         self.apps_as_submenu = self.config.getboolean('Applications', 'as_submenu')
 
@@ -97,6 +98,8 @@ class Menu(gtk.Menu):
         self.applications_menu_file = filename
 
     def open(self):
+        gtk.gdk.threads_init()
+        gtk.gdk.threads_enter()
         self.check_paths()
         self.load_menu()
         self.connect('hide', self.on_hide)
@@ -105,8 +108,6 @@ class Menu(gtk.Menu):
 
     def main(self):
         self.standalone = True
-        gtk.gdk.threads_init()
-        gtk.gdk.threads_enter()
         self.open()
         gtk.main()
         gtk.gdk.threads_leave()
@@ -115,6 +116,7 @@ class Menu(gtk.Menu):
         self.popdown()
         if self.standalone:
             gtk.main_quit()
+        gtk.gdk.threads_leave()
 
     def on_hide(self, widget, data=None):
         self.close()
@@ -222,4 +224,3 @@ class Menu(gtk.Menu):
             dlg = progress.indeterminate(
                 "Generating menus", daemon.update_all, Options()
             )
-            print 'I shouldnt be there...'

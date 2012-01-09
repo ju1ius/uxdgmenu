@@ -3,45 +3,53 @@
 
 <Menu>
 
+  <Name>RootMenu</Name>
+
   <DefaultAppDirs/>
   <DefaultDirectoryDirs/>
   <DefaultMergeDirs/>
 
   <Include>
     <!-- filemanager -->
-    <Filename>nautilus-browser.desktop</Filename>
     <Filename>thunar.desktop</Filename>
-    <Filename>pcmanfm.desktop</Filename>
     <!-- Web Browser -->
-    <Filename>firefox.desktop</Filename>
-    <Filename>chromium-browser.desktop</Filename>
+    <Filename>x-www-browser.desktop</Filename>
     <!-- Terminal Emulator -->
-    <Filename>gnome-terminal.desktop</Filename>
-    <Filename>terminator.desktop</Filename>
-    <Filename>lxterminal.desktop</Filename>
+    <Filename>x-terminal-emulator.desktop</Filename>
     <!-- Package Manager -->
+    <Filename>mintInstall.desktop</Filename>
     <Filename>synaptic.desktop</Filename>
+    <!-- Exit -->
+    <Filename>gtk-logout.desktop</Filename>
   </Include>
 
   <Menu>
-    <Name>fxm-applications</Name>
-	  <Directory>fxm-menu-applications.directory</Directory>
+    <Name>uxm-applications</Name>
+    <Directory>uxm-menu-applications.directory</Directory>
     <DefaultLayout show_empty="true">
       <Merge type="all"/>
     </DefaultLayout>
   </Menu>
 
   <Menu>
-    <Name>fxm-bookmarks</Name>
-	  <Directory>fxm-menu-bookmarks.directory</Directory>
+    <Name>uxm-bookmarks</Name>
+	  <Directory>uxm-menu-bookmarks.directory</Directory>
+    <DefaultLayout show_empty="true">
+      <Merge type="all"/>
+    </DefaultLayout>
+  </Menu>
+
+	<Menu>
+    <Name>uxm-recently-used</Name>
+	  <Directory>uxm-menu-recently-used.directory</Directory>
     <DefaultLayout show_empty="true">
       <Merge type="all"/>
     </DefaultLayout>
   </Menu>
 
   <Menu>
-    <Name>fluxbox</Name>
-	  <Directory>fxm-menu-fluxbox.directory</Directory>
+    <Name>uxm-menu</Name>
+    <Directory>X-GNOME-Other.directory</Directory>
     <DefaultLayout show_empty="true">
       <Merge type="all"/>
     </DefaultLayout>
@@ -49,26 +57,22 @@
 
 	<Layout>
     <!-- filemanager -->
-    <Filename>nautilus-browser.desktop</Filename>
     <Filename>thunar.desktop</Filename>
-    <Filename>pcmanfm.desktop</Filename>
     <!-- Web Browser -->
-    <Or>
-      <Filename>firefox.desktop</Filename>
-      <Filename>chromium-browser.desktop</Filename>
-    </Or>
+    <Filename>x-www-browser.desktop</Filename>
     <!-- Terminal Emulator -->
-    <Filename>gnome-terminal.desktop</Filename>
-    <Filename>terminator.desktop</Filename>
-    <Filename>lxterminal.desktop</Filename>
+    <Filename>x-terminal-emulator.desktop</Filename>
     <!-- Package Manager -->
     <Filename>synaptic.desktop</Filename>
 		<Separator/>
-    <Menuname>fxm-bookmarks</Menuname>
+    <Menuname>uxm-bookmarks</Menuname>
+    <Menuname>uxm-recently-used</Menuname>
 		<Separator/>
-    <Menuname>fxm-applications</Menuname>
+    <Menuname>uxm-applications</Menuname>
 		<Separator/>
-    <Menuname>fluxbox</Menuname>
+    <Menuname>uxm-menu</Menuname>
+    <!-- Exit -->
+    <Filename>gtk-logout.desktop</Filename>
 	</Layout>
 
-</Menu> <!-- End Applications -->
+</Menu>

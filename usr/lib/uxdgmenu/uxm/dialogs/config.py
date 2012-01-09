@@ -45,12 +45,13 @@ class DaemonStatusMonitor(threading.Thread, gobject.GObject):
             (gobject.TYPE_BOOLEAN,)
         )
     }
-    stopevent = threading.Event()
-    status = False
 
     def __init__(self):
         threading.Thread.__init__(self)
         gobject.GObject.__init__(self)
+
+        self.stopevent = threading.Event()
+        self.status = False
 
     def run(self):
         while not self.stopevent.isSet():

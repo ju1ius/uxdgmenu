@@ -36,11 +36,11 @@ class Listener(Queueable, gobject.GObject):
             ()
         )
     }
-    stopevent = threading.Event()
 
     def __init__(self, queue=None):
         gobject.GObject.__init__(self)
         self.queue = queue
+        self.stopevent = threading.Event()
 
     def run(self):
         if self.queue is None:
@@ -75,7 +75,7 @@ class IndeterminateListener(Listener):
                 self.emit('updated', 0, "")
                 continue
             # Check if fin)shed                                                                       
-            if data[0] == 1:
+            if data[0] == 1.0:
                 self.emit("finished")
                 self.stop()
             elif data[0] == "error":
@@ -128,14 +128,15 @@ class GeneratorWorker(BlockingWorker):
 
 class Dialog(gtk.MessageDialog):
 
-    autoclose = True
-    standalone = False
 
     def __init__(self, message, worker, listener, parent=None):
         flags = gtk.DIALOG_MODAL if parent else 0
         super(Dialog, self).__init__(
             parent, flags, gtk.MESSAGE_INFO, gtk.BUTTONS_CANCEL, message
         )
+        self.autoclose = True
+        self.standalone = False
+
         self.progress = gtk.ProgressBar()
         self.progress.set_pulse_step(0.05)
         self.progress.show()
@@ -176,12 +177,12 @@ class Dialog(gtk.MessageDialog):
         self.listener.connect("updated", self.on_progress_update)
         self.listener.connect("finished", self.on_progress_finished)
         self.listener.connect("error", self.on_progress_error)
-        # Starting Worker
-        self.process = multiprocessing.Process(target=self.worker.run, args=())
-        self.process.start()
         # Starting Listener
         self.thread = threading.Thread(target=self.listener.run, args=())
         self.thread.start()
+        # Starting Worker
+        self.process = multiprocessing.Process(target=self.worker.run, args=())
+        self.process.start()
         # Show window
         self.show_all()
 
@@ -216,7 +217,7 @@ class Dialog(gtk.MessageDialog):
         self.progress.set_fraction(1.0)
         self.progress.set_text("Done")
         if self.autoclose:
-            self.close()
+            self.close(None)
 
     def on_progress_error(self, obj, msg, data=None):
         d = uxm.dialogs.error.Dialog(msg)

@@ -24,6 +24,9 @@ MENU_FILE = "uxm-applications.menu"
 ROOTMENU_FILE = "uxm-rootmenu.menu"
 
 HOME = os.path.expanduser('~')
+BOOKMARKS_FILE = os.path.join(HOME, '.gtk-bookmarks')
+RECENT_FILES_FILE = os.path.join(HOME, '.recently-used.xbel')
+
 CACHE_DIR = os.path.join(xdg.BaseDirectory.xdg_cache_home, PKG_NAME)
 CONFIG_DIR = os.path.join(xdg.BaseDirectory.xdg_config_home, '.config', PKG_NAME)
 

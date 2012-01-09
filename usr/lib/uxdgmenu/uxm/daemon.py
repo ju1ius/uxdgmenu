@@ -111,15 +111,9 @@ def clear_cache(opts):
         sys.exit("Could not remove %s: %s" % (config.CACHE_DB, why))
     update(opts)
 
-def clear_recently_used(opts):
-    with open(os.path.expanduser('~/.recently-used.xbel'), 'w') as f:
-        f.write("""<?xml version="1.0" encoding="UTF-8"?>
-<xbel version="1.0"
-      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
-      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
->
-</xbel>""")
-    update_recently_used(opts)
+def clear_recent_files(opts):
+    os.remove(config.RECENT_FILES_FILE) 
+    update_recent_files(opts)
 
 def show(opts):
     cache = get_menu_cache(opts.formatter, 'applications')

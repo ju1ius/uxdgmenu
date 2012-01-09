@@ -6,10 +6,6 @@
 	<Name>Applications</Name>
 	<Directory>uxm-menu-applications.directory</Directory>
 
-  <!-- Scan legacy dirs first, as later items take priority -->
-  <LegacyDir>/etc/X11/applnk</LegacyDir>
-  <LegacyDir>/usr/share/gnome/apps</LegacyDir>
-
   <!-- Read standard .directory and .desktop file locations -->
   <DefaultAppDirs/>
   <DefaultDirectoryDirs/>
@@ -19,10 +15,6 @@
 
 	<!-- Read in overrides and child menus from applications-merged/ -->
   <DefaultMergeDirs/>
-
-  <Menu>
-    <custom>~/.fluxbox/fluxdgmenu/menu</custom>
-  </Menu>
 
 	<!-- Accessories submenu -->
 	<Menu>
@@ -104,7 +96,7 @@
 
 	<!-- Internet -->
 	<Menu>
-		<Name>Internet</Name>
+		<Name>Network</Name>
 		<Directory>uxm-network.directory</Directory>
 		<Include>
 			<And>
@@ -184,7 +176,15 @@
         </Or>
       </Not>
     </Include>
-	</Menu> <!-- End Other -->
+  </Menu> <!-- End Other -->
+
+  <Menu>
+    <Name>Wine</Name>
+    <Directory>uxm-wine.directory</Directory>
+    <Include>
+      <Category>Wine</Category>
+    </Include>
+  </Menu>
 
 
 	<Layout>

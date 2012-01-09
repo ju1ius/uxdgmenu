@@ -1,15 +1,16 @@
 import os, sys, re, urllib
 
 import uxm.parser as parser
+import uxm.config as config
 
 try:
     from xml.etree import cElementTree as ElementTree
 except:
     from xml.etree import ElementTree
 
-import gettext
-__t = gettext.translation("fluxdgmenu", "/usr/share/locale")
-_ = __t.ugettext
+#import gettext
+#__t = gettext.translation("fluxdgmenu", "/usr/share/locale")
+#_ = __t.ugettext
 
 MIME_TYPE_NS = 'http://www.freedesktop.org/standards/shared-mime-info'
 BOOKMARK_NS  = 'http://www.freedesktop.org/standards/desktop-bookmarks' 
@@ -30,17 +31,18 @@ class Parser(parser.BaseParser):
             self.clear_icon = ''
 
     def parse_bookmarks(self):
-        source = os.path.expanduser("~/.recently-used.xbel")
-        tree = ElementTree.parse(source)
+        if not os.path.exists(config.RECENT_FILES_FILE):
+            self.create_default()
+        tree = ElementTree.parse(config.RECENT_FILES_FILE)
         last_index = - (self.max_items -1)
-        bookmarks = tree.findall('/bookmark')[last_index:-1]
+        bookmarks = tree.findall('./bookmark')[last_index:-1]
         bookmarks.reverse()
         items = map(self.parse_item, bookmarks)
         items.extend([
             { "type": "separator" },
             {
                 "type": "application",
-                "label": _('Clear List'),
+                "label": 'Clear List',
                 "command": "uxm-daemon clear-recently-used",
                 "icon": self.clear_icon
             }
@@ -67,3 +69,12 @@ class Parser(parser.BaseParser):
             "icon": icon.encode('utf-8'),
             "command": cmd.encode('utf-8')
         }
+
+    def create_default(self):
+        with open(config.RECENT_FILES_FILE, 'w') as f:
+            f.write("""<?xml version="1.0" encoding="UTF-8"?>
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
+</xbel>""")
