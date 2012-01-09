@@ -28,8 +28,8 @@ install:
 	#
 	find . -name "*.pyc" | xargs rm -f
 	# Modify config paths
-	sed -i -e 's#PREFIX = ".*"#PREFIX = "$(DESTDIR)$(prefix)"#' \
-		-e 's#SYSCONFDIR = ".*"#SYSCONFDIR = "$(DESTDIR)$(sysconfdir)"#' \
+	sed -i -e 's#PREFIX = ".*"#PREFIX = "$(prefix)"#' \
+		-e 's#SYSCONFDIR = ".*"#SYSCONFDIR = "$(sysconfdir)"#' \
 		usr/lib/uxdgmenu/uxm/config.py
 	# lib
 	install -d $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/adapters
@@ -46,10 +46,10 @@ install:
 	# bin
 	install -d $(DESTDIR)$(prefix)/bin
 	install -m 0755 usr/bin/* $(DESTDIR)$(prefix)/bin
-	ln -sf -T $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm-daemon.py $(DESTDIR)$(prefix)/bin/uxm-daemon
-	ln -sf -T $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm-places.py $(DESTDIR)$(prefix)/bin/uxm-places
-	ln -sf -T $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm-menu.py $(DESTDIR)$(prefix)/bin/uxm-places
-	ln -sf -T $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm-config.py $(DESTDIR)$(prefix)/bin/uxm-places
+	ln -sf -T $(prefix)/lib/uxdgmenu/uxm-daemon.py $(DESTDIR)$(prefix)/bin/uxm-daemon
+	ln -sf -T $(prefix)/lib/uxdgmenu/uxm-places.py $(DESTDIR)$(prefix)/bin/uxm-places
+	ln -sf -T $(prefix)/lib/uxdgmenu/uxm-menu.py   $(DESTDIR)$(prefix)/bin/uxm-menu
+	ln -sf -T $(prefix)/lib/uxdgmenu/uxm-config.py $(DESTDIR)$(prefix)/bin/uxm-config
 	# share
 	install -d $(DESTDIR)$(prefix)/share/applications
 	install -m 0755 usr/share/applications/* $(DESTDIR)$(prefix)/share/applications

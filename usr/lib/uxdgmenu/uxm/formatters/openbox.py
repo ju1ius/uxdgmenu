@@ -51,8 +51,8 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
         elif id == 'uxm-bookmarks':
             data['command'] = "cat ~/.cache/uxdgmenu/bookmarks.openbox"
             return self.format_pipemenu(data, level)
-        elif id == 'uxm-recently-used':
-            data['command'] = "cat ~/.cache/uxdgmenu/recently-used.openbox"
+        elif id == 'uxm-recent-files':
+            data['command'] = "cat ~/.cache/uxdgmenu/recent-files.openbox"
             return self.format_pipemenu(data, level)
         elif id == 'uxm-wm-config':
             return self.format_wm_menu(data, level)

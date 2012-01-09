@@ -12,7 +12,7 @@ sys.exit(0)
 
 #from uxm.parsers.applications import Parser
 #from uxm.parsers.bookmarks import Parser
-#from uxm.parsers.recently_used import Parser
+#from uxm.parsers.recent_files import Parser
 #from uxm.formatters.fluxbox import Formatter
 
 p = Parser()

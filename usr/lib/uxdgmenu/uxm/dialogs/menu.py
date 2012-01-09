@@ -137,7 +137,7 @@ class Menu(gtk.Menu):
             elif name == 'uxm-bookmarks':
                 self.load_submenu(item, BOOK_MENU)
                 self.load_places_menu()
-            elif name == 'uxm-recently-used':
+            elif name == 'uxm-recent-files':
                 self.load_submenu(item, RECENT_MENU)
             elif name == 'uxm-menu':
                 self.load_uxm_menu(item)

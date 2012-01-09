@@ -28,10 +28,10 @@ def start(opts):
             '--bookmarks-command',
             '%s update:bookmarks -f %s' % (config.APP_DAEMON, fmt)
         ])
-    # Recently Used items
+    # Recent Files
     if cfg.getboolean('Daemon', 'monitor_recent_files'):
         cmd.extend([
-            '--recently-used-command',
+            '--recent-files-command',
             '%s update:recent-files -f %s' % (config.APP_DAEMON, fmt)
         ])
     # Add monitored dirs
@@ -84,7 +84,7 @@ def update_bookmarks(opts):
         fp.write(output)
 
 def update_recent_files(opts):
-    from uxm.parsers.recently_used import Parser
+    from uxm.parsers.recent_files import Parser
     parser = Parser()
     data = parser.parse_bookmarks()
     fmt = formatter.get_formatter(opts.formatter)
@@ -140,7 +140,7 @@ def debug_bookmarks(opts):
 
 def debug_recent_files(opts):
     from pprint import pprint
-    from uxm.parsers.recently_used import Parser
+    from uxm.parsers.recent_files import Parser
     parser = Parser()
     data = parser.parse_bookmarks()
     pprint(data)

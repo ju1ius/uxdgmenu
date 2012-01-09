@@ -56,7 +56,7 @@ int main(int argc, char **argv)
   int verbose = 0;
   /* watch gtk bookmarks ? */
   int watch_bookmarks = 0;
-  /* watch recently_used ? */
+  /* watch recent files ? */
   int watch_recent_files = 0;
   /* HOME watch descriptor */
   int home_wd = -1;

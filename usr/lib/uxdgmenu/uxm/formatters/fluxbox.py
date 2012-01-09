@@ -50,8 +50,8 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
             return self.format_applications_menu(data, level)
         elif id == 'uxm-bookmarks':
             return self.format_bookmarks_menu(data, level)
-        elif id == 'uxm-recently-used':
-            return self.format_recently_used_menu(data, level)
+        elif id == 'uxm-recent-files':
+            return self.format_recent_files_menu(data, level)
         elif id == 'uxm-wm-config':
             return self.format_wm_menu(data, level)
         elif id == 'uxm-menu':
@@ -84,9 +84,9 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
             "n": self.escape_label(data['label']),
             "icn": data['icon']
         }
-    def format_recently_used_menu(self, data, level=0):
+    def format_recent_files_menu(self, data, level=0):
         return """%(i)s[submenu] (%(n)s) <%(icn)s>
-%(i)s%(i)s[include] (~/.cache/uxdgmenu/recently-used.fluxbox)
+%(i)s%(i)s[include] (~/.cache/uxdgmenu/recent-files.fluxbox)
 %(i)s[end]""" % {
             "i": self.indent(level),
             "n": self.escape_label(data['label']),

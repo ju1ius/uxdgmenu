@@ -24,7 +24,7 @@ class Parser(parser.BaseParser):
     def __init__(self):
         super(Parser, self).__init__()
         self.exe_regex = re.compile(r"'(.*) %[a-zA-Z]'")
-        self.max_items = self.config.getint("Recently Used", "max_items")
+        self.max_items = self.config.getint("Recent Files", "max_items")
         if self.show_icons:
             self.clear_icon = self.icon_finder.find_by_name('gtk-clear')
         else:
@@ -43,14 +43,14 @@ class Parser(parser.BaseParser):
             {
                 "type": "application",
                 "label": 'Clear List',
-                "command": "uxm-daemon clear-recently-used",
+                "command": "uxm-daemon clear-recent-files",
                 "icon": self.clear_icon
             }
         ])
         return {
             "type": "menu",
             "label": "Recent Files",
-            "id": "uxdgmenu-recently-used",
+            "id": "uxdgmenu-recent-files",
             "icon": "",
             "items": items
         }

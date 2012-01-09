@@ -226,7 +226,10 @@ class Dialog(gtk.MessageDialog):
 
 
 def indeterminate(message, task, *args, **kwargs):
-    worker = BlockingWorker(task, *args, **kwargs)
-    listener = IndeterminateListener()
-    dlg = Dialog(message, worker, listener)
-    dlg.open()
+    try:
+        worker = BlockingWorker(task, *args, **kwargs)
+        listener = IndeterminateListener()
+        dlg = Dialog(message, worker, listener)
+        dlg.open()
+    except Exception, e:
+        uxm.dialogs.error.Dialog(str(e))

@@ -25,8 +25,6 @@ You can also optionally install the following packages:
 
 * python-gtk2:    enables uxdgmenu to use your current GTK icon theme and GUI dialogs
 * python-gmenu:   makes menu generation 10 times faster...
-* python-gobject: enables the recently used files menu to display item icons
-                  according to their mime type.
 
 Clone the git repository if you haven't already
 
@@ -35,7 +33,7 @@ Clone the git repository if you haven't already
 
 Build and install
 
-    make && sudo make install
+    make && sudo make install prefix=/usr
 
 Next
 ====

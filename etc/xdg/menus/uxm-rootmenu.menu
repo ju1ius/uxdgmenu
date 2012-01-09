@@ -40,8 +40,8 @@
   </Menu>
 
 	<Menu>
-    <Name>uxm-recently-used</Name>
-	  <Directory>uxm-menu-recently-used.directory</Directory>
+    <Name>uxm-recent-files</Name>
+	  <Directory>uxm-menu-recent-files.directory</Directory>
     <DefaultLayout show_empty="true">
       <Merge type="all"/>
     </DefaultLayout>
@@ -66,7 +66,7 @@
     <Filename>synaptic.desktop</Filename>
 		<Separator/>
     <Menuname>uxm-bookmarks</Menuname>
-    <Menuname>uxm-recently-used</Menuname>
+    <Menuname>uxm-recent-files</Menuname>
 		<Separator/>
     <Menuname>uxm-applications</Menuname>
 		<Separator/>

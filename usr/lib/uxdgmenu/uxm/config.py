@@ -43,7 +43,7 @@ USER_CONFIG_FILE = os.path.join(CONFIG_DIR, 'menu.conf')
 CACHE_DB = os.path.join(CACHE_DIR, 'cache.db')
 MENU_CACHE = os.path.join(CACHE_DIR, 'applications')
 BOOKMARKS_CACHE = os.path.join(CACHE_DIR, 'bookmarks')
-RECENTLY_USED_CACHE = os.path.join(CACHE_DIR, 'recently-used')
+RECENT_FILES_CACHE = os.path.join(CACHE_DIR, 'recent-files')
 
 PLUGINS_DIRS = [d for d in xdg.BaseDirectory.load_data_paths(PKG_NAME,'formatters')]
 PLUGINS_DIRS.append(os.path.join(os.path.dirname(__file__), "formatters"))
@@ -79,7 +79,7 @@ as_submenu: no
 
 [Bookmarks]
 
-[Recently Used]
+[Recent Files]
 max_items: 20
 
 [Places]

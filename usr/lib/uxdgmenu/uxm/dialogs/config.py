@@ -147,6 +147,8 @@ class ConfigEditor(object):
         self.formatters_list = ComboBoxTextDecorator(
             builder.get_object('formatters_list')
         )
+        self.daemon_status_img =  builder.get_object('daemon_status_img')
+        self.daemon_status_lbl =  builder.get_object('daemon_status_lbl')
         self.daemon_start_btn =  builder.get_object('daemon_start_btn')
         self.daemon_stop_btn =  builder.get_object('daemon_stop_btn')
         self.daemon_restart_btn =  builder.get_object('daemon_restart_btn')
@@ -160,12 +162,7 @@ class ConfigEditor(object):
     def _load_config(self):
         self.config = config.get()
         # General
-        self.monitor_bookmarks_cb.set_active(
-            self.config.getboolean('Daemon', 'monitor_bookmarks')        
-        )
-        self.monitor_recent_cb.set_active(
-            self.config.getboolean('Daemon', 'monitor_recent_files')        
-        )
+
         self.filemanager_entry.set_text(
             self.config.get('General', 'filemanager')            
         )
@@ -221,7 +218,7 @@ class ConfigEditor(object):
         )
         # ----- recent
         self.menus_recent_files_max_items_btn.set_value(
-            self.config.getint('Recently Used', 'max_items')        
+            self.config.getint('Recent Files', 'max_items')        
         )
         # ----- places
         self.menus_places_start_dir_chooser_btn.set_current_folder(
@@ -232,6 +229,12 @@ class ConfigEditor(object):
         )
 
         # Daemon
+        self.monitor_bookmarks_cb.set_active(
+            self.config.getboolean('Daemon', 'monitor_bookmarks')        
+        )
+        self.monitor_recent_cb.set_active(
+            self.config.getboolean('Daemon', 'monitor_recent_files')        
+        )
         for f in self._get_formatters_list():
             self.formatters_list.append_text(f)
 
@@ -283,7 +286,7 @@ class ConfigEditor(object):
 
         # ----- recent
         max_items = self.menus_recent_files_max_items_btn.get_value()
-        self.config.set('Recently Used', 'max_items', max_items)
+        self.config.set('Recent Files', 'max_items', max_items)
 
         # ----- places
         start_dir = self.menus_places_start_dir_chooser_btn.get_filename()
@@ -304,6 +307,7 @@ class ConfigEditor(object):
     def start_daemon_monitor(self):
         self.daemon_monitor = DaemonStatusMonitor()
         self.daemon_monitor.connect("status-change", self.on_daemon_status_change)
+        self.daemon_monitor.start()
 
     def _get_formatters_list(self):
         formatters = []
@@ -360,11 +364,17 @@ class ConfigEditor(object):
             self.config.write(fp)
             self.save_btn.set_sensitive(False)
 
-    def on_daemon_status_change(self, status):
+    def on_daemon_status_change(self, monitor, status):
         if status:
-            self.daemon_status_img.set_from_stock(gtk.STOCK_MEDIA_PLAY)
+            self.daemon_status_lbl.set_text("Running")
+            self.daemon_status_img.set_from_stock(
+                gtk.STOCK_MEDIA_PLAY, gtk.ICON_SIZE_BUTTON
+            )
         else:
-            self.daemon_status_img.set_from_stock(gtk.STOCK_MEDIA_STOP)
+            self.daemon_status_lbl.set_text("Stopped")
+            self.daemon_status_img.set_from_stock(
+                gtk.STOCK_MEDIA_STOP, gtk.ICON_SIZE_BUTTON 
+            )
 
     def on_daemon_start_btn_clicked(self, widget, data=None):
         self._gather_data()
@@ -372,7 +382,8 @@ class ConfigEditor(object):
             "Starting daemon", daemon.start,
             Options(
                 formatter = self.formatters_list.get_active_text(),
-                menu_file = self.menu_file_list.get_active_text()
+                menu_file = self.menu_file_list.get_active_text(),
+                verbose = False
             )
         )
 
@@ -385,7 +396,8 @@ class ConfigEditor(object):
             "Restarting daemon", daemon.start,
             Options(
                 formatter = self.formatters_list.get_active_text(),
-                menu_file = self.menu_file_list.get_active_text()
+                menu_file = self.menu_file_list.get_active_text(),
+                verbose = False
             )
         )
         
