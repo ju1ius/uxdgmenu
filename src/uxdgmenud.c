@@ -74,7 +74,7 @@ int main(int argc, char **argv)
   /* ---------- VARS ---------- */
 
   /* log message */
-  char message[1024];
+  char message_buf[1024];
   /**
    * the notified event
    **/
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
    **/
   for (i = optind; i < argc; i++)
   {
-    if(!inotifytools_watch_recursively(argv[i], EVENTS_MASK))
+    if(!inotifytools_watch_recursively(argv[i], APPS_EVENTS))
     {
       syslog( LOG_ERR, "Cannot watch %s: %s", argv[i], strerror(inotifytools_error()) );
     }
