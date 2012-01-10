@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Meuziad"
+
+msgid "Preferences"
+msgstr "Gwellvezioù"
+
+msgid "Refresh"
+msgstr "Azgrenaat"
+
+msgid "Open"
+msgstr "Digeriñ"
+
+msgid "Clear List"
+msgstr "Skarzhañ ar roll"
+
+msgid "Generate"
+msgstr "Genel"
+

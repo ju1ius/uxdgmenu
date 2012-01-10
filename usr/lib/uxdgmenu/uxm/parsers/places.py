@@ -4,6 +4,9 @@ import xdg.Mime
 
 import uxm.utils as utils
 import uxm.parser as parser
+import uxm.config as config
+
+_ = config.translate
 
 class Parser(parser.BaseParser):
 
@@ -23,7 +26,7 @@ class Parser(parser.BaseParser):
         items = [
             {
                 "type": "application",
-                "label": "Browse here...",
+                "label": "%s..." % _("Open"),
                 "icon": fi,
                 "command": '%s "%s"' % (fm, path)
             },

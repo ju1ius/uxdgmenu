@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "စာရင်းမှတ်"
+
+msgid "Preferences"
+msgstr "ဦးစားပေးချက်များ"
+
+msgid "Refresh"
+msgstr "ပြန်နှိုးပါ"
+
+msgid "Open"
+msgstr "ဖွင့်ပါ"
+
+msgid "Clear List"
+msgstr "စာရင်းကို ရှင်းလင်းပါ"
+
+msgid "Generate"
+msgstr "G စကားဝှက်ထုတ်လုပ်မည်"
+

@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Menyu"
+
+msgid "Preferences"
+msgstr "Parametrlar"
+
+msgid "Refresh"
+msgstr "Yangilash"
+
+msgid "Open"
+msgstr "Ochish"
+
+msgid "Clear List"
+msgstr "Roʻyxatni tozalash"
+

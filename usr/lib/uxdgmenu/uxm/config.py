@@ -28,7 +28,7 @@ BOOKMARKS_FILE = os.path.join(HOME, '.gtk-bookmarks')
 RECENT_FILES_FILE = os.path.join(HOME, '.recently-used.xbel')
 
 CACHE_DIR = os.path.join(xdg.BaseDirectory.xdg_cache_home, PKG_NAME)
-CONFIG_DIR = os.path.join(xdg.BaseDirectory.xdg_config_home, '.config', PKG_NAME)
+CONFIG_DIR = os.path.join(xdg.BaseDirectory.xdg_config_home, PKG_NAME)
 
 APP_DIRS = [d for d in xdg.BaseDirectory.load_data_paths('applications')]
 DIR_DIRS = [d for d in xdg.BaseDirectory.load_data_paths('desktop-directories')]
@@ -122,8 +122,8 @@ def check():
                 sys.exit("Could not create %s: %s" % (d, why))
     if not os.path.isfile(USER_CONFIG_FILE):
         guess()
-        #with open(CONFIG_FILE, 'w') as f:
-            #__parser.write(f)
+        with open(USER_CONFIG_FILE, 'w') as f:
+            __parser.write(f)
 
 def guess():
     open_cmd = utils.guess_open_cmd()
@@ -140,6 +140,15 @@ def to_string():
     buf.close()
     return val
 
+__ugettext = None
+
+def translate(*args, **kwargs):
+    global __ugettext
+    if __ugettext is None:
+        import gettext
+        t = gettext.translation("uxdgmenu", os.path.join(PREFIX,"share/locale"))
+        __ugettext = t.ugettext
+    return __ugettext(*args, **kwargs)
 
 ########################################################
 #                                                      #
@@ -153,4 +162,4 @@ __parser.readfp(StringIO.StringIO(DEFAULT_CONFIG))
 # Create working dirs & config files if needed
 check()
 # Parse config files
-#__parser.read([SYSTEM_CONFIG_FILE, USER_CONFIG_FILE])
+__parser.read([SYSTEM_CONFIG_FILE, USER_CONFIG_FILE])

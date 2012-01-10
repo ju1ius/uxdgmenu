@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Vymazat mezipaměť"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Preferences"
+msgstr "Nastavení"
+
+msgid "Refresh"
+msgstr "Obnovit"
+
+msgid "Open"
+msgstr "Otevřít"
+
+msgid "Clear List"
+msgstr "Vymazat seznam"
+
+msgid "Generate"
+msgstr "Vygenerovat"
+

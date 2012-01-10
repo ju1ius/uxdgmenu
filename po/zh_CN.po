@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "清除缓存"
+
+msgid "Menu"
+msgstr "菜单"
+
+msgid "Preferences"
+msgstr "首选项(P)"
+
+msgid "Refresh"
+msgstr "刷新(R)"
+
+msgid "Open"
+msgstr "打开(O)"
+
+msgid "Clear List"
+msgstr "清除列表(C)"
+
+msgid "Generate"
+msgstr "生成(G)"
+

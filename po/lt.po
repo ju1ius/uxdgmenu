@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Išvalyti podėlį"
+
+msgid "Menu"
+msgstr "Meniu"
+
+msgid "Preferences"
+msgstr "Nustatymai"
+
+msgid "Refresh"
+msgstr "Atnaujinti"
+
+msgid "Open"
+msgstr "Atverti"
+
+msgid "Clear List"
+msgstr "Išvalyti sąrašą"
+
+msgid "Generate"
+msgstr "Generuoti"
+

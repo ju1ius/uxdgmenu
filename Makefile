@@ -10,7 +10,7 @@ LDFLAGS=-linotifytools
 EXEC=usr/bin/uxdgmenud
 SRC=src/uxdgmenud.c
 
-all: uxdgmenud
+all: uxdgmenud locale
 
 uxdgmenud:
 	${CC} ${SRC} -o ${EXEC} ${LDFLAGS} ${CFLAGS}
@@ -55,8 +55,8 @@ install:
 	install -m 0755 usr/share/applications/* $(DESTDIR)$(prefix)/share/applications
 	install -d $(DESTDIR)$(prefix)/share/desktop-directories
 	install -m 0755 usr/share/desktop-directories/* $(DESTDIR)$(prefix)/share/desktop-directories
-	#install -d $(DESTDIR)$(prefix)/share/locale
-	#cp -R usr/share/locale/* $(DESTDIR)$(prefix)/share/locale
+	install -d $(DESTDIR)$(prefix)/share/locale
+	cp -R usr/share/locale/* $(DESTDIR)$(prefix)/share/locale
 	# etc
 	install -d $(DESTDIR)$(sysconfdir)/xdg/menus
 	install -m 0755 etc/xdg/menus/* $(DESTDIR)$(sysconfdir)/xdg/menus

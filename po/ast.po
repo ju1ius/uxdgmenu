@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menú"
+
+msgid "Preferences"
+msgstr "Preferencies"
+
+msgid "Refresh"
+msgstr "Anovar"
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Clear List"
+msgstr "Llimpiar llista"
+
+msgid "Generate"
+msgstr "Xenerar"
+

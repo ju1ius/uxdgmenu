@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "מעניו"
+
+msgid "Preferences"
+msgstr "פּרעפֿערענצן"
+
+msgid "Refresh"
+msgstr "דערהײַנטיק"
+
+msgid "Open"
+msgstr "עפֿן"
+
+msgid "Clear List"
+msgstr "מעק אָפּ"
+

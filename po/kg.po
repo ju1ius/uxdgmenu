@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "katikati"
+
+msgid "Preferences"
+msgstr "nkalulu"
+
+msgid "Refresh"
+msgstr "vutukila"
+
+msgid "Open"
+msgstr "ziezula"
+
+msgid "Clear List"
+msgstr "vunzae lutaangulu"
+

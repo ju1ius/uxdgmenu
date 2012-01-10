@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Xoá bộ nhớ tạm"
+
+msgid "Menu"
+msgstr "Trình đơn"
+
+msgid "Preferences"
+msgstr "Tùy thích"
+
+msgid "Refresh"
+msgstr "Cập nhật"
+
+msgid "Open"
+msgstr "Mở"
+
+msgid "Clear List"
+msgstr "Xóa danh sách"
+
+msgid "Generate"
+msgstr "Tạo ra"
+

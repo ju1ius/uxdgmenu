@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "ububikoremezo y'Ubwihisho"
+
+msgid "Menu"
+msgstr "ibikubiyemo"
+
+msgid "Preferences"
+msgstr "Ibyahiswemo"
+
+msgid "Refresh"
+msgstr "Kugira gishya"
+
+msgid "Open"
+msgstr "Gufungura"
+
+msgid "Clear List"
+msgstr "Gusiba"
+
+msgid "Generate"
+msgstr ""
+

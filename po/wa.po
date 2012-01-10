@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Muchete e memwere"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Preferences"
+msgstr "Preferinces"
+
+msgid "Refresh"
+msgstr "Rafrister"
+
+msgid "Open"
+msgstr "Drovi"
+
+msgid "Clear List"
+msgstr "Netyî djivêye"
+
+msgid "Generate"
+msgstr "Djenerå"
+

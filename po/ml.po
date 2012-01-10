@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "കാഷ് വെടിപ്പാക്കുക"
+
+msgid "Menu"
+msgstr "മെനു"
+
+msgid "Preferences"
+msgstr "മുന്‍ഗണനകള്‍ "
+
+msgid "Refresh"
+msgstr "പുതുക്കുക "
+
+msgid "Open"
+msgstr "തുറക്കുക "
+
+msgid "Clear List"
+msgstr "പട്ടിക വെടിപ്പാക്കുക"
+
+msgid "Generate"
+msgstr "ഉണ്ടാക്കുക"
+

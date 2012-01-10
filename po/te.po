@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "క్యాచీను శుభ్రముచేయి"
+
+msgid "Menu"
+msgstr "జాబితా"
+
+msgid "Preferences"
+msgstr "ప్రాధాన్యతలు"
+
+msgid "Refresh"
+msgstr "తాజాపరుచు"
+
+msgid "Open"
+msgstr "తెరవు"
+
+msgid "Clear List"
+msgstr "జాబితాను శుభ్రంచేయి"
+
+msgid "Generate"
+msgstr "జనియింపచేయుము"
+

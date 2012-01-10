@@ -83,7 +83,7 @@ def guess_open_cmd():
     """Tries to guess the command to open files
     with their associated application.
     If it fails, defaults to xdg-open"""
-    for cmd in ['gnome-open', 'exo-open', 'kde-open']:
+    for cmd in ['exo-open', 'kde-open','gnome-open']:
         if which(cmd):
             return cmd
     return 'xdg-open'

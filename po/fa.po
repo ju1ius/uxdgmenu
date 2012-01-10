@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "منو"
+
+msgid "Preferences"
+msgstr "ترجیحات"
+
+msgid "Refresh"
+msgstr "نوسازی"
+
+msgid "Open"
+msgstr "باز کردن"
+
+msgid "Clear List"
+msgstr "پاک کردن فهرست"
+
+msgid "Generate"
+msgstr "تولید"
+

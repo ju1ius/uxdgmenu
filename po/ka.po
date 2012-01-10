@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "მენიუ"
+
+msgid "Preferences"
+msgstr "პარამეტრები"
+
+msgid "Refresh"
+msgstr "განახლება"
+
+msgid "Open"
+msgstr "გახსნა"
+
+msgid "Clear List"
+msgstr "სიის გასუფთავება"
+
+msgid "Generate"
+msgstr "გენერაცია"
+

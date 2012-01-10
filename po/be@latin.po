@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Preferences"
+msgstr "Nałady"
+
+msgid "Refresh"
+msgstr "Abnavi"
+
+msgid "Open"
+msgstr "Adčyni"
+
+msgid "Clear List"
+msgstr "Vyčyść śpis"
+
+msgid "Generate"
+msgstr "Zhieneruj"
+

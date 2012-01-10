@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Roghchlár"
+
+msgid "Preferences"
+msgstr "Sainroghanna"
+
+msgid "Refresh"
+msgstr "Athnuaigh"
+
+msgid "Open"
+msgstr "Oscail"
+
+msgid "Clear List"
+msgstr "Glan Liosta"
+
+msgid "Generate"
+msgstr "Gin"
+

@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Attīrīt kešu"
+
+msgid "Menu"
+msgstr "Izvēlne"
+
+msgid "Preferences"
+msgstr "Iestatījumi"
+
+msgid "Refresh"
+msgstr "Atsvaidzināt"
+
+msgid "Open"
+msgstr "Atvērt"
+
+msgid "Clear List"
+msgstr "Attīrīt sarakstu"
+
+msgid "Generate"
+msgstr "Ģenerēt"
+

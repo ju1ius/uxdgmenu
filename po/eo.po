@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menuo"
+
+msgid "Preferences"
+msgstr "Agordoj"
+
+msgid "Refresh"
+msgstr "Aktualigi"
+
+msgid "Open"
+msgstr "Malfermi"
+
+msgid "Clear List"
+msgstr "Vakigi liston"
+
+msgid "Generate"
+msgstr "Generu"
+

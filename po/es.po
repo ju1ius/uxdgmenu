@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Limpiar la caché"
+
+msgid "Menu"
+msgstr "Menú"
+
+msgid "Preferences"
+msgstr "Preferencias"
+
+msgid "Refresh"
+msgstr "Actualizar"
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Clear List"
+msgstr "Limpiar lista"
+
+msgid "Generate"
+msgstr "Generar"
+

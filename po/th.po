@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "ล้างแคช"
+
+msgid "Menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr "ปรับแต่ง"
+
+msgid "Refresh"
+msgstr "เรียกใหม่"
+
+msgid "Open"
+msgstr "เปิด"
+
+msgid "Clear List"
+msgstr "ล้างรายการ"
+
+msgid "Generate"
+msgstr "สุ่ม"
+

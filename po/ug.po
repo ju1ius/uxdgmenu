@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "تىزىملىك"
+
+msgid "Preferences"
+msgstr "مايىللىق(P)"
+
+msgid "Refresh"
+msgstr "يېڭىلا(R)"
+
+msgid "Open"
+msgstr "ئاچ(O)"
+
+msgid "Clear List"
+msgstr "تىزىمنى تازىلا(C)"
+
+msgid "Generate"
+msgstr "قۇر(G)"
+

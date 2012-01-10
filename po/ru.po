@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Очистить кэш"
+
+msgid "Menu"
+msgstr "Меню"
+
+msgid "Preferences"
+msgstr "Параметры"
+
+msgid "Refresh"
+msgstr "Обновить"
+
+msgid "Open"
+msgstr "Открыть"
+
+msgid "Clear List"
+msgstr "Очистить список"
+
+msgid "Generate"
+msgstr "Создать"
+

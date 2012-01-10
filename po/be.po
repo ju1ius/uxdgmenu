@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Мэню"
+
+msgid "Preferences"
+msgstr "Настройкі"
+
+msgid "Refresh"
+msgstr "Абнавіць"
+
+msgid "Open"
+msgstr "Адкрыць"
+
+msgid "Clear List"
+msgstr "Ачысціць спіс"
+
+msgid "Generate"
+msgstr "Згенэраваць"
+

@@ -175,10 +175,6 @@ class Menu(gtk.Menu):
         config.connect("activate", self.exec_command, "uxm-config")
         submenu.append(config)
 
-        editor = gtk.ImageMenuItem(gtk.STOCK_PROPERTIES)
-        editor.connect("activate", self.exec_command, "uxm-editor")
-        submenu.append(editor)
-
         widget.set_submenu(submenu)
 
     def load_places_menu(self):

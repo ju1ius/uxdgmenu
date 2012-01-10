@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "ሜኑ"
+
+msgid "Preferences"
+msgstr "ምርጫዎች"
+
+msgid "Refresh"
+msgstr "በድጋሚ ጀምር"
+
+msgid "Open"
+msgstr "ክፈት"
+
+msgid "Clear List"
+msgstr "ሰርዝ"
+
+msgid "Generate"
+msgstr "አጠቃላይ"
+

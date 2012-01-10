@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "ಕ್ಯಾಶೆಯನ್ನು ಅಳಿಸಿಹಾಕು"
+
+msgid "Menu"
+msgstr "ಅಂಶ ಪಟ್ಟಿ"
+
+msgid "Preferences"
+msgstr "ಆದ್ಯತೆಗಳು(P)"
+
+msgid "Refresh"
+msgstr "ಪುನಶ್ಚೇತನಗೊಳಿಸು(R)"
+
+msgid "Open"
+msgstr "ತೆರೆ(O)"
+
+msgid "Clear List"
+msgstr "ಪಟ್ಟಿಯನ್ನು ಅಳಿಸಿಹಾಕು(C)"
+
+msgid "Generate"
+msgstr "ಉತ್ಪಾದಿಸು(G)"
+

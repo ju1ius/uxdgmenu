@@ -1,0 +1,3 @@
+msgid "Clear cache"
+msgstr ""
+

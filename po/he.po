@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "נקה מטמון"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Preferences"
+msgstr "העדפות"
+
+msgid "Refresh"
+msgstr "רענון"
+
+msgid "Open"
+msgstr "פתיחה"
+
+msgid "Clear List"
+msgstr "פינוי הרשימה"
+
+msgid "Generate"
+msgstr "יצירה"
+

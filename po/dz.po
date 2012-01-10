@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "འདྲ་མཛོད་བསལ།"
+
+msgid "Menu"
+msgstr "དཀར་ཆག"
+
+msgid "Preferences"
+msgstr "དགའ་གདམ་ཚུ།(P)"
+
+msgid "Refresh"
+msgstr "ཡང་སེལ།(R)"
+
+msgid "Open"
+msgstr "ཁ་ཕྱེ།(O)"
+
+msgid "Clear List"
+msgstr "ཐོ་ཡིག་བསལ།(C)"
+
+msgid "Generate"
+msgstr "བཟོ་བསྐྲུན་འབད།(G)"
+

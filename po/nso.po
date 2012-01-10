@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Lelokelelo la dikagare"
+
+msgid "Preferences"
+msgstr "Tše ratwago"
+
+msgid "Refresh"
+msgstr "Thoma o tšwelepele"
+
+msgid "Open"
+msgstr "Bula"
+
+msgid "Clear List"
+msgstr "Phumola"
+

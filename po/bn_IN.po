@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "ক্যাশের তথ্য মুছে ফেলুন"
+
+msgid "Menu"
+msgstr "মেনু"
+
+msgid "Preferences"
+msgstr "পছন্দ"
+
+msgid "Refresh"
+msgstr "নতুন করে প্রদর্শন"
+
+msgid "Open"
+msgstr "খুলুন"
+
+msgid "Clear List"
+msgstr "তালিকা পরিশ্রুত করুন"
+
+msgid "Generate"
+msgstr "উত্‌পন্ন করুন"
+

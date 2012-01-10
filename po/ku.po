@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Preferences"
+msgstr "Vebijêrk"
+
+msgid "Refresh"
+msgstr "Tezekirin"
+
+msgid "Open"
+msgstr "Vekirin"
+
+msgid "Clear List"
+msgstr "Lîsteyê Paqij Bike"
+
+msgid "Generate"
+msgstr "Hilberîne"
+

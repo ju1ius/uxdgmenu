@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Dewislen"
+
+msgid "Preferences"
+msgstr "Hoffterau"
+
+msgid "Refresh"
+msgstr "Diweddaru"
+
+msgid "Open"
+msgstr "Agor"
+
+msgid "Clear List"
+msgstr "Clirio'r Rhestr"
+
+msgid "Generate"
+msgstr "Creu"
+

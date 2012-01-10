@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Imenyu"
+
+msgid "Preferences"
+msgstr "Okukhethayo"
+
+msgid "Refresh"
+msgstr "Hlaziya"
+
+msgid "Open"
+msgstr "Vula"
+
+msgid "Clear List"
+msgstr "Cima"
+
+msgid "Generate"
+msgstr "Yenza"
+

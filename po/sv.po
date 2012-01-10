@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Töm cache"
+
+msgid "Menu"
+msgstr "Meny"
+
+msgid "Preferences"
+msgstr "Inställningar"
+
+msgid "Refresh"
+msgstr "Uppdatera"
+
+msgid "Open"
+msgstr "Öppna"
+
+msgid "Clear List"
+msgstr "Töm lista"
+
+msgid "Generate"
+msgstr "Skapa"
+

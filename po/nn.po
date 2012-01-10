@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Meny"
+
+msgid "Preferences"
+msgstr "Innstillingar"
+
+msgid "Refresh"
+msgstr "Oppfrisk"
+
+msgid "Open"
+msgstr "Opna"
+
+msgid "Clear List"
+msgstr "Tøm lista"
+
+msgid "Generate"
+msgstr "Opprett"
+

@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "غورنۍ"
+
+msgid "Preferences"
+msgstr "غوراوي"
+
+msgid "Refresh"
+msgstr "تاندول"
+
+msgid "Open"
+msgstr "پرانيستل"
+
+msgid "Clear List"
+msgstr "لړ پاکول"
+
+msgid "Generate"
+msgstr "جوړول"
+

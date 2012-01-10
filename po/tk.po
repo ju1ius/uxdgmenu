@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr "Seçenekler"
+
+msgid "Refresh"
+msgstr "Ýene Ýükle"
+
+msgid "Open"
+msgstr "Aç"
+
+msgid "Clear List"
+msgstr "Durla"
+

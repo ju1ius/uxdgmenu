@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menüü"
+
+msgid "Preferences"
+msgstr "Eelistused"
+
+msgid "Refresh"
+msgstr "Värskenda"
+
+msgid "Open"
+msgstr "Ava"
+
+msgid "Clear List"
+msgstr "Tühjenda loend"
+
+msgid "Generate"
+msgstr "Genereeri"
+

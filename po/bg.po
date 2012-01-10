@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Изчистване на кеша"
+
+msgid "Menu"
+msgstr "Меню"
+
+msgid "Preferences"
+msgstr "Предпочитания"
+
+msgid "Refresh"
+msgstr "Обновяване"
+
+msgid "Open"
+msgstr "Отваряне"
+
+msgid "Clear List"
+msgstr "Изчистване на списък"
+
+msgid "Generate"
+msgstr "Генериране"
+

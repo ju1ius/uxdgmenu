@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "கேஷை துடை"
+
+msgid "Menu"
+msgstr "பட்டி"
+
+msgid "Preferences"
+msgstr "முன்னுரிமைகள்"
+
+msgid "Refresh"
+msgstr "புதுப்பி"
+
+msgid "Open"
+msgstr "திற"
+
+msgid "Clear List"
+msgstr "பட்டியலை துடை"
+
+msgid "Generate"
+msgstr "உருவாக்கு"
+

@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr ""
+
+msgid "Menu"
+msgstr "Menü"
+
+msgid "Preferences"
+msgstr "Tercihler"
+
+msgid "Refresh"
+msgstr "Tazele"
+
+msgid "Open"
+msgstr "Aç"
+
+msgid "Clear List"
+msgstr "Listeyi Temizle"
+
+msgid "Generate"
+msgstr "Üret"
+

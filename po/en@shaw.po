@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "𐑥𐑧𐑯𐑿"
+
+msgid "Preferences"
+msgstr "𐑐𐑮𐑧𐑓𐑼𐑩𐑯𐑕𐑩𐑟"
+
+msgid "Refresh"
+msgstr "𐑮𐑰𐑓𐑮𐑧𐑖"
+
+msgid "Open"
+msgstr "𐑴𐑐𐑩𐑯"
+
+msgid "Clear List"
+msgstr "𐑒𐑤𐑻 𐑤𐑦𐑕𐑑"
+
+msgid "Generate"
+msgstr "𐑡𐑧𐑯𐑼𐑱𐑑"
+

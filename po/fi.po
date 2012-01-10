@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Tyhjennä välimuisti"
+
+msgid "Menu"
+msgstr "Valikko"
+
+msgid "Preferences"
+msgstr "Asetukset"
+
+msgid "Refresh"
+msgstr "Päivitä"
+
+msgid "Open"
+msgstr "Avaa"
+
+msgid "Clear List"
+msgstr "Tyhjennä luettelo"
+
+msgid "Generate"
+msgstr "Luo"
+

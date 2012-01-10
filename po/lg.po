@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr "Nteekateeka"
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Open"
+msgstr "Bikkula"
+
+msgid "Clear List"
+msgstr "Gyawo olukalala"
+

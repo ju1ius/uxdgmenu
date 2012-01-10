@@ -332,7 +332,8 @@ class ConfigEditor(object):
     # ---------- Signal handlers ---------- #
 
     def on_destroy(self, widget, data=None):
-        self.daemon_monitor.stop()
+        if self.daemon_monitor:
+            self.daemon_monitor.stop()
         gtk.main_quit()
 
     def on_changed(self, widget, data=None):

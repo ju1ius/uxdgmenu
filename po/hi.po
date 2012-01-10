@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "मेनू"
+
+msgid "Preferences"
+msgstr "वरीयता"
+
+msgid "Refresh"
+msgstr "ताज़ा करें"
+
+msgid "Open"
+msgstr "खोलें"
+
+msgid "Clear List"
+msgstr "सूची साफ करें"
+
+msgid "Generate"
+msgstr "उत्पन्न करें"
+

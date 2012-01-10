@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Մենյու"
+
+msgid "Preferences"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Open"
+msgstr "Բացել Հղումը"
+
+msgid "Clear List"
+msgstr "Մաքրել ցուցակը"
+

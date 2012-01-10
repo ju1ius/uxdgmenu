@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr "Ngā Tina Hiahia"
+
+msgid "Refresh"
+msgstr "Whakārahina"
+
+msgid "Open"
+msgstr "Huaki"
+
+msgid "Clear List"
+msgstr "Whakawātea"
+

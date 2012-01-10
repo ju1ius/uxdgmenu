@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Gyorsítótár törlése"
+
+msgid "Menu"
+msgstr "Menü"
+
+msgid "Preferences"
+msgstr "Beállítások"
+
+msgid "Refresh"
+msgstr "Frissítés"
+
+msgid "Open"
+msgstr "Megnyitás"
+
+msgid "Clear List"
+msgstr "Lista törlése"
+
+msgid "Generate"
+msgstr "Létrehozás"
+

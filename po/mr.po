@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "कॅशे पुसा"
+
+msgid "Menu"
+msgstr "मेनू"
+
+msgid "Preferences"
+msgstr "आवड निवड"
+
+msgid "Refresh"
+msgstr "पुन्ह दाखल करा"
+
+msgid "Open"
+msgstr "उघडा"
+
+msgid "Clear List"
+msgstr "यादी साफ करा(C)"
+
+msgid "Generate"
+msgstr "बनवा"
+

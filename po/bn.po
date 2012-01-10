@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "মেনু"
+
+msgid "Preferences"
+msgstr "পছন্দসমূহ"
+
+msgid "Refresh"
+msgstr "রিফ্রেশ করুন"
+
+msgid "Open"
+msgstr "খুলুন"
+
+msgid "Clear List"
+msgstr "তালিকা মুছে ফেলুন"
+
+msgid "Generate"
+msgstr "তৈরি করুন"
+

@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Καθαρισμός μνήμης"
+
+msgid "Menu"
+msgstr "Μενού"
+
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+msgid "Refresh"
+msgstr "Ανανέωση"
+
+msgid "Open"
+msgstr "Άνοιγμα"
+
+msgid "Clear List"
+msgstr "Εκκαθάριση λίστας"
+
+msgid "Generate"
+msgstr "Δημιουργία"
+

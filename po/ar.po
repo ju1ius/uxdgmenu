@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "امسح الذاكرة المؤقتة"
+
+msgid "Menu"
+msgstr "القائمة"
+
+msgid "Preferences"
+msgstr "التفضيلات"
+
+msgid "Refresh"
+msgstr "حدِّث"
+
+msgid "Open"
+msgstr "افتح"
+
+msgid "Clear List"
+msgstr "امسح القائمة"
+
+msgid "Generate"
+msgstr "ولِّد"
+

@@ -8,9 +8,7 @@ try:
 except:
     from xml.etree import ElementTree
 
-#import gettext
-#__t = gettext.translation("fluxdgmenu", "/usr/share/locale")
-#_ = __t.ugettext
+_ = config.translate
 
 MIME_TYPE_NS = 'http://www.freedesktop.org/standards/shared-mime-info'
 BOOKMARK_NS  = 'http://www.freedesktop.org/standards/desktop-bookmarks' 
@@ -42,7 +40,7 @@ class Parser(parser.BaseParser):
             { "type": "separator" },
             {
                 "type": "application",
-                "label": 'Clear List',
+                "label": _('Clear List'),
                 "command": "uxm-daemon clear-recent-files",
                 "icon": self.clear_icon
             }

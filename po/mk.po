@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Мени"
+
+msgid "Preferences"
+msgstr "Преференци"
+
+msgid "Refresh"
+msgstr "Освежи"
+
+msgid "Open"
+msgstr "Отвори"
+
+msgid "Clear List"
+msgstr "Исчисти ја листата"
+
+msgid "Generate"
+msgstr "Генерирај"
+

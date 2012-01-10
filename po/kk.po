@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Орташа"
+
+msgid "Preferences"
+msgstr "Баптаулар"
+
+msgid "Refresh"
+msgstr "Жаңарту"
+
+msgid "Open"
+msgstr "Ашу"
+
+msgid "Clear List"
+msgstr "Тізімді тазарту"
+

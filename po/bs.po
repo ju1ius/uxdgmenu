@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Meni"
+
+msgid "Preferences"
+msgstr "Opcije"
+
+msgid "Refresh"
+msgstr "Osvježi"
+
+msgid "Open"
+msgstr "Otvori"
+
+msgid "Clear List"
+msgstr "Očisti"
+

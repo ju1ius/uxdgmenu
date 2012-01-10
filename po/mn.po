@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Цэс"
+
+msgid "Preferences"
+msgstr "Тохируулгууд"
+
+msgid "Refresh"
+msgstr "Сэргээх"
+
+msgid "Open"
+msgstr "Нээх"
+
+msgid "Clear List"
+msgstr "Цэвэрлэх"
+
+msgid "Generate"
+msgstr "Ерөнхий"
+

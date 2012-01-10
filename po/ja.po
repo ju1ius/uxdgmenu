@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "キャッシュのクリア"
+
+msgid "Menu"
+msgstr "メニュー"
+
+msgid "Preferences"
+msgstr "設定(P)"
+
+msgid "Refresh"
+msgstr "更新(R)"
+
+msgid "Open"
+msgstr "開く(O)"
+
+msgid "Clear List"
+msgstr "一覧のクリア(C)"
+
+msgid "Generate"
+msgstr "生成(G)"
+

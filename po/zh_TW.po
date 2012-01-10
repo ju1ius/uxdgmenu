@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "記憶快取資料"
+
+msgid "Menu"
+msgstr "選單"
+
+msgid "Preferences"
+msgstr "偏好設定(P)"
+
+msgid "Refresh"
+msgstr "重新整理(R)"
+
+msgid "Open"
+msgstr "開啟(O)"
+
+msgid "Clear List"
+msgstr "清除清單(C)"
+
+msgid "Generate"
+msgstr "產生(G)"
+

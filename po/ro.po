@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Șterge memoria cache"
+
+msgid "Menu"
+msgstr "Meniu"
+
+msgid "Preferences"
+msgstr "Preferințe"
+
+msgid "Refresh"
+msgstr "Reîmprospătează"
+
+msgid "Open"
+msgstr "Deschide"
+
+msgid "Clear List"
+msgstr "Golește lista"
+
+msgid "Generate"
+msgstr "Generează"
+

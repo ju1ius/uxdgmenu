@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Saylaq"
+
+msgid "Preferences"
+msgstr "Caylaw"
+
+msgid "Refresh"
+msgstr "Yañart"
+
+msgid "Open"
+msgstr "Açu"
+
+msgid "Clear List"
+msgstr "Buşat"
+

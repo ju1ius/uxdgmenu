@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr "Menü"
+
+msgid "Preferences"
+msgstr "Tercihler"
+
+msgid "Refresh"
+msgstr "Tazert"
+
+msgid "Open"
+msgstr "Aç"
+
+msgid "Clear List"
+msgstr "Listeni Temizle"
+

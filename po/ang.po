@@ -1,0 +1,15 @@
+msgid "Menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Open"
+msgstr "Openian"
+
+msgid "Clear List"
+msgstr ""
+

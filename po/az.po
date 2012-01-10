@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menü"
+
+msgid "Preferences"
+msgstr "Seçimlər"
+
+msgid "Refresh"
+msgstr "Yenilə"
+
+msgid "Open"
+msgstr "Aç"
+
+msgid "Clear List"
+msgstr "Təmizlə"
+
+msgid "Generate"
+msgstr "Ümumi"
+

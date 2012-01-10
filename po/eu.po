@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Garbitu cache-a"
+
+msgid "Menu"
+msgstr "Menua"
+
+msgid "Preferences"
+msgstr "Hobespenak"
+
+msgid "Refresh"
+msgstr "Freskatu"
+
+msgid "Open"
+msgstr "Ireki"
+
+msgid "Clear List"
+msgstr "Garbitu zerrenda"
+
+msgid "Generate"
+msgstr "Sortu"
+

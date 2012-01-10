@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Preferences"
+msgstr "Keutamaan"
+
+msgid "Refresh"
+msgstr "Segarkan"
+
+msgid "Open"
+msgstr "Buka"
+
+msgid "Clear List"
+msgstr "Kosongkan"
+
+msgid "Generate"
+msgstr "Umum"
+

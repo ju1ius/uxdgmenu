@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "কেশ্বেৰ তথ্য আঁতৰাওক"
+
+msgid "Menu"
+msgstr "মেনু"
+
+msgid "Preferences"
+msgstr "পছন্দ"
+
+msgid "Refresh"
+msgstr "নতুনকৈ প্ৰদৰ্শন"
+
+msgid "Open"
+msgstr "খোলক"
+
+msgid "Clear List"
+msgstr "তালিকা পৰিষ্কাৰ কৰক"
+
+msgid "Generate"
+msgstr "উত্‌পন্ন কৰুন"
+

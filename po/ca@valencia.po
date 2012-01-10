@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr "Buida la memòria cau"
+
+msgid "Menu"
+msgstr "Menú"
+
+msgid "Preferences"
+msgstr "Preferències"
+
+msgid "Refresh"
+msgstr "Actualitza"
+
+msgid "Open"
+msgstr "Obri"
+
+msgid "Clear List"
+msgstr "Neteja la llista"
+
+msgid "Generate"
+msgstr "Genera"
+

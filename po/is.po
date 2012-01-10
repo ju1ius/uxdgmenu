@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr "Stillingar"
+
+msgid "Refresh"
+msgstr "Hressa"
+
+msgid "Open"
+msgstr "Opna"
+
+msgid "Clear List"
+msgstr "Hreinsa"
+
+msgid "Generate"
+msgstr "Framleiða"
+

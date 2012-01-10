@@ -1,0 +1,18 @@
+msgid "Menu"
+msgstr "Kieslys"
+
+msgid "Preferences"
+msgstr "Voorkeure"
+
+msgid "Refresh"
+msgstr "Verfris"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "Clear List"
+msgstr "Maak lys skoon"
+
+msgid "Generate"
+msgstr "Genereer"
+

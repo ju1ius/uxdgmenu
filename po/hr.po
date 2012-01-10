@@ -1,0 +1,21 @@
+msgid "Clear cache"
+msgstr ""
+
+msgid "Menu"
+msgstr "Izbornik"
+
+msgid "Preferences"
+msgstr "Postavke"
+
+msgid "Refresh"
+msgstr "Osvježi"
+
+msgid "Open"
+msgstr "Otvori"
+
+msgid "Clear List"
+msgstr "Očisti"
+
+msgid "Generate"
+msgstr "Generiraj"
+
