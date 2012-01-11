@@ -5,7 +5,7 @@ Priority: optional
 Standards-Version: 3.9.0
 Build-Depends: debhelper (>= 7.3.8), libinotifytools0-dev, libglib2.0-dev
 
-Package: uxdgmenu-threaded
+Package: uxdgmenu
 Architecture: any
 Depends: libinotifytools0, libglib2.0-0, python-xdg
 Recommends: python-gtk2
