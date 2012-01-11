@@ -48,21 +48,6 @@ RECENT_FILES_CACHE = os.path.join(CACHE_DIR, 'recent-files')
 PLUGINS_DIRS = [d for d in xdg.BaseDirectory.load_data_paths(PKG_NAME,'formatters')]
 PLUGINS_DIRS.append(os.path.join(os.path.dirname(__file__), "formatters"))
 
-# List of directories to monitor
-# uxdgmenud will only respond to events on files
-# having one of these extensions: .desktop|.directory|.menu
-MONITORED = []
-MONITORED.extend(DIR_DIRS)
-MONITORED.extend(APP_DIRS)
-MONITORED.extend(MENU_DIRS)
-# List of regex patterns to exclude
-# note that theses are C POSIX extended regex patterns,
-# so literal special characters must be double escaped !
-EXCLUDED = [
-    # Debian menu entries
-    "/.local/share/applications/menu-xdg/"
-]
-
 DEFAULT_CONFIG = """
 [General]
 filemanager: thunar
@@ -70,6 +55,7 @@ terminal: x-terminal-emulator
 open_cmd: gnome-open
 
 [Daemon]
+monitor_applications: yes
 monitor_bookmarks: yes
 monitor_recent_files: yes
 

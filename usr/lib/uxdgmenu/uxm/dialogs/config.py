@@ -142,6 +142,7 @@ class ConfigEditor(object):
         #
 
         # Daemon
+        self.monitor_apps_cb = builder.get_object('monitor_apps_cb')
         self.monitor_bookmarks_cb = builder.get_object('monitor_bookmarks_cb')
         self.monitor_recent_cb = builder.get_object('monitor_recent_cb')
         self.formatters_list = ComboBoxTextDecorator(
@@ -229,6 +230,9 @@ class ConfigEditor(object):
         )
 
         # Daemon
+        self.monitor_apps_cb.set_active(
+            self.config.getboolean('Daemon', 'monitor_applications')        
+        )
         self.monitor_bookmarks_cb.set_active(
             self.config.getboolean('Daemon', 'monitor_bookmarks')        
         )
@@ -240,15 +244,6 @@ class ConfigEditor(object):
 
     def _gather_data(self):
         # General
-        monitor_bookmarks = self.monitor_bookmarks_cb.get_active()
-        self.config.set('Daemon', 'monitor_bookmarks',
-            str(monitor_bookmarks).lower()
-        )
-        monitor_recent = self.monitor_recent_cb.get_active()
-        self.config.set('Daemon', 'monitor_recent_files',
-            str(monitor_recent).lower()
-        )
-
         fm = self.filemanager_entry.get_text()
         self.config.set('General', 'filemanager', fm)
         term = self.terminal_entry.get_text()
@@ -293,6 +288,21 @@ class ConfigEditor(object):
         self.config.set('Places', 'start_dir', start_dir)
         show_files = self.menus_places_show_files_cb.get_active()
         self.config.set('Places', 'show_files', str(show_files).lower())
+
+        # Daemon
+        monitor_applications = self.monitor_apps_cb.get_active()
+        self.config.set('Daemon', 'monitor_applications',
+            str(monitor_applications).lower()
+        )
+        monitor_bookmarks = self.monitor_bookmarks_cb.get_active()
+        self.config.set('Daemon', 'monitor_bookmarks',
+            str(monitor_bookmarks).lower()
+        )
+        monitor_recent = self.monitor_recent_cb.get_active()
+        self.config.set('Daemon', 'monitor_recent_files',
+            str(monitor_recent).lower()
+        )
+
 
     def open(self):
         self.window.show_all()

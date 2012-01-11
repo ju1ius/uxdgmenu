@@ -10,32 +10,23 @@ import uxm.formatter as formatter
 #
 def start(opts):
     """starts the daemon"""
-    fmt = opts.formatter
     stop(opts)
     update(opts)
-    cmd = [config.APP_WATCH, '--daemon',
-        '--apps-command', '%s update:apps -f %s' % (config.APP_DAEMON, fmt)
-    ]
-    # Add exclude patterns
-    cmd.extend(['--exclude', "|".join(config.EXCLUDED)])
-    # Log events
-    if opts.verbose:
-        cmd.append('--verbose')
+    cmd = [config.APP_WATCH, '-d']
+    # Apps
+    if opts.with_applications:
+        cmd.append(['-a'])
     # Gtk Bookmarks
     if opts.with_bookmarks:
-        cmd.extend([
-            '--bookmarks-command',
-            '%s update:bookmarks -f %s' % (config.APP_DAEMON, fmt)
-        ])
+        cmd.append('-b')
     # Recent Files
     if opts.with_recent_files:
-        cmd.extend([
-            '--recent-files-command',
-            '%s update:recent-files -f %s' % (config.APP_DAEMON, fmt)
-        ])
-    # Add monitored dirs
-    for d in config.MONITORED:
-        cmd.append(d)
+        cmd.append('-r')
+    # Log events
+    if opts.verbose:
+        cmd.append('-v')
+    # Formatter
+    cmd.extend(['-f', opts.formatter])
 
     if opts.verbose:
         print "Starting daemon..."

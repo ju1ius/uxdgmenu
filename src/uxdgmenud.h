@@ -7,7 +7,7 @@
 
 #define UXM_DAEMON_NAME           "uxdgmenud"
 #define UXM_UPDATE_CMD_PREFIX     "uxm-daemon update"
-#define UXM_UPDATE_CMD_BUF_SIZE   32
+#define UXM_UPDATE_CMD_BUF_SIZE   256
 
 #define UXM_DESKTOP_FILE_EXT      ".desktop"
 #define UXM_DIRECTORY_FILE_EXT    ".directory"
@@ -30,12 +30,13 @@
  **/
 typedef struct UxmSharedData {
 	GAsyncQueue *queue;
+	char *formatter;
 	int flags;
 } UxmSharedData;
 /**
  * Constructs a UxmSharedData object
  **/
-UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags);
+UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags, char *formatter);
 
 /**
  * Types of messages emitted by the monitor worker
@@ -51,8 +52,8 @@ typedef enum UxmMessageType UxmMessageType;
  * The message object emitted by the monitor worker
  **/
 typedef struct UxmMessage {
-  UxmMessageType type;
   char *data;
+  UxmMessageType type;
 } UxmMessage;
 
 /**

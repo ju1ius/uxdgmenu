@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 {
   int next_option;
   /* list of short options */
-  const char *short_options = "abrdv";
+  const char *short_options = "abrdvf:";
   /* An array listing valid long options */
   static const struct option long_options[] =
   {
@@ -32,12 +32,14 @@ int main(int argc, char **argv)
     {"watch-recent-files",  no_argument, NULL, 'r'},
     {"daemon",              no_argument, NULL, 'd'},
     {"verbose",             no_argument, NULL, 'v'},
+    {"formatter",           required_argument, NULL, 'f'},
     {NULL, 0, NULL, 0} /* End of array need by getopt_long do not delete it*/
   };
 
   /* ---------- OPTIONS ---------- */
   
   int opts_flags = 0;
+  char *formatter = NULL;
 
   /* ---------- VARS ---------- */
   GAsyncQueue *queue = NULL;
@@ -45,8 +47,7 @@ int main(int argc, char **argv)
   GThread *listener_thread;
   GError *error = NULL;
 
-  struct UxmSharedData *shared_data;
-  
+  UxmSharedData *shared_data;
 
   /*****************************************
    * Process Command line args
@@ -65,6 +66,9 @@ int main(int argc, char **argv)
       case 'r':
         opts_flags |= UXM_OPTS_WATCH_RECENT_FILES;
         break;
+      case 'f':
+        formatter = optarg;
+        break;
       case 'd':
         opts_flags |= UXM_OPTS_DAEMONIZE;
         break;
@@ -74,10 +78,16 @@ int main(int argc, char **argv)
       case '?':
         break;
       default:
+          abort();
         break;
     }
   }
   while(next_option != -1);
+
+  if(!formatter) {
+    g_print("No formatter provided\n");
+    exit(EXIT_FAILURE);
+  }
 
   if(opts_flags & UXM_OPTS_DAEMONIZE) {
     daemon(0,0);
@@ -107,7 +117,7 @@ int main(int argc, char **argv)
   
   queue = g_async_queue_new();
 
-  shared_data = uxm_shared_data_new(queue, opts_flags);
+  shared_data = uxm_shared_data_new(queue, opts_flags, formatter);
 
   listener_thread = g_thread_create((GThreadFunc)uxm_monitor_listener, shared_data, FALSE, &error);
   if(!listener_thread) {
@@ -135,7 +145,7 @@ int main(int argc, char **argv)
  * Functions
  **/
 
-static gpointer uxm_monitor_worker(UxmSharedData *data)
+gpointer uxm_monitor_worker(UxmSharedData *data)
 {
   /* message queued */
   struct UxmMessage *msg;
@@ -192,7 +202,7 @@ static gpointer uxm_monitor_worker(UxmSharedData *data)
     monitored = uxm_get_monitored_directories();
     for(iter = monitored; iter; iter = iter->next) {
       if(!inotifytools_watch_recursively(iter->data, UXM_APPS_EVENTS)) {
-        syslog( LOG_ERR, "Cannot watch %s: %s", (char*)iter->data, strerror(inotifytools_error()) );
+        syslog(LOG_ERR, "Cannot watch %s: %s", (char*)iter->data, strerror(inotifytools_error()) );
       } else if (verbose) {
         syslog(LOG_INFO, "Watching %s", (char*)iter->data);
       }
@@ -212,6 +222,11 @@ static gpointer uxm_monitor_worker(UxmSharedData *data)
         syslog(LOG_INFO, "Watching %s", home);
       }
     }
+  }
+
+  if(!inotifytools_get_num_watches()) {
+    syslog(LOG_ERR, "Nothing to watch, aborting...");
+    exit(EXIT_FAILURE);
   }
 
   /**
@@ -260,7 +275,7 @@ static gpointer uxm_monitor_worker(UxmSharedData *data)
   return 0;
 }
 
-static gpointer uxm_monitor_listener(UxmSharedData *data)
+gpointer uxm_monitor_listener(UxmSharedData *data)
 {
   UxmMessage *msg;
   gint l;
@@ -291,7 +306,10 @@ static gpointer uxm_monitor_listener(UxmSharedData *data)
       }
       /*g_async_queue_unlock(queue);*/
 
-      strcpy(command_buf, UXM_UPDATE_CMD_PREFIX);
+      g_snprintf(
+        command_buf, UXM_UPDATE_CMD_BUF_SIZE,
+        "%s -f %s", UXM_UPDATE_CMD_PREFIX, data->formatter
+      );
       if(types & UXM_MSG_TYPE_APPLICATION) {
         strcat(command_buf, " -a");
       }    
@@ -301,6 +319,7 @@ static gpointer uxm_monitor_listener(UxmSharedData *data)
       if(types & UXM_MSG_TYPE_RECENT_FILE) {
         strcat(command_buf, " -r");
       }
+      g_printf("%s\n",command_buf);
       system(command_buf);
 
     } else {
@@ -317,7 +336,7 @@ static gpointer uxm_monitor_listener(UxmSharedData *data)
   return 0; 
 }
 
-UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags)
+UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags, char *formatter)
 {
   UxmSharedData *data = (UxmSharedData*) g_malloc(sizeof(UxmSharedData));
   if(!data) {
@@ -326,6 +345,7 @@ UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags)
   }
   data->queue = queue;
   data->flags = flags;
+  data->formatter = formatter;
   return data;
 }
 
