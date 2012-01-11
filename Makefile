@@ -4,16 +4,16 @@ version="0.1"
 export prefix=/usr/local
 export sysconfdir=/etc
 
-CC=gcc
-CFLAGS=-W -Wall -pedantic
-LDFLAGS=-linotifytools
-EXEC=usr/bin/uxdgmenud
-SRC=src/uxdgmenud.c
+CC      := gcc
+CFLAGS  := `pkg-config --cflags glib-2.0 gthread-2.0` -W -Wall -pedantic
+LDFLAGS := `pkg-config --libs glib-2.0 gthread-2.0` -linotifytools
+EXEC    := usr/bin/uxdgmenud
+SRC     := src/uxdgmenud.c
 
 all: uxdgmenud locale
 
 uxdgmenud:
-	${CC} ${SRC} -o ${EXEC} ${LDFLAGS} ${CFLAGS}
+	$(CC) $(SRC) -o $(EXEC) $(LDFLAGS) $(CFLAGS)
 
 locale:
 	./scripts/make-locale.sh

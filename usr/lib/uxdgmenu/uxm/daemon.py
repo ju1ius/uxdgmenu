@@ -22,14 +22,13 @@ def start(opts):
     if opts.verbose:
         cmd.append('--verbose')
     # Gtk Bookmarks
-    cfg = config.get()
-    if cfg.getboolean('Daemon', 'monitor_bookmarks'):
+    if opts.with_bookmarks:
         cmd.extend([
             '--bookmarks-command',
             '%s update:bookmarks -f %s' % (config.APP_DAEMON, fmt)
         ])
     # Recent Files
-    if cfg.getboolean('Daemon', 'monitor_recent_files'):
+    if opts.with_recent_files:
         cmd.extend([
             '--recent-files-command',
             '%s update:recent-files -f %s' % (config.APP_DAEMON, fmt)
@@ -48,11 +47,11 @@ def stop(opts):
     subprocess.call(['pkill', '-u', os.environ['USER'], config.APP_WATCH])
 
 def update(opts):
-    cfg = config.get()
-    update_applications(opts)
-    if cfg.getboolean('Daemon', 'monitor_bookmarks'):
+    if opts.with_applications:
+        update_applications(opts)
+    if opts.with_bookmarks:
         update_bookmarks(opts)
-    if cfg.getboolean('Daemon', 'monitor_recent_files'):
+    if opts.with_recent_files:
         update_recent_files(opts)
 
 def update_all(opts):

@@ -8,88 +8,45 @@
 #include <regex.h>
 #include <inotifytools/inotifytools.h>
 #include <inotifytools/inotify.h>
+#include <glib.h>
+#include <glib/gprintf.h>
+#include <glib/gstdio.h>
 
-/**
- * Compile with: gcc -linotifytools mom-watch.c -o mom-watch -W -Wall -pedantic
- **/
+#include "uxdgmenud.h"
 
-#define DAEMON_NAME           "uxdgmenud"
-#define DESKTOP_FILE_EXT      ".desktop"
-#define DIRECTORY_FILE_EXT    ".directory"
-#define MENU_FILE_EXT         ".menu"
-#define BOOKMARKS_FILE        ".gtk-bookmarks"
-#define RECENT_FILES_FILE     ".recently-used.xbel"
-#define APPS_EVENTS           IN_CLOSE_WRITE|IN_DELETE|IN_MOVE
-#define BOOKMARKS_EVENTS      IN_CLOSE_WRITE
-#define HOME                  getenv("HOME")
-
-void signal_handler(int signum);
-void cleanup(void);
-int str_has_suffix(const char *str, const char *suffix);
+static int uxm_stop_event = 0;
 
 /**
  * MAIN
  **/
 int main(int argc, char **argv)
 {
-  int i;
   int next_option;
   /* list of short options */
-  const char *short_options = "a:b:r:e:dv";
+  const char *short_options = "abrdv";
   /* An array listing valid long options */
   static const struct option long_options[] =
   {
-    {"apps-command", required_argument, NULL, 'a'},
-    {"bookmarks-command", required_argument, NULL, 'b'},
-    {"recent-files-command", required_argument, NULL, 'r'},
-    {"exclude", required_argument, NULL, 'e'},
-    {"daemon", no_argument, NULL, 'd'},
-    {"verbose", no_argument, NULL, 'v'},
+    {"watch-applications",  no_argument, NULL, 'a'},
+    {"watch-bookmarks",     no_argument, NULL, 'b'},
+    {"watch-recent-files",  no_argument, NULL, 'r'},
+    {"daemon",              no_argument, NULL, 'd'},
+    {"verbose",             no_argument, NULL, 'v'},
     {NULL, 0, NULL, 0} /* End of array need by getopt_long do not delete it*/
   };
 
   /* ---------- OPTIONS ---------- */
-
-  /* daemonize the process ? */
-  int daemonize = 0;
-  /* verbose output ? */
-  int verbose = 0;
-  /* watch gtk bookmarks ? */
-  int watch_bookmarks = 0;
-  /* watch recent files ? */
-  int watch_recent_files = 0;
-  /* HOME watch descriptor */
-  int home_wd = -1;
-  /**
-   * exclude pattern for inotify events
-   **/
-  char *exclude_pattern = NULL;
-  /**
-   * commands to execute on notification
-   **/
-  char *apps_command;
-  char *bookmarks_command;
-  char *recent_files_command;
+  
+  int opts_flags = 0;
 
   /* ---------- VARS ---------- */
+  GAsyncQueue *queue = NULL;
+  GThread *worker_thread;
+  GThread *listener_thread;
+  GError *error = NULL;
 
-  /* log message */
-  char message_buf[1024];
-  /**
-   * the notified event
-   **/
-  struct inotify_event *event;
-
-  size_t length = strlen(HOME) + 1;
-  char *home = (char*) malloc(length);
-
-  strncat(home, HOME, length);
-  if(!str_has_suffix(HOME, "/"))
-  {
-    length += 2;
-    home = (char*) realloc(home, length);
-    strncat(home, "/", length);
-  }
+  struct UxmSharedData *shared_data;
+  
 
   /*****************************************
    * Process Command line args
@@ -100,23 +57,19 @@ int main(int argc, char **argv)
     switch(next_option)
     {
       case 'a':
-        apps_command = optarg;
+        opts_flags |= UXM_OPTS_WATCH_APPLICATIONS;
         break;
       case 'b':
-        watch_bookmarks = 1;
-        bookmarks_command = optarg;
+        opts_flags |= UXM_OPTS_WATCH_BOOKMARKS;
         break;
       case 'r':
-        watch_recent_files = 1;
-        recent_files_command = optarg;
+        opts_flags |= UXM_OPTS_WATCH_RECENT_FILES;
         break;
       case 'd':
-        daemonize = 1;
+        opts_flags |= UXM_OPTS_DAEMONIZE;
         break;
-      case 'e':
-        exclude_pattern = optarg;
       case 'v':
-        verbose = 1;
+        opts_flags |= UXM_OPTS_VERBOSE;
         break;
       case '?':
         break;
@@ -126,39 +79,99 @@ int main(int argc, char **argv)
   }
   while(next_option != -1);
 
-  if(argc - optind == 0)
-  {
-    printf("Not enough arguments... Please provide at least one file to watch !\n");
-    exit(EXIT_FAILURE);
+  if(opts_flags & UXM_OPTS_DAEMONIZE) {
+    daemon(0,0);
   }
 
-  if(daemonize) daemon(0,0);
-
-  openlog(DAEMON_NAME, LOG_PID, LOG_USER);
-  syslog(LOG_INFO, "Starting in %s", HOME);
+  openlog(UXM_DAEMON_NAME, LOG_PID, LOG_USER);
+  syslog(LOG_INFO, "Starting in %s", g_getenv("HOME"));
 
   /* Setup signal handling */
   signal(SIGCHLD, SIG_IGN); /* ignore child */
   signal(SIGTSTP, SIG_IGN); /* ignore tty signals */
   signal(SIGTTOU, SIG_IGN);
   signal(SIGTTIN, SIG_IGN);
-  signal(SIGHUP, signal_handler);
-  signal(SIGINT, signal_handler);
-  signal(SIGQUIT, signal_handler);
-  signal(SIGTERM, signal_handler);
-  signal(SIGKILL, signal_handler);
+  signal(SIGHUP, uxm_signal_handler);
+  signal(SIGINT, uxm_signal_handler);
+  signal(SIGQUIT, uxm_signal_handler);
+  signal(SIGTERM, uxm_signal_handler);
+  signal(SIGKILL, uxm_signal_handler);
 
 
   /*****************************************
    *  Core Functionnalities
    ****************************************/
+  
+  if(!g_thread_supported())
+    g_thread_init(NULL);
+  
+  queue = g_async_queue_new();
+
+  shared_data = uxm_shared_data_new(queue, opts_flags);
+
+  listener_thread = g_thread_create((GThreadFunc)uxm_monitor_listener, shared_data, FALSE, &error);
+  if(!listener_thread) {
+    syslog(LOG_ERR, "Error: %s\n", error->message );
+    exit(EXIT_FAILURE);
+  }
+
+  worker_thread = g_thread_create((GThreadFunc)uxm_monitor_worker, shared_data, TRUE, &error);
+  if(!worker_thread) {
+    syslog(LOG_ERR, "Error: %s\n", error->message );
+    exit(EXIT_FAILURE);
+  }
+
+  g_thread_join(worker_thread);
+
+  /**
+   * Cleanup
+   **/
+  uxm_cleanup();
+
+  return 0;
+}
+
+/**
+ * Functions
+ **/
+
+static gpointer uxm_monitor_worker(UxmSharedData *data)
+{
+  /* message queued */
+  struct UxmMessage *msg;
+  /*void *msg_data;*/
+
+  /* log message */
+  char message_buf[256];
+
+  /* the notified event */
+  struct inotify_event *event;
+  /* HOME watch descriptor */
+  int home_wd = -1;
+
+  /* Setup paths */
+  const char *home = g_getenv("HOME");
+  GSList *monitored = NULL;
+  GSList *iter = NULL;
+
+  /* Flags */
+  int verbose = data->flags & UXM_OPTS_VERBOSE;
+  int watch_applications = data->flags & UXM_OPTS_WATCH_APPLICATIONS;
+  int watch_bookmarks = data->flags & UXM_OPTS_WATCH_BOOKMARKS;
+  int watch_recent_files = data->flags & UXM_OPTS_WATCH_RECENT_FILES;
+  int watch_home = watch_recent_files || watch_bookmarks;
+  
+  if(!home) {
+    home = g_get_home_dir();
+  }
+
+  g_async_queue_ref(data->queue);
 
   /**
    * initialize and watch the entire directory tree from the current working
    * directory downwards for all events
    **/
-  if(!inotifytools_initialize())
-  {
+  if(!inotifytools_initialize()) {
     syslog( LOG_ERR, "%s", strerror(inotifytools_error()) );
     exit(EXIT_FAILURE);
   }
@@ -166,47 +179,36 @@ int main(int argc, char **argv)
   /* set time format to 24 hour time, HH:MM:SS */
   inotifytools_set_printf_timefmt( "%T" );
 
-  if(exclude_pattern)
-  {
-    if(!inotifytools_ignore_events_by_regex(exclude_pattern, REG_EXTENDED))
-    {
-      syslog(LOG_ERR, "Invalid exclude pattern: %s", exclude_pattern);
-    }
-    else if (verbose)
-    {
-      syslog(LOG_INFO, "Ignoring pattern: %s", exclude_pattern);
-    }
+  if(!inotifytools_ignore_events_by_regex(UXM_EXCLUDE_PATTERN, REG_EXTENDED)) {
+    syslog(LOG_ERR, "Invalid exclude pattern: %s", UXM_EXCLUDE_PATTERN);
+  } else if (verbose) {
+    syslog(LOG_INFO, "Ignoring pattern: %s", UXM_EXCLUDE_PATTERN);
   }
 
   /**
-   * Loop on the remaining command-line args
+   * Loop on the monitored directories
    **/
-  for (i = optind; i < argc; i++)
-  {
-    if(!inotifytools_watch_recursively(argv[i], APPS_EVENTS))
-    {
-      syslog( LOG_ERR, "Cannot watch %s: %s", argv[i], strerror(inotifytools_error()) );
+  if(watch_applications) {
+    monitored = uxm_get_monitored_directories();
+    for(iter = monitored; iter; iter = iter->next) {
+      if(!inotifytools_watch_recursively(iter->data, UXM_APPS_EVENTS)) {
+        syslog( LOG_ERR, "Cannot watch %s: %s", (char*)iter->data, strerror(inotifytools_error()) );
+      } else if (verbose) {
+        syslog(LOG_INFO, "Watching %s", (char*)iter->data);
+      }
     }
-    else if (verbose)
-    {
-      syslog(LOG_INFO, "Watching %s", argv[i]);
-    }
+    g_slist_free_full(monitored, g_free);
   }
 
   /**
    * Add a watch on $HOME
    **/
-  if(watch_bookmarks || watch_recent_files)
-  {
-    if(!inotifytools_watch_file(home, BOOKMARKS_EVENTS))
-    {
+  if(watch_home) {
+    if(!inotifytools_watch_file(home, UXM_BOOKMARKS_EVENTS)) {
       syslog( LOG_ERR, "%s: %s", home, strerror(inotifytools_error()) );
-    }
-    else
-    {
+    } else {
       home_wd = inotifytools_wd_from_filename(home);
-      if (verbose)
-      {
+      if (verbose) {
         syslog(LOG_INFO, "Watching %s", home);
       }
     }
@@ -217,88 +219,187 @@ int main(int argc, char **argv)
    * Output events as "<timestamp> <events> <path>"
    **/
   event = inotifytools_next_event(-1);
-  while (event)
-  {
-    if(
-        (watch_bookmarks || watch_recent_files)
-        && event->wd == home_wd
-    ){
-      if(strcmp(event->name, RECENT_FILES_FILE) == 0)
-      {
-        if (verbose)
-        {
-          inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
-          syslog(LOG_INFO, "%s >>> %s", message_buf, recent_files_command);
+  while (event) {
+    if (watch_home && event->wd == home_wd) {
+      if (strcmp(event->name, UXM_RECENT_FILES_FILE) == 0) {
+        msg = uxm_msg_new(UXM_MSG_TYPE_RECENT_FILE);
+        if (verbose) {
+          inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
+          msg->data = g_strdup(message_buf);
         }
-        system(recent_files_command);
-      }
-      else if(strcmp(event->name, BOOKMARKS_FILE) == 0)
-      {
-        if (verbose)
-        {
-          inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
-          syslog(LOG_INFO, "%s >>> %s", message_buf, bookmarks_command);
+        g_async_queue_push(data->queue, msg);
+      } else if (strcmp(event->name, UXM_BOOKMARKS_FILE) == 0) {
+        msg = uxm_msg_new(UXM_MSG_TYPE_BOOKMARK);
+        if (verbose) {
+          inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
+          msg->data = g_strdup(message_buf);
         }
-        system(bookmarks_command);
+        g_async_queue_push(data->queue, msg);
       }
-    }
-    else if(
-      event->wd != home_wd
-      && (str_has_suffix(event->name, DESKTOP_FILE_EXT)
-        || str_has_suffix(event->name, DIRECTORY_FILE_EXT)
-        || str_has_suffix(event->name, MENU_FILE_EXT)
-      )
+    } else if (
+        event->wd != home_wd
+        && (
+          g_str_has_suffix(event->name, UXM_DESKTOP_FILE_EXT)
+          || g_str_has_suffix(event->name, UXM_DIRECTORY_FILE_EXT)
+          || g_str_has_suffix(event->name, UXM_MENU_FILE_EXT)
+        )
     ){
-      if (verbose)
-      {
-        inotifytools_snprintf(message_buf, 1024, event, "%T %e %w%f\n");
-          syslog(LOG_INFO, "%s >>> %s", message_buf, apps_command);
+      msg = uxm_msg_new(UXM_MSG_TYPE_APPLICATION);
+      if (verbose) {
+        inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
+        msg->data = g_strdup(message_buf);
       }
-      system(apps_command);
+      g_async_queue_push(data->queue, msg);
     }
+
+    if (uxm_stop_event) break;
     event = inotifytools_next_event(-1);
   }
 
-  /**
-   * Cleanup
-   **/
-  free(home);
-  cleanup();
-
+  g_async_queue_unref(data->queue);
   return 0;
 }
 
-/**
- * Functions
- **/
+static gpointer uxm_monitor_listener(UxmSharedData *data)
+{
+  UxmMessage *msg;
+  gint l;
+  int types = 0;
+  int verbose = data->flags & UXM_OPTS_VERBOSE;
+  char command_buf[UXM_UPDATE_CMD_BUF_SIZE];
 
-void cleanup(void)
+  g_async_queue_ref(data->queue);
+
+  while(!uxm_stop_event) {
+    l = g_async_queue_length(data->queue);
+    /* There are messages in the queue ! */
+    if(l > 0) {
+      /*g_async_queue_lock(queue);*/
+      /*msg = (UxmMessage*) g_async_queue_try_pop_unlocked(queue);*/
+      msg = (UxmMessage*) g_async_queue_try_pop(data->queue);
+      /* Loop on every msg in the queue */
+      while(msg) {
+        types |= msg->type;
+        if(verbose) {
+          /*syslog(LOG_INFO, "%s", msg->data);*/
+          g_printf("%s\n", msg->data);
+          g_free(msg->data);
+        }
+        g_free(msg);
+        msg = (UxmMessage*) g_async_queue_try_pop(data->queue);
+        /*msg = (UxmMessage*) g_async_queue_try_pop_unlocked(queue);*/
+      }
+      /*g_async_queue_unlock(queue);*/
+
+      strcpy(command_buf, UXM_UPDATE_CMD_PREFIX);
+      if(types & UXM_MSG_TYPE_APPLICATION) {
+        strcat(command_buf, " -a");
+      }    
+      if(types & UXM_MSG_TYPE_BOOKMARK) {
+        strcat(command_buf, " -b");
+      }
+      if(types & UXM_MSG_TYPE_RECENT_FILE) {
+        strcat(command_buf, " -r");
+      }
+      system(command_buf);
+
+    } else {
+      /**
+       * Go to sleep only if we had no messages,
+       * because updating takes some time,
+       * and we want new messages processed immediately
+       **/
+      sleep(1);
+    }
+  }
+
+  g_async_queue_unref(data->queue);
+  return 0; 
+}
+
+UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags)
+{
+  UxmSharedData *data = (UxmSharedData*) g_malloc(sizeof(UxmSharedData));
+  if(!data) {
+    g_printf("Could not allocate %d bytes for UxmSharedData\n", (int)sizeof(UxmSharedData));
+    return NULL;
+  }
+  data->queue = queue;
+  data->flags = flags;
+  return data;
+}
+
+UxmMessage * uxm_msg_new(UxmMessageType type)
+{
+  UxmMessage *msg = (UxmMessage*) g_malloc(sizeof(UxmMessage));
+  if(!msg) {
+    g_printf("Could not allocate %d bytes for UxmMessage\n", (int)sizeof(UxmMessage));
+    return NULL;
+  }
+  msg->type = type;
+  return msg;
+}
+
+void uxm_cleanup(void)
 {
   inotifytools_cleanup();
   syslog(LOG_INFO, "Exiting...");
   closelog();
 }
 
-void signal_handler(int signum)
+void uxm_signal_handler(int signum)
 {
   (void) signum;
-  cleanup();
+  uxm_stop_event = 1;
+  uxm_cleanup();
   exit(0);
 }
 
-int str_has_suffix(const char *str, const char *suffix)
+GSList * uxm_get_monitored_directories(void)
 {
-  int str_len;
-  int suffix_len;
+  const gchar* const *data_dirs = g_get_system_data_dirs();
+  const gchar* const *config_dirs = g_get_system_config_dirs();
+  const gchar* user_data_dir = g_get_user_data_dir(); 
+  const gchar* user_config_dir = g_get_user_config_dir();
+  GSList *monitored = NULL;
+  gchar *path;
+  int i;
 
-  if(str == NULL || suffix == NULL)
-    return 0;
+  for(i = 0; data_dirs[i]; i++) {
+    path = g_build_path("/", data_dirs[i], "applications", NULL);
+    if(uxm_path_is_dir(path)) {
+      monitored = g_slist_prepend(monitored, path);
+    }
+    path = g_build_path("/", data_dirs[i], "desktop-directories", NULL);
+    if(uxm_path_is_dir(path)) {
+      monitored = g_slist_prepend(monitored, path);
+    }
+  }
+  for(i = 0; config_dirs[i]; i++) {
+    path = g_build_path("/", config_dirs[i], "menus", NULL);
+    if(uxm_path_is_dir(path)) {
+      monitored = g_slist_prepend(monitored, path);
+    }
+  }
+  path = g_build_path("/", user_data_dir, "applications", NULL);
+  if(uxm_path_is_dir(path)) monitored = g_slist_prepend(monitored, path);
+  path = g_build_path("/", user_data_dir, "desktop-directories", NULL);
+  if(uxm_path_is_dir(path)) monitored = g_slist_prepend(monitored, path);
+  path = g_build_path("/", user_config_dir, "menus", NULL);
+  if(uxm_path_is_dir(path)) monitored = g_slist_prepend(monitored, path);
 
-  str_len = strlen(str);
-  suffix_len = strlen(suffix);
+  return monitored;
+}
 
-  if (str_len < suffix_len)
-    return 0;
+gboolean uxm_path_is_dir(const gchar *path)
+{
+  GStatBuf stat_buf;
 
-  return strcmp(str + str_len - suffix_len, suffix) == 0;
+  if(path == NULL || g_stat(path, &stat_buf) == -1) {
+    return FALSE;
+  }
+  if(stat_buf.st_mode & S_IFDIR) {
+    return TRUE;
+  }
+  return FALSE;
 }

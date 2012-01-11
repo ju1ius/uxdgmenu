@@ -26,24 +26,31 @@ def die():
 if __name__ == '__main__':
     usage = "%prog [options] command"
     description = """Commands:
-  help                  prints the help message and exits
+  help                  Prints the help message and exits
 
-  start                 starts the menu daemon
-  stop                  stops the menu daemon
+  start                 Starts the menu daemon
+                        If none of -a, -b or -r are provided,
+                        use options specified in the config file
+  stop                  Stops the menu daemon
 
-  update                regenerates menus specified in the config file
-  update:all            regenerates all menus
-  update:applications   regenerates the applications menu
-  update:apps           alias for update:applications
-  update:bookmarks      regenerates the bookmarks menu
-  update:recent-files   regenerates the recent files menu
-  update:rootmenu       regenerates the rootmenu
+  update                Regenerates menus
+                        If none of -a, -b or -r are provided,
+                        use options specified in the config file
+  update:all            Regenerates all menus
+  update:applications   Regenerates the applications menu
+                        Equivalent to uxm-daemon:update -a
+  update:apps           Alias for update:applications
+  update:bookmarks      Regenerates the bookmarks menu
+                        Equivalent to uxm-daemon:update -b
+  update:recent-files   Regenerates the recent files menu
+                        Equivalent to uxm-daemon:update -r
+  update:rootmenu       Regenerates the rootmenu
 
-  clear:recent-files    clears and regenerates the recent files menu
-  clear:cache           clears the icon cache, then regenerates menus
+  clear:recent-files    Clears and regenerates the recent files menu
+  clear:cache           Clears the icon cache, then regenerates menus
 
-  debug:config          outputs the computed config values
-  debug:applications    outputs a representation of the parsed data
+  debug:config          Outputs the computed config values
+  debug:applications    Outputs a representation of the parsed data
   debug:bookmarks
   debug:recent-files
   debug:rootmenu
@@ -67,6 +74,18 @@ if __name__ == '__main__':
 Defaults to 'uxm-applications.menu'"""
     )
     parser.add_option(
+        '-a', '--with-applications', action='store_true',
+        help="Monitor / update applications"
+    )
+    parser.add_option(
+        '-b', '--with-bookmarks', action='store_true',
+        help="Monitor / update GTK bookmarks"
+    )
+    parser.add_option(
+        '-r', '--with-recent-files', action='store_true',
+        help="Monitor / update recent files"
+    )
+    parser.add_option(
         '-p', '--progress', action='store_true',
         help="Display a GTK progress bar dialog"
     )
@@ -74,6 +93,20 @@ Defaults to 'uxm-applications.menu'"""
 
     if len(args) == 0:
         die()
+
+    cfg = config.get()
+
+    if (not options.with_applications and not options.with_bookmarks and
+            not options.with_recent_files):
+        options.with_bookmarks = cfg.getboolean(
+            'Daemon', 'monitor_applications'
+        )
+        options.with_bookmarks = cfg.getboolean(
+            'Daemon', 'monitor_bookmarks'
+        )
+        options.with_recent_files = cfg.getboolean(
+            'Daemon', 'monitor_recent_files'
+        )
 
     if options.verbose:
         import time
