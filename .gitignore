@@ -9,3 +9,6 @@ usr/share/locale/*
 ######################
 *~
 *.swp
+
+# Crash dumps
+/core
