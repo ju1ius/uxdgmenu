@@ -161,7 +161,8 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
   int home_wd = -1;
 
   /* Setup paths */
-  const char *home = g_getenv("HOME");
+  const gchar *HOME = g_getenv("HOME");
+  gchar * home;
   GSList *monitored = NULL;
   GSList *iter = NULL;
 
@@ -172,8 +173,17 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
   int watch_recent_files = data->flags & UXM_OPTS_WATCH_RECENT_FILES;
   int watch_home = watch_recent_files || watch_bookmarks;
   
-  if(!home) {
-    home = g_get_home_dir();
+  if(!HOME) {
+    HOME = g_get_home_dir();
+  }
+  /**
+   * In order to get the right watch descriptor,
+   * we need HOME to end with a "/"
+   **/
+  if(!g_str_has_suffix(HOME, "/")) {
+    home = g_strconcat(HOME, "/", NULL);
+  } else {
+    home = g_strdup(HOME);
   }
 
   g_async_queue_ref(data->queue);
@@ -224,6 +234,7 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
       }
     }
   }
+  g_free(home);
 
   if(!inotifytools_get_num_watches()) {
     syslog(LOG_ERR, "Nothing to watch, aborting...");
@@ -242,11 +253,11 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
         if (verbose) {
           inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
           msg->data = g_strdup(message_buf);
-        }
+        }                               
         g_async_queue_push(data->queue, msg);
       } else if (strcmp(event->name, UXM_BOOKMARKS_FILE) == 0) {
         msg = uxm_msg_new(UXM_MSG_TYPE_BOOKMARK);
-        if (verbose) {
+        if (verbose) {                  
           inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
           msg->data = g_strdup(message_buf);
         }
