@@ -2,6 +2,9 @@ import uxm.formatter as base
 
 class Formatter(base.FlatFormatter):
 
+    def format_rootmenu(self, data):
+        return self.format_menu(data)
+
     def format_menu(self, data):
         return "\n".join(self.get_children(data, False))
 
@@ -21,3 +24,5 @@ class Formatter(base.FlatFormatter):
     def format_submenu_entry(self, data, indent):
         return '  "%s" f.menu "%s"' % (data['label'], data['id'])
 
+    def format_text_item(self, level=0):
+        return ""

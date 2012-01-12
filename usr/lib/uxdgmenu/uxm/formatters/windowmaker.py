@@ -2,10 +2,16 @@ import uxm.formatter as base
 
 class Formatter(base.TreeFormatter):
 
+    def format_rootmenu(self, data):
+        return self.format_menu(data)
+
     def format_menu(self, data):
         return "\n".join(self.get_children(data))
 
     def format_separator(self, level=0):
+        return ""
+
+    def format_text_item(self, level=0):
         return ""
 
     def format_application(self, data, level=0):

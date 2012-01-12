@@ -2,11 +2,17 @@ import uxm.formatter as base
 
 class Formatter(base.FlatFormatter):
 
+    def format_rootmenu(self, data):
+        return self.format_menu(data)
+
     def format_menu(self, data):
         entries = self.get_children(data, True)
         return """
 %s
 """ % ( "\n".join(entries) )
+
+    def format_text_item(self, level=0):
+        return ""
 
     def format_submenu(self, data, entries, level=0):
         icon = "%%(icn)s%" % data['icon'] if data['icon'] else ''

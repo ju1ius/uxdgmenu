@@ -8,6 +8,9 @@ class Formatter(base.FlatFormatter):
     def escape_id(self, id):
         return "uxdgmenu_%s" % id.lower().replace(' ', '_').replace('-', '_')
 
+    def format_rootmenu(self, data):
+        return self.format_menu(data)
+
     def format_menu(self, data):
         return self.format_submenu(data)
 
@@ -35,3 +38,5 @@ class Formatter(base.FlatFormatter):
             data['label']
         )
 
+    def format_text_item(self, level=0):
+        return ""

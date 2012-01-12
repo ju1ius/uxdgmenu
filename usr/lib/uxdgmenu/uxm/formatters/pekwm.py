@@ -2,6 +2,9 @@ import uxm.formatter as base
 
 class Formatter(base.TreeFormatter):
 
+    def format_rootmenu(self, data):
+        return self.format_menu(data)
+
     def format_menu(self, content):
         return "\n".join(self.get_children(data))
 
@@ -24,3 +27,6 @@ class Formatter(base.TreeFormatter):
                 "n": data['label'],
                 "items": "\n".join(self.get_children(data, level+1))
             }
+
+    def format_text_item(self, level=0):
+        return ""
