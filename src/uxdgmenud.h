@@ -60,7 +60,8 @@ typedef struct UxmMessage {
  * Constructs message objects
  **/
 UxmMessage * uxm_msg_new(UxmMessageType type);
-
+void uxm_msg_dispatch(GAsyncQueue *queue, struct inotify_event *event,
+                      UxmMessageType type, char *msg_buf, int verbose);
 /**
  * Monitors directories
  **/
@@ -87,6 +88,8 @@ void uxm_cleanup(void);
  **/
 GSList * uxm_get_monitored_directories(void);
 
+gchar * uxm_get_recent_files_path(void);
+
 /**
  * Compatibility with glib < 2.28
  **/
@@ -97,6 +100,7 @@ void uxm_gslist_free_full(GSList *list);
  **/
 gboolean uxm_path_is_dir(const gchar *path);
 
+gchar * uxm_path_ensure_trailing_slash(const gchar *path);
 
 #endif /* __UXDGMENUD_H__ */
 

@@ -6,6 +6,69 @@ import xdg.BaseDirectory
 import uxm.utils as utils
 import uxm.icon_finder as icon_finder
 
+
+
+############################################################
+#                                                          #
+# -------------------- Config methods -------------------- #
+#                                                          #
+############################################################
+
+
+class OptionParser(optparse.OptionParser):
+    """Custom Option parser for better help formatting"""
+    def format_epilog(self, formatter):
+        return "\n%s\n" % self.expand_prog_name(self.epilog)
+
+def get():
+    """Returns the config parser"""
+    return __parser
+
+def check():
+    for d in [CONFIG_DIR, CACHE_DIR]:
+        if not os.path.isdir(d):
+            try:
+                os.makedirs(d)
+            except OSError, why:
+                sys.exit("Could not create %s: %s" % (d, why))
+    if not os.path.isfile(USER_CONFIG_FILE):
+        guess()
+        with open(USER_CONFIG_FILE, 'w') as f:
+            __parser.write(f)
+
+def guess():
+    open_cmd = utils.guess_open_cmd()
+    __parser.set('General', 'open_cmd', open_cmd)
+    fm = utils.guess_file_manager()
+    __parser.set('General', 'filemanager', fm)
+    theme = icon_finder.get_gtk_theme()
+    __parser.set('Icons', 'theme', theme)
+
+def to_string():
+    buf = StringIO.StringIO()
+    __parser.write(buf)
+    val = buf.getvalue()
+    buf.close()
+    return val
+
+__ugettext = None
+
+def translate(*args, **kwargs):
+    global __ugettext
+    if __ugettext is None:
+        import gettext
+        t = gettext.translation("uxdgmenu", os.path.join(PREFIX,"share/locale"))
+        __ugettext = t.ugettext
+    return __ugettext(*args, **kwargs)
+
+def get_recent_files_path():
+    path = os.path.join(HOME, '.recently-used.xbel')
+    if os.path.exists(path):
+        return path
+    return os.path.join(xdg.BaseDirectory.xdg_data_home, 'recently-used.xbel')
+
+
+
 #########################################################
 #                                                       #
 # -------------------- Config vars -------------------- #
@@ -25,7 +88,7 @@ ROOTMENU_FILE = "uxm-rootmenu.menu"
 
 HOME = os.path.expanduser('~')
 BOOKMARKS_FILE = os.path.join(HOME, '.gtk-bookmarks')
-RECENT_FILES_FILE = os.path.join(HOME, '.recently-used.xbel')
+RECENT_FILES_FILE = get_recent_files_path()
 
 CACHE_DIR = os.path.join(xdg.BaseDirectory.xdg_cache_home, PKG_NAME)
 CONFIG_DIR = os.path.join(xdg.BaseDirectory.xdg_config_home, PKG_NAME)
@@ -82,60 +145,7 @@ application: application-x-executable
 bookmark: user-bookmarks
 folder: gtk-directory
 file: gtk-file
-"""
-
-############################################################
-#                                                          #
-# -------------------- Config methods -------------------- #
-#                                                          #
-############################################################
-
-
-class OptionParser(optparse.OptionParser):
-    """Custom Option parser for better help formatting"""
-    def format_epilog(self, formatter):
-        return "\n%s\n" % self.expand_prog_name(self.epilog)
-
-def get():
-    """Returns the config parser"""
-    return __parser
-
-def check():
-    for d in [CONFIG_DIR, CACHE_DIR]:
-        if not os.path.isdir(d):
-            try:
-                os.makedirs(d)
-            except OSError, why:
-                sys.exit("Could not create %s: %s" % (d, why))
-    if not os.path.isfile(USER_CONFIG_FILE):
-        guess()
-        with open(USER_CONFIG_FILE, 'w') as f:
-            __parser.write(f)
-
-def guess():
-    open_cmd = utils.guess_open_cmd()
-    __parser.set('General', 'open_cmd', open_cmd)
-    fm = utils.guess_file_manager()
-    __parser.set('General', 'filemanager', fm)
-    theme = icon_finder.get_gtk_theme()
-    __parser.set('Icons', 'theme', theme)
-
-def to_string():
-    buf = StringIO.StringIO()
-    __parser.write(buf)
-    val = buf.getvalue()
-    buf.close()
-    return val
-
-__ugettext = None
-
-def translate(*args, **kwargs):
-    global __ugettext
-    if __ugettext is None:
-        import gettext
-        t = gettext.translation("uxdgmenu", os.path.join(PREFIX,"share/locale"))
-        __ugettext = t.ugettext
-    return __ugettext(*args, **kwargs)
+"""         
 
 ########################################################
 #                                                      #

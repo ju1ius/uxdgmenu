@@ -15,7 +15,7 @@ all: uxdgmenud locale
 uxdgmenud:
 	# add -g -O0 flags for debugging,
 	# along with "ulimit -c unlimited" in the debugging console session
-	$(CC) $(SRC) -o $(EXEC) $(LDFLAGS) $(CFLAGS)
+	$(CC) $(SRC) -o $(EXEC) $(LDFLAGS) $(CFLAGS) -g -O0
 
 locale:
 	./scripts/make-locale.sh

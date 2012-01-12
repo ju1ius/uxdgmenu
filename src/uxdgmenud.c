@@ -37,7 +37,7 @@ int main(int argc, char **argv)
   };
 
   /* ---------- OPTIONS ---------- */
-  
+
   int opts_flags = 0;
   char *formatter = NULL;
 
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
       case '?':
         break;
       default:
-          /*abort();*/
+        /*abort();*/
         break;
     }
   }
@@ -111,10 +111,10 @@ int main(int argc, char **argv)
   /*****************************************
    *  Core Functionnalities
    ****************************************/
-  
+
   if(!g_thread_supported())
     g_thread_init(NULL);
-  
+
   queue = g_async_queue_new();
 
   shared_data = uxm_shared_data_new(queue, opts_flags, formatter);
@@ -148,43 +148,29 @@ int main(int argc, char **argv)
 
 gpointer uxm_monitor_worker(UxmSharedData *data)
 {
-  /* message queued */
-  struct UxmMessage *msg;
-  /*void *msg_data;*/
-
   /* log message */
-  char message_buf[256];
+  char msg_buf[256];
 
   /* the notified event */
   struct inotify_event *event;
   /* HOME watch descriptor */
-  int home_wd = -1;
+  int home_dir_wd = -1;
+  int recent_files_dir_wd = -1;
 
   /* Setup paths */
-  const gchar *HOME = g_getenv("HOME");
-  gchar * home;
+  gchar * home_dir = NULL;
   GSList *monitored = NULL;
   GSList *iter = NULL;
+  gchar *recent_files_dir = NULL;
+  gchar *recent_files_path = NULL;
+  gchar *recent_files_name = NULL;
 
   /* Flags */
   int verbose = data->flags & UXM_OPTS_VERBOSE;
   int watch_applications = data->flags & UXM_OPTS_WATCH_APPLICATIONS;
   int watch_bookmarks = data->flags & UXM_OPTS_WATCH_BOOKMARKS;
   int watch_recent_files = data->flags & UXM_OPTS_WATCH_RECENT_FILES;
-  int watch_home = watch_recent_files || watch_bookmarks;
-  
-  if(!HOME) {
-    HOME = g_get_home_dir();
-  }
-  /**
-   * In order to get the right watch descriptor,
-   * we need HOME to end with a "/"
-   **/
-  if(!g_str_has_suffix(HOME, "/")) {
-    home = g_strconcat(HOME, "/", NULL);
-  } else {
-    home = g_strdup(HOME);
-  }
+
 
   g_async_queue_ref(data->queue);
 
@@ -224,17 +210,55 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
   /**
    * Add a watch on $HOME
    **/
-  if(watch_home) {
-    if(!inotifytools_watch_file(home, UXM_BOOKMARKS_EVENTS)) {
-      syslog( LOG_ERR, "%s: %s", home, strerror(inotifytools_error()) );
-    } else {
-      home_wd = inotifytools_wd_from_filename(home);
-      if (verbose) {
-        syslog(LOG_INFO, "Watching %s", home);
-      }
-    }
-  }
-  g_free(home);
+  if(watch_bookmarks) {
+    /**
+     * In order to get the right watch descriptor,
+     * we need HOME to end with a "/"
+     **/
+    home_dir = uxm_path_ensure_trailing_slash(g_get_home_dir());
+
+    if(!inotifytools_watch_file(home_dir, UXM_BOOKMARKS_EVENTS)) {
+      watch_bookmarks = 0;
+      syslog( LOG_ERR, "%s: %s", home_dir, strerror(inotifytools_error()) );
+    } else {              
+      home_dir_wd = inotifytools_wd_from_filename(home_dir);
+      if (verbose) {      
+        syslog(LOG_INFO, "Watching %s", home_dir);
+      }                   
+    }                     
+    g_free(home_dir);     
+                          
+  }                       
+  /**                     
+   * Watch $XDG_DATA_DIR or $HOME
+   **/                    
+  if(watch_recent_files) {
+                          
+    /* find location of bookmarks file */
+    recent_files_path = uxm_get_recent_files_path();
+    if(recent_files_path == NULL) {
+      watch_recent_files = 0;
+      syslog(LOG_ERR, "Recent files database not found");
+    } else {              
+      recent_files_dir = uxm_path_ensure_trailing_slash(
+        g_path_get_dirname(recent_files_path)
+      );                  
+      recent_files_name = g_path_get_basename(recent_files_path);
+      /* Add a watch on its parent directory */                  
+      if(!inotifytools_watch_file(recent_files_dir, UXM_BOOKMARKS_EVENTS)) {
+        watch_recent_files = 0;
+        syslog( LOG_ERR, "%s: %s", recent_files_dir, strerror(inotifytools_error()) );
+      } else {            
+        recent_files_dir_wd = inotifytools_wd_from_filename(recent_files_dir);
+        if (verbose) {    
+          syslog(LOG_INFO, "Watching %s", recent_files_dir);
+        }                 
+      }                   
+      g_free(recent_files_path);
+      g_free(recent_files_dir);
+    }                     
+                          
+  }                       
 
   if(!inotifytools_get_num_watches()) {
     syslog(LOG_ERR, "Nothing to watch, aborting...");
@@ -247,42 +271,31 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
    **/
   event = inotifytools_next_event(-1);
   while (event) {
-    if (watch_home && event->wd == home_wd) {
-      if (strcmp(event->name, UXM_RECENT_FILES_FILE) == 0) {
-        msg = uxm_msg_new(UXM_MSG_TYPE_RECENT_FILE);
-        if (verbose) {
-          inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
-          msg->data = g_strdup(message_buf);
-        }                               
-        g_async_queue_push(data->queue, msg);
-      } else if (strcmp(event->name, UXM_BOOKMARKS_FILE) == 0) {
-        msg = uxm_msg_new(UXM_MSG_TYPE_BOOKMARK);
-        if (verbose) {                  
-          inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
-          msg->data = g_strdup(message_buf);
-        }
-        g_async_queue_push(data->queue, msg);
-      }
+    if (
+        watch_bookmarks && event->wd == home_dir_wd
+        && strcmp(event->name, UXM_BOOKMARKS_FILE) == 0
+    ){                            
+      uxm_msg_dispatch(data->queue, event, UXM_MSG_TYPE_BOOKMARK, msg_buf, verbose);
+    } else if (                   
+        watch_recent_files && event->wd == recent_files_dir_wd
+        && strcmp(event->name, recent_files_name) == 0
+    ){                            
+      uxm_msg_dispatch(data->queue, event, UXM_MSG_TYPE_RECENT_FILE, msg_buf, verbose);
     } else if (
-        event->wd != home_wd
+        event->wd != home_dir_wd && event->wd != recent_files_dir_wd
         && (
           g_str_has_suffix(event->name, UXM_DESKTOP_FILE_EXT)
           || g_str_has_suffix(event->name, UXM_DIRECTORY_FILE_EXT)
           || g_str_has_suffix(event->name, UXM_MENU_FILE_EXT)
         )
-    ){
-      msg = uxm_msg_new(UXM_MSG_TYPE_APPLICATION);
-      if (verbose) {
-        inotifytools_snprintf(message_buf, 256, event, "%T %e %w%f\n");
-        msg->data = g_strdup(message_buf);
-      }
-      g_async_queue_push(data->queue, msg);
+    ){ 
+      uxm_msg_dispatch(data->queue, event, UXM_MSG_TYPE_APPLICATION, msg_buf, verbose);
     }
-
     if (uxm_stop_event) break;
     event = inotifytools_next_event(-1);
   }
-  
+
+  g_free(recent_files_name);
   g_async_queue_unref(data->queue);
   return 0;
 }
@@ -307,7 +320,6 @@ gpointer uxm_monitor_listener(UxmSharedData *data)
         types |= msg->type;
         if(verbose) {
           syslog(LOG_INFO, "%s", msg->data);
-          /*g_printf("%s\n", msg->data);*/
           g_free(msg->data);
         }
         g_free(msg);
@@ -320,14 +332,13 @@ gpointer uxm_monitor_listener(UxmSharedData *data)
       );
       if(types & UXM_MSG_TYPE_APPLICATION) {
         strcat(command_buf, " -a");
-      }    
+      }
       if(types & UXM_MSG_TYPE_BOOKMARK) {
         strcat(command_buf, " -b");
       }
       if(types & UXM_MSG_TYPE_RECENT_FILE) {
         strcat(command_buf, " -r");
       }
-      g_printf("%s\n",command_buf);
       system(command_buf);
 
     } else {
@@ -341,7 +352,7 @@ gpointer uxm_monitor_listener(UxmSharedData *data)
   }
 
   g_async_queue_unref(data->queue);
-  return 0; 
+  return 0;
 }
 
 UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags, char *formatter)
@@ -368,6 +379,17 @@ UxmMessage * uxm_msg_new(UxmMessageType type)
   return msg;
 }
 
+void uxm_msg_dispatch(GAsyncQueue *queue, struct inotify_event *event,
+                      UxmMessageType type, char *msg_buf, int verbose)
+{
+  UxmMessage *msg = uxm_msg_new(type);
+  if (verbose) {
+    inotifytools_snprintf(msg_buf, 256, event, "%T %e %w%f\n");
+    msg->data = g_strdup(msg_buf);
+  }
+  g_async_queue_push(queue, msg);
+}
+
 void uxm_cleanup(void)
 {
   inotifytools_cleanup();
@@ -387,7 +409,7 @@ GSList * uxm_get_monitored_directories(void)
 {
   const gchar* const *data_dirs = g_get_system_data_dirs();
   const gchar* const *config_dirs = g_get_system_config_dirs();
-  const gchar* user_data_dir = g_get_user_data_dir(); 
+  const gchar* user_data_dir = g_get_user_data_dir();
   const gchar* user_config_dir = g_get_user_config_dir();
   GSList *monitored = NULL;
   gchar *path;
@@ -432,6 +454,24 @@ void uxm_gslist_free_full(GSList *list)
   }
 }
 
+gchar * uxm_get_recent_files_path(void)
+{
+  const gchar *home_dir = g_get_home_dir();
+  const gchar *user_data_dir = g_get_user_data_dir();
+  gchar *filepath;
+  struct stat stat_buf;
+
+  filepath = g_build_path("/", user_data_dir, "recently-used.xbel", NULL);
+  if(stat(filepath, &stat_buf) != -1) {
+    return filepath;
+  }
+  filepath = g_build_path("/", home_dir, ".recently-used.xbel", NULL);
+  if(stat(filepath, &stat_buf) != -1) {
+    return filepath;
+  }
+  return NULL;
+}
+
 gboolean uxm_path_is_dir(const gchar *path)
 {
   struct stat stat_buf;
@@ -443,4 +483,12 @@ gboolean uxm_path_is_dir(const gchar *path)
     return TRUE;
   }
   return FALSE;
+}
+
+gchar * uxm_path_ensure_trailing_slash(const gchar * path)
+{
+  if(!g_str_has_suffix("/", path)){
+    return g_strconcat(path, "/", NULL);
+  }
+  return g_strdup(path);
 }
