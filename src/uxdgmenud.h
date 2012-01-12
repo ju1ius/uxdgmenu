@@ -88,6 +88,11 @@ void uxm_cleanup(void);
 GSList * uxm_get_monitored_directories(void);
 
 /**
+ * Compatibility with glib < 2.28
+ **/
+void uxm_gslist_free_full(GSList *list);
+
+/**
  * Checks is given path is a directory
  **/
 gboolean uxm_path_is_dir(const gchar *path);

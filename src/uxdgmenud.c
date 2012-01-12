@@ -6,11 +6,11 @@
 #include <signal.h>
 #include <string.h>
 #include <regex.h>
+#include <sys/stat.h>
 #include <inotifytools/inotifytools.h>
 #include <inotifytools/inotify.h>
 #include <glib.h>
 #include <glib/gprintf.h>
-#include <glib/gstdio.h>
 
 #include "uxdgmenud.h"
 
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
       case '?':
         break;
       default:
-          abort();
+          /*abort();*/
         break;
     }
   }
@@ -136,6 +136,7 @@ int main(int argc, char **argv)
   /**
    * Cleanup
    **/
+  g_free(shared_data);
   uxm_cleanup();
 
   return 0;
@@ -207,7 +208,7 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
         syslog(LOG_INFO, "Watching %s", (char*)iter->data);
       }
     }
-    g_slist_free_full(monitored, g_free);
+    uxm_gslist_free_full(monitored);
   }
 
   /**
@@ -270,7 +271,7 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
     if (uxm_stop_event) break;
     event = inotifytools_next_event(-1);
   }
-
+  
   g_async_queue_unref(data->queue);
   return 0;
 }
@@ -289,22 +290,18 @@ gpointer uxm_monitor_listener(UxmSharedData *data)
     l = g_async_queue_length(data->queue);
     /* There are messages in the queue ! */
     if(l > 0) {
-      /*g_async_queue_lock(queue);*/
-      /*msg = (UxmMessage*) g_async_queue_try_pop_unlocked(queue);*/
       msg = (UxmMessage*) g_async_queue_try_pop(data->queue);
       /* Loop on every msg in the queue */
       while(msg) {
         types |= msg->type;
         if(verbose) {
-          /*syslog(LOG_INFO, "%s", msg->data);*/
-          g_printf("%s\n", msg->data);
+          syslog(LOG_INFO, "%s", msg->data);
+          /*g_printf("%s\n", msg->data);*/
           g_free(msg->data);
         }
         g_free(msg);
         msg = (UxmMessage*) g_async_queue_try_pop(data->queue);
-        /*msg = (UxmMessage*) g_async_queue_try_pop_unlocked(queue);*/
       }
-      /*g_async_queue_unlock(queue);*/
 
       g_snprintf(
         command_buf, UXM_UPDATE_CMD_BUF_SIZE,
@@ -411,11 +408,24 @@ GSList * uxm_get_monitored_directories(void)
   return monitored;
 }
 
+void uxm_gslist_free_full(GSList *list)
+{
+  if(!GLIB_CHECK_VERSION(2,28,0)) {
+    GSList *iter;
+    for(iter = list; iter; iter = iter->next) {
+      g_free(iter->data);
+    }
+    g_slist_free(list);
+  } else {
+    g_slist_free_full(list, g_free);
+  }
+}
+
 gboolean uxm_path_is_dir(const gchar *path)
 {
-  GStatBuf stat_buf;
+  struct stat stat_buf;
 
-  if(path == NULL || g_stat(path, &stat_buf) == -1) {
+  if(path == NULL || stat(path, &stat_buf) == -1) {
     return FALSE;
   }
   if(stat_buf.st_mode & S_IFDIR) {
