@@ -15,16 +15,16 @@ if __name__ == "__main__":
     )
     options, args = parser.parse_args()
 
-    if not options)formatter:
+    if not options.formatter:
         parser.print_usage()
         sys.exit(1)
     
     if len(args) < 1:
         start_dir = uxm.config.get().get('Places', 'start_dir')
     else:
-        start_dir = args[1]
+        start_dir = args[0]
 
     path = os.path.expanduser(start_dir)
-    parser = Parser()
+    parser = Parser(options.formatter)
     data = parser.parse_path(path)
     print uxm.formatter.get_formatter(options.formatter).format_menu(data)

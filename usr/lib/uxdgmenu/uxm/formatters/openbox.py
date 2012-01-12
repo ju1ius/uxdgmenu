@@ -61,6 +61,9 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
         elif id == 'uxm-places':
             data['command'] = "uxm-places -f openbox ~"
             return self.format_pipemenu(data, level)
+        elif 'command' in data:
+            return self.format_pipemenu(data, level)
+
         submenu = "\n".join(self.get_children(data, level+1))
         return """%(i)s<menu id=%(id)s label=%(n)s icon=%(icn)s>
 %(sub)s
