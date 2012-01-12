@@ -201,22 +201,24 @@ def pgrep(pattern, **kwargs):
         ret = [int(pid), None]
         if check_cmdline:
             cmdline_file = os.path.join(pid_dir, 'cmdline')
-            with open(cmdline_file, 'r') as f:
-                cmdline = f.read().strip()
-                if _pgrep_return_if_matches(pattern, cmdline, exact_match, invert_match):
-                    pid_matches = True
+            if os.path.exists(cmdline_file):
+                with open(cmdline_file, 'r') as f:
+                    cmdline = f.read().strip()
+                    if _pgrep_return_if_matches(pattern, cmdline, exact_match, invert_match):
+                        pid_matches = True
         status_file = os.path.join(pid_dir, 'status')
-        with open(status_file, 'r') as f:
-            lines = f.readlines()
-            if check_user:
-                data = lines[6].partition(':')[2].split()[0]
-                if int(data) != uid:
-                    continue
-            if return_name or not check_cmdline:
-                name = lines[0].partition(':')[2].strip()
-                if _pgrep_return_if_matches(pattern, name, exact_match, invert_match):
-                    pid_matches = True
-                    ret[1] = name
+        if os.path.exists(status_file):
+            with open(status_file, 'r') as f:
+                lines = f.readlines()
+                if check_user:
+                    data = lines[6].partition(':')[2].split()[0]
+                    if int(data) != uid:
+                        continue
+                if return_name or not check_cmdline:
+                    name = lines[0].partition(':')[2].strip()
+                    if _pgrep_return_if_matches(pattern, name, exact_match, invert_match):
+                        pid_matches = True
+                        ret[1] = name
         if pid_matches:
             if return_name:
                 append(tuple(ret))

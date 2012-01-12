@@ -13,6 +13,11 @@ import uxm.dialogs.menu
 class Options(object):
     """Mock OptionsParser options"""
     def __init__(self, **kwargs):
+        # Defaults
+        self.with_applications = None
+        self.with_bookmarks = None
+        self.with_recent_files = None
+        # Overrides
         for prop, val in kwargs.iteritems():
             self.__dict__[prop] = val
 
@@ -36,6 +41,12 @@ class ComboBoxTextDecorator(object):
 
     def set_active(self, idx):
         self.cb.set_active(idx)
+
+    def set_active_text(self, text):
+        for i, row in enumerate(self.model):
+            if row[0] == text:
+                self.cb.set_active(i)
+
 
 class DaemonStatusMonitor(threading.Thread, gobject.GObject):
     __gsignals__ = {
@@ -211,6 +222,9 @@ class ConfigEditor(object):
         # ----- apps
         for f in self._get_menus_list():
             self.menu_file_list.append_text(f)
+        self.menu_file_list.set_active_text(
+            self.config.get('Applications', 'menu_file')        
+        )
         self.menus_apps_show_all_cb.set_active(
             self.config.getboolean('Applications', 'show_all')        
         )
@@ -274,6 +288,8 @@ class ConfigEditor(object):
         # Menus
 
         # ----- apps
+        menu_file = self.menu_file_list.get_active_text()
+        self.config.set('Applications', 'menu_file', menu_file)
         show_all = self.menus_apps_show_all_cb.get_active()
         self.config.set('Applications', 'show_all', str(show_all).lower())
         as_submenu = self.menus_apps_as_submenu_cb.get_active()
@@ -281,7 +297,7 @@ class ConfigEditor(object):
 
         # ----- recent
         max_items = self.menus_recent_files_max_items_btn.get_value()
-        self.config.set('Recent Files', 'max_items', max_items)
+        self.config.set('Recent Files', 'max_items', int(max_items))
 
         # ----- places
         start_dir = self.menus_places_start_dir_chooser_btn.get_filename()
@@ -395,7 +411,8 @@ class ConfigEditor(object):
                 formatter = self.formatters_list.get_active_text(),
                 menu_file = self.menu_file_list.get_active_text(),
                 verbose = False
-            )
+            ),
+            parent = self.window
         )
 
     def on_daemon_stop_btn_clicked(self, widget, data=None):
@@ -409,7 +426,8 @@ class ConfigEditor(object):
                 formatter = self.formatters_list.get_active_text(),
                 menu_file = self.menu_file_list.get_active_text(),
                 verbose = False
-            )
+            ),
+            parent = self.window
         )
         
     def on_daemon_update_btn_clicked(self, widget, data=None):
@@ -419,7 +437,8 @@ class ConfigEditor(object):
             Options(
                 formatter = self.formatters_list.get_active_text(),
                 menu_file = self.menu_file_list.get_active_text()
-            )
+            ),
+            parent = self.window
         )
 
     def on_daemon_update_all_btn_clicked(self, widget, data=None):
@@ -429,7 +448,8 @@ class ConfigEditor(object):
             Options(
                 formatter = self.formatters_list.get_active_text(),
                 menu_file = self.menu_file_list.get_active_text()
-            )
+            ),
+            parent = self.window
         )
 
     def on_daemon_clear_cache_btn_clicked(self, widget, data=None):
@@ -439,7 +459,8 @@ class ConfigEditor(object):
             Options(
                 formatter = self.formatters_list.get_active_text(),
                 menu_file = self.menu_file_list.get_active_text()
-            )
+            ),
+            parent = self.window
         )
 
     def on_daemon_show_btn_clicked(self, widget, data=None):

@@ -60,6 +60,7 @@ monitor_bookmarks: yes
 monitor_recent_files: yes
 
 [Applications]
+menu_file: uxm-applications.menu
 show_all: yes
 as_submenu: no
 

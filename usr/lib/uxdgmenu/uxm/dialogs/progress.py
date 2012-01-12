@@ -226,10 +226,15 @@ class Dialog(gtk.MessageDialog):
 
 
 def indeterminate(message, task, *args, **kwargs):
+    if "parent" in kwargs:
+        parent = kwargs['parent']
+        del kwargs['parent']
     try:
         worker = BlockingWorker(task, *args, **kwargs)
         listener = IndeterminateListener()
         dlg = Dialog(message, worker, listener)
+        if "parent" in kwargs and parent is not None:
+            dlg.set_transient_for(parent)
         dlg.open()
     except Exception, e:
         uxm.dialogs.error.Dialog(str(e))

@@ -10,12 +10,13 @@ import uxm.formatter as formatter
 #
 def start(opts):
     """starts the daemon"""
+    opts = options_from_config(opts)
     stop(opts)
     update(opts)
-    cmd = [config.APP_WATCH, '-d']
+    cmd = [config.APP_WATCH, 'start', '-d']
     # Apps
     if opts.with_applications:
-        cmd.append(['-a'])
+        cmd.append('-a')
     # Gtk Bookmarks
     if opts.with_bookmarks:
         cmd.append('-b')
@@ -38,6 +39,7 @@ def stop(opts):
     subprocess.call(['pkill', '-u', os.environ['USER'], config.APP_WATCH])
 
 def update(opts):
+    opts = options_from_config(opts)
     if opts.with_applications:
         update_applications(opts)
     if opts.with_bookmarks:
@@ -105,11 +107,20 @@ def clear_recent_files(opts):
     os.remove(config.RECENT_FILES_FILE) 
     update_recent_files(opts)
 
-def show(opts):
-    cache = get_menu_cache(opts.formatter, 'applications')
-    with open(cache, 'r') as f:
-        for l in f:
-            print l
+def options_from_config(opts):
+    if (not opts.with_applications and not opts.with_bookmarks and
+            not opts.with_recent_files):
+        cfg = config.get()
+        opts.with_applications = cfg.getboolean(
+            'Daemon', 'monitor_applications'
+        )
+        opts.with_bookmarks = cfg.getboolean(
+            'Daemon', 'monitor_bookmarks'
+        )
+        opts.with_recent_files = cfg.getboolean(
+            'Daemon', 'monitor_recent_files'
+        )
+    return opts
 
 def debug_config(opts):
     print config.to_string()

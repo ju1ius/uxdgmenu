@@ -94,19 +94,6 @@ Defaults to 'uxm-applications.menu'"""
     if len(args) == 0:
         die()
 
-    cfg = config.get()
-
-    if (not options.with_applications and not options.with_bookmarks and
-            not options.with_recent_files):
-        options.with_bookmarks = cfg.getboolean(
-            'Daemon', 'monitor_applications'
-        )
-        options.with_bookmarks = cfg.getboolean(
-            'Daemon', 'monitor_bookmarks'
-        )
-        options.with_recent_files = cfg.getboolean(
-            'Daemon', 'monitor_recent_files'
-        )
 
     if options.verbose:
         import time
