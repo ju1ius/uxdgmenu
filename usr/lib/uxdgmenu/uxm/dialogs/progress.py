@@ -121,7 +121,7 @@ class GeneratorWorker(BlockingWorker):
 
     def run(self):
         self.queue.put((0.0, "Queue Starting..."))
-        for obj in self.run_task():
+        for proportion in self.run_task():
             self.queue.put((proportion, "working..."))
         self.queue.put((1.0, "Queue finished"))
 

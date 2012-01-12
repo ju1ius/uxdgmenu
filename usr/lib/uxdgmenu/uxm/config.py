@@ -1,4 +1,4 @@
-import os, optparse, ConfigParser
+import os, sys, optparse, ConfigParser
 import cStringIO as StringIO
 
 import xdg.BaseDirectory

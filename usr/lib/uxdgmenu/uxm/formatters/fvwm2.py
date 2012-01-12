@@ -36,7 +36,6 @@ AddToMenu "uxdgmenu-%(id)s" "%(n)s" Title
         )
 
     def format_submenu_entry(self, data, level=0):
-        icon = 
         return '+       "%s%s" Popup %s\n' % (
             data['label'],
             "%%(icn)s%" % data['icon'] if data['icon'] else '',

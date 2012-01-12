@@ -26,21 +26,6 @@ def get_formatter(name):
 
 class Formatter(object):
     
-    _supports_pipemenus = False
-    @property
-    def supports_pipemenus(self):
-        return self._supports_pipemenus
-
-    _supports_includes = True
-    @property
-    def supports_includes(self):
-        return self._supports_includes
-
-    _supports_icons = True
-    @property
-    def supports_icons(self):
-        return self._supports_pipemenus
-    
     _indent_str = "  "
     def indent(self, level=0):
         return self._indent_str * level

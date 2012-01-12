@@ -217,6 +217,6 @@ class Menu(gtk.Menu):
             class Options:
                 formatter = 'pckl'
                 menu_file = self.applications_menu_file
-            dlg = progress.indeterminate(
+            progress.indeterminate(
                 "Generating menus", daemon.update_all, Options()
             )

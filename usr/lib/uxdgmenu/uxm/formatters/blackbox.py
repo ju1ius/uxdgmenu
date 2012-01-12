@@ -1,6 +1,6 @@
-from . import base
+from uxm.formatter import TreeFormatter
 
-class Formatter(base.Formatter):
+class Formatter(TreeFormatter):
 
     def escape_label(self, label):
         return label.replace('(', ':: ').replace(')', ' ::')

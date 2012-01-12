@@ -1,4 +1,4 @@
-import os, re, pwd, subprocess
+import os, re, pwd, shlex, subprocess
 import xdg.BaseDirectory
 
 def round_base(x, base=8):

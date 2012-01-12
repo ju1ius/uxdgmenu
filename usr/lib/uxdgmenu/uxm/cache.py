@@ -36,10 +36,6 @@ class Cache(object):
             self.connection.row_factory = sqlite3.Row
             self.cursor = self.connection.cursor()
 
-    def close(self):
-        self.save()
-        self.connection.close()
-
     def get_icon(self, key):
         self.cursor.execute(
             'SELECT icons.key, icons.path FROM icons WHERE icons.key = ?',
