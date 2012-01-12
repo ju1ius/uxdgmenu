@@ -1,6 +1,7 @@
 from xml.sax.saxutils import escape, quoteattr
 
 import uxm.formatter
+import uxm.config as config
 
 class OpenboxFormatter(uxm.formatter.TreeFormatter):
 
@@ -46,13 +47,16 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
     def format_submenu(self, data, level=0):
         id = data['id']
         if id == 'uxm-applications':
-            data['command'] = "cat ~/.cache/uxdgmenu/uxm-applications.menu.openbox"
+            data['command'] = "cat %s/uxm-applications.menu.openbox" % (
+                config.CACHE_DIR)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-bookmarks':
-            data['command'] = "cat ~/.cache/uxdgmenu/bookmarks.openbox"
+            data['command'] = "cat %s/bookmarks.openbox" % (
+                config.CACHE_DIR)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-recent-files':
-            data['command'] = "cat ~/.cache/uxdgmenu/recent-files.openbox"
+            data['command'] = "cat %s/recent-files.openbox" % (
+                config.CACHE_DIR)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-wm-config':
             return self.format_wm_menu(data, level)
@@ -108,17 +112,17 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
         return """%(i)s<menu id=%(name)s label=%(icon)s>
 %(i)s  <item label="%(update)s">
 %(i)s    <action name="Execute">
-%(i)s      <execute>uxm-daemon update -pa -f openbox</execute>
+%(i)s      <execute>uxm-daemon update -p -f openbox</execute>
 %(i)s    </action>
 %(i)s  </item>
 %(i)s  <item label="%(regen)s">
 %(i)s    <action name="Execute">
-%(i)s      <execute>uxm-daemon generate-rootmenu -p -f openbox</execute>
+%(i)s      <execute>uxm-daemon update:rootmenu -p -f openbox</execute>
 %(i)s    </action>
 %(i)s  </item>
 %(i)s  <item label="%(clear)s">
 %(i)s    <action name="Execute">
-%(i)s      <execute>uxm-daemon clear-cache -p -f openbox</execute>
+%(i)s      <execute>uxm-daemon clear:cache -p -f openbox</execute>
 %(i)s    </action>
 %(i)s  </item>
 %(i)s</menu>""" % {

@@ -12,6 +12,7 @@ and comes with a standalone GTK app-launcher and a GUI for configuration.
 uxdgmenu is written in C and Python and only requires the following packages:
 
 * libinotifytools0
+* libglib-2.0-0
 * python-xdg
 
 Install
@@ -19,7 +20,7 @@ Install
 
 Install dependencies:
 
-    sudo aptitude install libinotifytools0 libinotifytools0-dev python-xdg
+    sudo aptitude install libglib2.0-dev libglib2.0-0 libinotifytools0 libinotifytools0-dev python-xdg
 
 You can also optionally install the following packages:
 
@@ -41,6 +42,6 @@ Next
 [Check the wiki](http://github.com/ju1ius/uxdgmenu/wiki)
 
 -----------------------------------------------------------------------
-uxdgmenu is heavily inspired by:
+uxdgmenu is inspired by:
 
 * [xdg-menu](http://cvs.fedoraproject.org/viewvc/devel/openbox/xdg-menu)

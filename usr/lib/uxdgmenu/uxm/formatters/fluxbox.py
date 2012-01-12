@@ -1,11 +1,9 @@
 import os
 
 import uxm.formatter
+import uxm.config as config
 
 class FluxboxFormatter(uxm.formatter.TreeFormatter):
-
-    def get_rootmenu_path(self):
-        return os.path.expanduser('~/.cache/uxdgmenu/rootmenu.fluxbox')
 
     def escape_label(self, label):
         return label.replace('(', ':: ').replace(')', ' ::')
@@ -69,28 +67,31 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
 
     def format_applications_menu(self, data, level=0):
         return """%(i)s[submenu] (%(n)s) <%(icn)s>
-%(i)s%(i)s[include] (~/.cache/uxdgmenu/uxm-applications.menu.fluxbox)
+%(i)s%(i)s[include] (%(menu))
 %(i)s[end]""" % {
             "i": self.indent(level),
             "n": self.escape_label(data['label']),
-            "icn": data['icon']
+            "icn": data['icon'],
+            "menu": "%s/applications.fluxbox" % config.CACHE_DIR
         }
 
     def format_bookmarks_menu(self, data, level=0):
         return """%(i)s[submenu] (%(n)s) <%(icn)s>
-%(i)s%(i)s[include] (~/.cache/uxdgmenu/bookmarks.fluxbox)
+%(i)s%(i)s[include] (%(menu))
 %(i)s[end]""" % {
             "i": self.indent(level),
             "n": self.escape_label(data['label']),
-            "icn": data['icon']
+            "icn": data['icon'],
+            "menu": "%s/bookmarks.fluxbox" % config.CACHE_DIR
         }
     def format_recent_files_menu(self, data, level=0):
         return """%(i)s[submenu] (%(n)s) <%(icn)s>
-%(i)s%(i)s[include] (~/.cache/uxdgmenu/recent-files.fluxbox)
+%(i)s%(i)s[include] (%(menu))
 %(i)s[end]""" % {
             "i": self.indent(level),
             "n": self.escape_label(data['label']),
-            "icn": data['icon']
+            "icn": data['icon'],
+            "menu": "%s/recent-files.fluxbox" % config.CACHE_DIR
         }
 
     def format_wm_menu(self, data, level=0):
@@ -111,9 +112,9 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
 
     def format_uxm_menu(self, data, level=0):
         return """%(i)s[submenu] (%(name)s) <%(icon)s>
-%(i)s  [exec] (%(update)s) { uxm-daemon update -pa -f fluxbox }
-%(i)s  [exec] (%(regen)s) { uxm-daemon generate-rootmenu -pa -f fluxbox }
-%(i)s  [exec] (%(clear)s) { uxm-daemon clear-cache -p -f fluxbox }
+%(i)s  [exec] (%(update)s) { uxm-daemon update -p -f fluxbox }
+%(i)s  [exec] (%(regen)s) { uxm-daemon update:rootmenu -p -f fluxbox }
+%(i)s  [exec] (%(clear)s) { uxm-daemon clear:cache -p -f fluxbox }
 %(i)s[end]""" % {
             "i": self.indent(level),
             "name": data['label'],
