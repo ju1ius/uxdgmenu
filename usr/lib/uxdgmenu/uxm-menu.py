@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import os, sys, optparse
+import sys
 
 from uxm.dialogs.menu import Menu
 

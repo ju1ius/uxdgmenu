@@ -1,7 +1,5 @@
 import os
 
-import xdg.Mime
-
 import uxm.utils as utils
 import uxm.parser as parser
 import uxm.config as config

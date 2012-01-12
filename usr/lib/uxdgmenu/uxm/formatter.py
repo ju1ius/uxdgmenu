@@ -77,7 +77,8 @@ class TreeFormatter(Formatter):
 
 class FlatFormatter(Formatter):
 
-    submenus_first = False
+    def __init__(self):
+        self.submenus_first = True
 
     def format_submenu_entry(self, data, level=0):
         self._implement_error("format_submenu_entry")

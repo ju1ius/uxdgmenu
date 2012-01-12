@@ -13,6 +13,7 @@ class Queueable(object):
     @property
     def queue(self):
         return self._queue
+
     @queue.setter
     def queue(self, queue):
         self._queue = queue
@@ -220,7 +221,7 @@ class Dialog(gtk.MessageDialog):
             self.close(None)
 
     def on_progress_error(self, obj, msg, data=None):
-        d = uxm.dialogs.error.Dialog(msg)
+        uxm.dialogs.error.Dialog(msg)
         self.close(None)
 
 

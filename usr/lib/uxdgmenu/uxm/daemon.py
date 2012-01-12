@@ -1,7 +1,6 @@
 import os, sys, subprocess
 
 import uxm.config as config
-import uxm.utils as utils
 import uxm.cache as cache
 import uxm.formatter as formatter
 
@@ -61,8 +60,8 @@ def update_applications(opts):
     data = parser.parse_menu_file(opts.menu_file)
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    cache = get_menu_cache(opts.formatter, 'applications')
-    with open(cache, 'w+') as fp:
+    menu_cache = get_menu_cache(opts.formatter, 'applications')
+    with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
 def update_bookmarks(opts):
@@ -71,8 +70,8 @@ def update_bookmarks(opts):
     data = parser.parse_bookmarks()
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    cache = get_menu_cache(opts.formatter, 'bookmarks')
-    with open(cache, 'w+') as fp:
+    menu_cache = get_menu_cache(opts.formatter, 'bookmarks')
+    with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
 def update_recent_files(opts):
@@ -81,8 +80,8 @@ def update_recent_files(opts):
     data = parser.parse_bookmarks()
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    cache = get_menu_cache(opts.formatter, 'recent-files')
-    with open(cache, 'w+') as fp:
+    menu_cache = get_menu_cache(opts.formatter, 'recent-files')
+    with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
 def update_rootmenu(opts):
@@ -91,8 +90,8 @@ def update_rootmenu(opts):
     data = parser.parse_menu_file(config.ROOTMENU_FILE)
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_rootmenu(data)
-    cache = get_menu_cache(opts.formatter, 'rootmenu')
-    with open(cache, 'w+') as fp:
+    menu_cache = get_menu_cache(opts.formatter, 'rootmenu')
+    with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
 def clear_cache(opts):

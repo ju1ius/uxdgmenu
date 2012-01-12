@@ -1,4 +1,4 @@
-import os, sys, re, urllib
+import os, re, urllib
 
 import uxm.parser as parser
 import uxm.config as config

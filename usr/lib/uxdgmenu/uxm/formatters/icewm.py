@@ -8,7 +8,7 @@ class Formatter(base.TreeFormatter):
     def format_rootmenu(self, data):
         return self.format_menu(data)
 
-    def format_text_item(self, level=0):
+    def format_text_item(self, data, level=0):
         return ""
 
     def format_separator(self, data, level=0):
@@ -22,11 +22,11 @@ class Formatter(base.TreeFormatter):
             data['command']
         )
 
-    def format_submenu(self, id, name, icon, submenu, level=0):
+    def format_submenu(self, data, level=0):
         return """%(i)smenu "%(n)s" %(icn)s {
 %(items)s
 %(i)s}""" % {
-                "i": self.indent(level)
+                "i": self.indent(level),
                 "icn": data['icon'] if data['icon'] else '-',
                 "n": data['label'],
                 "items": "\n".join(self.get_children(data, level))

@@ -1,4 +1,4 @@
-import os, sys, re
+import os
 
 import uxm.parser as parser
 import uxm.adapters as adapters

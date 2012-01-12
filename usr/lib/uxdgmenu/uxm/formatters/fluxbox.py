@@ -1,5 +1,3 @@
-import os
-
 import uxm.formatter
 import uxm.config as config
 

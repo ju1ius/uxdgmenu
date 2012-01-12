@@ -2,9 +2,6 @@ import uxm.formatter as base
 
 class Formatter(base.FlatFormatter):
 
-    supports_icons = True
-    submenus_first = False
-
     def escape_id(self, id):
         return "uxdgmenu_%s" % id.lower().replace(' ', '_').replace('-', '_')
 
@@ -12,20 +9,21 @@ class Formatter(base.FlatFormatter):
         return self.format_menu(data)
 
     def format_menu(self, data):
-        return self.format_submenu(data)
+        entries = self.get_children(data, True)
+        return ",\n".join(entries)
 
-    def format_submenu(self, data, level=0):
+
+    def format_submenu(self, data, entries, level=0):
         return """defmenu("%s",
 {
 %s
-})
-""" % (
+})""" % (
             self.escape_id(data['id']),
-            ",\n".join(self.get_children(data, True))
+            ",\n".join(entries)
         )
 
-    def format_separator(self, level=0):
-        return '' 
+    def format_separator(self, data, level=0):
+        return """  menuentry("", nil)"""
 
     def format_application(self, data, level=0):
         return """  menuentry("%s", "ioncore.exec_on(_, '%s')")""" % (

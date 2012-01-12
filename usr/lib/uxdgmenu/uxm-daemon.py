@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 
-import os, sys
+import sys
 import uxm.config as config
 import uxm.daemon as daemon
-import uxm.utils as utils
 
 
 def check_formatter(fatal=True):

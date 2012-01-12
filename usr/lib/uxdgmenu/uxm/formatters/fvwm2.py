@@ -15,7 +15,6 @@ class Formatter(base.FlatFormatter):
         return ""
 
     def format_submenu(self, data, entries, level=0):
-        icon = "%%(icn)s%" % data['icon'] if data['icon'] else ''
         return """DestroyMenu "uxdgmenu-%(id)s"
 AddToMenu "uxdgmenu-%(id)s" "%(n)s" Title
 %(items)s
@@ -31,14 +30,14 @@ AddToMenu "uxdgmenu-%(id)s" "%(n)s" Title
     def format_application(self, data, level=0):
         return '+       "%s%s" Exec %s' % (
             data['label'],
-            "%%(icn)s%" % data['icon'] if data['icon'] else '',
+            "%%%(icn)s%%" % data['icon'] if data['icon'] else '',
             data['command']
         )
 
     def format_submenu_entry(self, data, level=0):
         return '+       "%s%s" Popup %s\n' % (
             data['label'],
-            "%%(icn)s%" % data['icon'] if data['icon'] else '',
+            "%%%(icn)s%%" % data['icon'] if data['icon'] else '',
             data['id']
         )
 

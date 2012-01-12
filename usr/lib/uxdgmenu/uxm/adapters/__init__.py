@@ -19,15 +19,14 @@ SORT_DISPLAY_NAME = 1
 
 def get_default_adapter():
     try:
-        import gmenu
-        from . import gmenu_adapter
+        from uxm.adapters import gmenu_adapter
         return gmenu_adapter.GmenuAdapter()
     except ImportError:
-        from . import xdg_adapter
+        from uxm.adapters import xdg_adapter
         return xdg_adapter.XdgAdapter()
 
 def get_adapter(name):
-    if not name in['gmenu', 'xdg', 'cXdg']:
+    if not name in['gmenu', 'xdg']:
         raise ValueError
     else:
         adapter_name = "uxdgmenu.adapters.%s_adapter" % name

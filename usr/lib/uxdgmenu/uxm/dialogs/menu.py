@@ -1,4 +1,4 @@
-import os, sys, shlex, subprocess
+import os, shlex, subprocess
 
 import pygtk
 pygtk.require('2.0')
@@ -201,7 +201,7 @@ class Menu(gtk.Menu):
         try:
             subprocess.call(shlex.split(cmd))
         except Exception, e:
-            d = uxm.dialogs.error.Dialog(str(e))
+            uxm.dialogs.error.Dialog(str(e))
         finally:
             self.close()
 
