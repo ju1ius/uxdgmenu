@@ -1,25 +1,11 @@
 menus:
-  Wine category
-  compatibility with gnome categories
-
-daemon:
-  should it watch bookmarks/recent is they don't exist ?
-  check passing cmdline options to daemon
-  check getting the right formatter
-
-GUI launcher:
-  path checks on launch
-
-GUI config editor:
-  exception handling...
+  compatibility with gnome categories, implies renaming of .directory files
 
 GUI menu editor:
-  fork alacarte...
+  fork alacarte ???
 
-l10n...
+l10n for config editor...
 
 update wiki...
 
 unit tests...
-
-deployment solutions...

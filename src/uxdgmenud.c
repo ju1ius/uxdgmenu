@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 {
   int next_option;
   /* list of short options */
-  const char *short_options = "abrdvf:";
+  const char *short_options = "abrdDvf:";
   /* An array listing valid long options */
   static const struct option long_options[] =
   {

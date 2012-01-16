@@ -17,6 +17,7 @@ class Options(object):
         self.with_applications = None
         self.with_bookmarks = None
         self.with_recent_files = None
+        self.with_devices = None
         # Overrides
         for prop, val in kwargs.iteritems():
             self.__dict__[prop] = val

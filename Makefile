@@ -1,5 +1,5 @@
 package="uxdgmenu"
-version="0.1"
+version="0.2"
 
 export prefix=/usr/local
 export sysconfdir=/etc
@@ -27,24 +27,22 @@ clean:
 	rm -rf usr/share/locale/* 2> /dev/null
 
 install:
-	#
+	# remove pyc
 	find . -name "*.pyc" | xargs rm -f
 	# Modify config paths
 	sed -i -e 's#PREFIX = ".*"#PREFIX = "$(prefix)"#' \
 		-e 's#SYSCONFDIR = ".*"#SYSCONFDIR = "$(sysconfdir)"#' \
 		usr/lib/uxdgmenu/uxm/config.py
-	# lib
-	install -d $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/adapters
-	install -d $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/parsers
-	install -d $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/formatters
-	install -d $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/dialogs
-	install -m 0755 usr/lib/uxdgmenu/*.py $(DESTDIR)$(prefix)/lib/uxdgmenu
-	install -m 0755 usr/lib/uxdgmenu/uxm/*.py $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm
-	install -m 0755 usr/lib/uxdgmenu/uxm/adapters/*.py $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/adapters
-	install -m 0755 usr/lib/uxdgmenu/uxm/parsers/*.py $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/parsers
-	install -m 0755 usr/lib/uxdgmenu/uxm/formatters/*.py $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/formatters
-	install -m 0755 usr/lib/uxdgmenu/uxm/dialogs/*.py $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/dialogs
-	install -m 0755 usr/lib/uxdgmenu/uxm/dialogs/*.glade $(DESTDIR)$(prefix)/lib/uxdgmenu/uxm/dialogs
+	# install dirs under prefix/lib
+	find usr/lib/uxdgmenu -type d \
+		| sed "s#.*/uxdgmenu/\(.*\)#$(DESTDIR)$(prefix)/lib/uxdgmenu/\1#" \
+		| xargs install -d
+	# install files under prefix/lib
+	find usr/lib/uxdgmenu -type f -name "*.py" -or -name "*.glade" | while read file; do \
+		dir=`dirname "$$file"`; \
+		dest=`echo "$$dir" | sed "s#\(.*\)usr/lib/uxdgmenu#$(DESTDIR)$(prefix)/lib/uxdgmenu#"`; \
+		install -m 0755 "$$file" "$$dest"; \
+	done
 	# bin
 	install -d $(DESTDIR)$(prefix)/bin
 	install -m 0755 usr/bin/* $(DESTDIR)$(prefix)/bin
