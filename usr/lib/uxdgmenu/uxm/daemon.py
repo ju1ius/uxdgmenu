@@ -122,15 +122,15 @@ def clear_recent_files(opts):
     os.remove(config.RECENT_FILES_FILE) 
     update_recent_files(opts)
 
-def device_mount(opts, dev):
+def device_mount(dev):
     import uxm.udisks
     uxm.udisks.mount(dev)
 
-def device_unmount(opts, dev):
+def device_unmount(dev):
     import uxm.udisks
     uxm.udisks.unmount(dev)
 
-def device_open(opts, dev):
+def device_open(dev):
     import uxm.udisks
     device = uxm.udisks.mount(dev)
     cfg = config.get()
