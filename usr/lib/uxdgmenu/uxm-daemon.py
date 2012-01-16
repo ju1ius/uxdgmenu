@@ -43,6 +43,7 @@ if __name__ == '__main__':
                         Equivalent to uxm-daemon:update -b
   update:recent-files   Regenerates the recent files menu
                         Equivalent to uxm-daemon:update -r
+  update:devices        Regenerates the devices menu
   update:rootmenu       Regenerates the rootmenu
 
   clear:recent-files    Clears and regenerates the recent files menu
@@ -83,6 +84,10 @@ Defaults to 'uxm-applications.menu'"""
     parser.add_option(
         '-r', '--with-recent-files', action='store_true',
         help="Monitor / update recent files"
+    )
+    parser.add_option(
+        '-d', '--with-devices', action='store_true',
+        help="Monitor / update devices"
     )
     parser.add_option(
         '-p', '--progress', action='store_true',

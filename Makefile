@@ -5,8 +5,8 @@ export prefix=/usr/local
 export sysconfdir=/etc
 
 CC      := gcc
-CFLAGS  := `pkg-config --cflags glib-2.0 gthread-2.0` -W -Wall -pedantic
-LDFLAGS := `pkg-config --libs glib-2.0 gthread-2.0` -linotifytools
+CFLAGS  := `pkg-config --cflags glib-2.0 gthread-2.0 gio-2.0` -W -Wall -pedantic
+LDFLAGS := `pkg-config --libs glib-2.0 gthread-2.0 gio-2.0` -linotifytools
 EXEC    := usr/bin/uxdgmenud
 SRC     := src/uxdgmenud.c
 

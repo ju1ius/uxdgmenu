@@ -11,6 +11,7 @@
 #include <inotifytools/inotify.h>
 #include <glib.h>
 #include <glib/gprintf.h>
+#include <gio/gio.h>
 
 #include "uxdgmenud.h"
 
@@ -30,7 +31,8 @@ int main(int argc, char **argv)
     {"watch-applications",  no_argument, NULL, 'a'},
     {"watch-bookmarks",     no_argument, NULL, 'b'},
     {"watch-recent-files",  no_argument, NULL, 'r'},
-    {"daemon",              no_argument, NULL, 'd'},
+    {"watch-devices",       no_argument, NULL, 'd'},
+    {"daemon",              no_argument, NULL, 'D'},
     {"verbose",             no_argument, NULL, 'v'},
     {"formatter",           required_argument, NULL, 'f'},
     {NULL, 0, NULL, 0} /* End of array need by getopt_long do not delete it*/
@@ -42,12 +44,14 @@ int main(int argc, char **argv)
   char *formatter = NULL;
 
   /* ---------- VARS ---------- */
+  int use_inotify = 0;
   GAsyncQueue *queue = NULL;
-  GThread *worker_thread;
-  GThread *listener_thread;
+  GThread *inotify_thread = NULL;
+  GThread *udisks_thread = NULL;
+  GThread *listener_thread = NULL;
   GError *error = NULL;
 
-  UxmSharedData *shared_data;
+  UxmSharedData *shared_data = NULL;
 
   /*****************************************
    * Process Command line args
@@ -59,17 +63,23 @@ int main(int argc, char **argv)
     {
       case 'a':
         opts_flags |= UXM_OPTS_WATCH_APPLICATIONS;
+        use_inotify = 1;
         break;
       case 'b':
         opts_flags |= UXM_OPTS_WATCH_BOOKMARKS;
+        use_inotify = 1;
         break;
       case 'r':
         opts_flags |= UXM_OPTS_WATCH_RECENT_FILES;
+        use_inotify = 1;
+        break;
+      case 'd':
+        opts_flags |= UXM_OPTS_WATCH_DEVICES;
         break;
       case 'f':
         formatter = optarg;
         break;
-      case 'd':
+      case 'D':
         opts_flags |= UXM_OPTS_DAEMONIZE;
         break;
       case 'v':
@@ -119,19 +129,45 @@ int main(int argc, char **argv)
 
   shared_data = uxm_shared_data_new(queue, opts_flags, formatter);
 
-  listener_thread = g_thread_create((GThreadFunc)uxm_monitor_listener, shared_data, FALSE, &error);
+  listener_thread = g_thread_create((GThreadFunc)uxm_monitor_listener,
+                                    shared_data,
+                                    TRUE,
+                                    &error);
   if(!listener_thread) {
     syslog(LOG_ERR, "Error: %s\n", error->message );
     exit(EXIT_FAILURE);
   }
 
-  worker_thread = g_thread_create((GThreadFunc)uxm_monitor_worker, shared_data, TRUE, &error);
-  if(!worker_thread) {
-    syslog(LOG_ERR, "Error: %s\n", error->message );
-    exit(EXIT_FAILURE);
+  if(opts_flags & UXM_OPTS_WATCH_DEVICES) {
+    udisks_thread = g_thread_create((GThreadFunc)uxm_udisks_worker,
+                                      shared_data,
+                                      TRUE,
+                                      &error);
+    if(!udisks_thread) {
+      syslog(LOG_ERR, "Error: %s\n", error->message );
+      exit(EXIT_FAILURE);
+    }
+    g_thread_join(udisks_thread);
   }
 
-  g_thread_join(worker_thread);
+  if(use_inotify) {
+    inotify_thread = g_thread_create((GThreadFunc)uxm_inotify_worker,
+                                  shared_data,
+                                  TRUE,
+                                  &error);
+    if(!inotify_thread) {
+      syslog(LOG_ERR, "Error: %s\n", error->message );
+      exit(EXIT_FAILURE);
+    }
+  }
+
+  if(opts_flags & UXM_OPTS_WATCH_DEVICES) {
+    g_thread_join(udisks_thread);
+  }
+  if(use_inotify) {
+    g_thread_join(inotify_thread);
+  }
+  g_thread_join(listener_thread);
 
   /**
    * Cleanup
@@ -146,7 +182,8 @@ int main(int argc, char **argv)
  * Functions
  **/
 
-gpointer uxm_monitor_worker(UxmSharedData *data)
+static int
+uxm_inotify_worker(UxmSharedData *data)
 {
   /* log message */
   char msg_buf[256];
@@ -261,8 +298,8 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
   }                       
 
   if(!inotifytools_get_num_watches()) {
-    syslog(LOG_ERR, "Nothing to watch, aborting...");
-    exit(EXIT_FAILURE);
+    syslog(LOG_ERR, "Nothing to watch, exiting inotify thread...");
+    goto end;
   }
 
   /**
@@ -295,12 +332,85 @@ gpointer uxm_monitor_worker(UxmSharedData *data)
     event = inotifytools_next_event(-1);
   }
 
-  g_free(recent_files_name);
-  g_async_queue_unref(data->queue);
+  end:
+    inotifytools_cleanup();
+    g_free(recent_files_name);
+    g_async_queue_unref(data->queue);
   return 0;
 }
 
-gpointer uxm_monitor_listener(UxmSharedData *data)
+static int
+uxm_udisks_worker(UxmSharedData *data)
+{
+  GMainContext *context = NULL;
+  GDBusProxy *proxy = NULL;
+  GError *error = NULL;
+
+  g_type_init();
+  g_async_queue_ref(data->queue);
+
+  context = g_main_context_new();
+  g_main_context_push_thread_default(context);
+
+  proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL, /* GDBusInterfaceInfo */
+                                         UXM_UDISKS_OBJECT_NAME,
+                                         UXM_UDISKS_OBJECT_PATH,
+                                         UXM_UDISKS_OBJECT_IFACE,
+                                         NULL, /* GCancellable */
+                                         &error);
+  if (proxy == NULL)
+  {
+    g_printerr("Error creating proxy: %s\n", error->message);
+    g_error_free(error);
+    goto out;
+  }
+  g_signal_connect (G_OBJECT(proxy),
+                    "g-signal",
+                    G_CALLBACK (uxm_udisks_signal_handler),
+                    data);
+
+  while(!uxm_stop_event) {
+    g_main_context_iteration(context, TRUE); 
+  }
+
+  out:
+    g_async_queue_unref(data->queue);
+    if (proxy != NULL)
+      g_object_unref(proxy);
+    g_main_context_unref(context);
+
+  return 0; 
+}
+
+static void
+uxm_udisks_signal_handler (GDBusProxy *proxy,
+                            gchar      *sender_name,
+                            gchar      *signal_name,
+                            GVariant   *parameters,
+                            gpointer    user_data)
+{
+  gchar *parameters_str;
+  UxmSharedData *data = (UxmSharedData *) user_data;
+
+  g_print("%s\n", signal_name);
+
+  if(strcmp(signal_name, "DeviceChanged") == 0) {
+    UxmMessage *msg = uxm_msg_new(UXM_MSG_TYPE_DEVICE);
+    if (data->flags & UXM_OPTS_VERBOSE) {
+      parameters_str = g_variant_print(parameters, FALSE);
+      msg->data = g_strdup_printf("UDisks: %s => %s\n",
+                                  signal_name,
+                                  parameters_str);
+      g_free(parameters_str);
+    }
+    g_async_queue_push(data->queue, msg);
+  }
+}
+
+static int
+uxm_monitor_listener(UxmSharedData *data)
 {
   UxmMessage *msg;
   gint l;
@@ -339,6 +449,9 @@ gpointer uxm_monitor_listener(UxmSharedData *data)
       if(types & UXM_MSG_TYPE_RECENT_FILE) {
         strcat(command_buf, " -r");
       }
+      if(types & UXM_MSG_TYPE_DEVICE) {
+        strcat(command_buf, " -d");
+      }
       system(command_buf);
 
     } else {
@@ -355,7 +468,10 @@ gpointer uxm_monitor_listener(UxmSharedData *data)
   return 0;
 }
 
-UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags, char *formatter)
+static UxmSharedData *
+uxm_shared_data_new(GAsyncQueue *queue,
+                    int flags,
+                    char *formatter)
 {
   UxmSharedData *data = (UxmSharedData*) g_malloc(sizeof(UxmSharedData));
   if(!data) {
@@ -368,7 +484,8 @@ UxmSharedData * uxm_shared_data_new(GAsyncQueue *queue, int flags, char *formatt
   return data;
 }
 
-UxmMessage * uxm_msg_new(UxmMessageType type)
+UxmMessage *
+uxm_msg_new(UxmMessageType type)
 {
   UxmMessage *msg = (UxmMessage*) g_malloc(sizeof(UxmMessage));
   if(!msg) {
@@ -379,8 +496,12 @@ UxmMessage * uxm_msg_new(UxmMessageType type)
   return msg;
 }
 
-void uxm_msg_dispatch(GAsyncQueue *queue, struct inotify_event *event,
-                      UxmMessageType type, char *msg_buf, int verbose)
+static void
+uxm_msg_dispatch(GAsyncQueue *queue,
+                  struct inotify_event *event,
+                  UxmMessageType type,
+                  char *msg_buf,
+                  int verbose)
 {
   UxmMessage *msg = uxm_msg_new(type);
   if (verbose) {
@@ -390,14 +511,15 @@ void uxm_msg_dispatch(GAsyncQueue *queue, struct inotify_event *event,
   g_async_queue_push(queue, msg);
 }
 
-void uxm_cleanup(void)
+static void 
+uxm_cleanup(void)
 {
-  inotifytools_cleanup();
   syslog(LOG_INFO, "Exiting...");
   closelog();
 }
 
-void uxm_signal_handler(int signum)
+static void
+uxm_signal_handler(int signum)
 {
   (void) signum;
   uxm_stop_event = 1;
@@ -405,7 +527,8 @@ void uxm_signal_handler(int signum)
   exit(0);
 }
 
-GSList * uxm_get_monitored_directories(void)
+static GSList *
+uxm_get_monitored_directories(void)
 {
   const gchar* const *data_dirs = g_get_system_data_dirs();
   const gchar* const *config_dirs = g_get_system_config_dirs();
@@ -441,7 +564,8 @@ GSList * uxm_get_monitored_directories(void)
   return monitored;
 }
 
-void uxm_gslist_free_full(GSList *list)
+static void
+uxm_gslist_free_full(GSList *list)
 {
   if(!GLIB_CHECK_VERSION(2,28,0)) {
     GSList *iter;
@@ -454,7 +578,8 @@ void uxm_gslist_free_full(GSList *list)
   }
 }
 
-gchar * uxm_get_recent_files_path(void)
+static gchar *
+uxm_get_recent_files_path(void)
 {
   const gchar *home_dir = g_get_home_dir();
   const gchar *user_data_dir = g_get_user_data_dir();
@@ -472,7 +597,8 @@ gchar * uxm_get_recent_files_path(void)
   return NULL;
 }
 
-gboolean uxm_path_is_dir(const gchar *path)
+static gboolean
+uxm_path_is_dir(const gchar *path)
 {
   struct stat stat_buf;
 
@@ -485,7 +611,8 @@ gboolean uxm_path_is_dir(const gchar *path)
   return FALSE;
 }
 
-gchar * uxm_path_ensure_trailing_slash(const gchar * path)
+static gchar *
+uxm_path_ensure_trailing_slash(const gchar * path)
 {
   if(!g_str_has_suffix("/", path)){
     return g_strconcat(path, "/", NULL);

@@ -12,7 +12,7 @@ def start(opts):
     opts = options_from_config(opts)
     stop(opts)
     update(opts)
-    cmd = [config.APP_WATCH, 'start', '-d']
+    cmd = [config.APP_WATCH, 'start', '-D']
     # Apps
     if opts.with_applications:
         cmd.append('-a')
@@ -22,6 +22,9 @@ def start(opts):
     # Recent Files
     if opts.with_recent_files:
         cmd.append('-r')
+    # Devices
+    if opts.with_devices:
+        cmd.append('-d')
     # Log events
     if opts.verbose:
         cmd.append('-v')
