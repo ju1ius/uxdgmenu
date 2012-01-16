@@ -24,8 +24,11 @@ Install dependencies:
 
 You should also (but are not forced to) install the following packages:
 
-* python-gtk2:    enables uxdgmenu to use your current GTK icon theme and GUI dialogs
+* python-gtk2: for the GUIs (dialogs, configuration, menu widget...)
 * python-gmenu:   makes menu generation 10 times faster...
+* python-dbus: for monitoring, mounting & unmounting devices.
+You might also need to install the freedesktop.org's ConsoleKit + PolicyKit stack in order to
+get mount/unmount permissions as a user.
 
 Clone the git repository if you haven't already
 
@@ -44,5 +47,7 @@ Next
 -----------------------------------------------------------------------
 uxdgmenu has been inspired by:
 
-* [xdg-menu](http://cvs.fedoraproject.org/viewvc/devel/openbox/xdg-menu)
-* [mint-fm2](http://community.linuxmint.com/tutorial/view/96)
+* Fedora's xdg-menu
+* Shane Lazar's mint-fm2
+* Byron Clark's udiskie
+* corenominal's crunchbang linux pipemenus for openbox
