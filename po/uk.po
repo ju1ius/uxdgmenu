@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Демонтувати вибраний том"
+
 msgid "Clear cache"
 msgstr "Кеш пам'яті"
+
+msgid "Mount the selected volume"
+msgstr "Змонтувати вибраний том"
+
+msgid "Clear List"
+msgstr "Очистити список"
+
+msgid "Generate"
+msgstr "Загальне"
 
 msgid "Menu"
 msgstr "Меню"
@@ -10,12 +22,9 @@ msgstr "Параметри"
 msgid "Refresh"
 msgstr "Оновити"
 
+msgid "Devices"
+msgstr "Пристрої"
+
 msgid "Open"
 msgstr "Відкрити"
-
-msgid "Clear List"
-msgstr "Очистити список"
-
-msgid "Generate"
-msgstr "Загальне"
 

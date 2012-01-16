@@ -1,0 +1,9 @@
+msgid "Unmount the selected volume"
+msgstr "Má fi ìgbóhùnsókè-sódò tí a yàn lọ́lẹ̀ mọ́"
+
+msgid "Mount the selected volume"
+msgstr "Fi ìgbóhùnsókè-sódò tí a yàn lọ́lẹ̀"
+
+msgid "Devices"
+msgstr "Sáfíìsì nínúu"
+

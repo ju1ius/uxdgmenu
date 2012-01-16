@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "افصل الجزء المختار"
+
 msgid "Clear cache"
 msgstr "امسح الذاكرة المؤقتة"
+
+msgid "Mount the selected volume"
+msgstr "صِل الجزء المختار"
+
+msgid "Clear List"
+msgstr "امسح القائمة"
+
+msgid "Generate"
+msgstr "ولِّد"
 
 msgid "Menu"
 msgstr "القائمة"
@@ -10,12 +22,9 @@ msgstr "التفضيلات"
 msgid "Refresh"
 msgstr "حدِّث"
 
+msgid "Devices"
+msgstr "الأجهزة"
+
 msgid "Open"
 msgstr "افتح"
-
-msgid "Clear List"
-msgstr "امسح القائمة"
-
-msgid "Generate"
-msgstr "ولِّد"
 

@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr ""
+
+msgid "Mount the selected volume"
+msgstr "የተመረጠውን ምልክት ተጎታች ድርግ"
+
+msgid "Clear List"
+msgstr "ሰርዝ"
+
+msgid "Generate"
+msgstr "አጠቃላይ"
+
 msgid "Menu"
 msgstr "ሜኑ"
 
@@ -7,12 +19,9 @@ msgstr "ምርጫዎች"
 msgid "Refresh"
 msgstr "በድጋሚ ጀምር"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "ክፈት"
-
-msgid "Clear List"
-msgstr "ሰርዝ"
-
-msgid "Generate"
-msgstr "አጠቃላይ"
 

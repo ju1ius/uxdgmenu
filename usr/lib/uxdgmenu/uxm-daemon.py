@@ -37,7 +37,7 @@ if __name__ == '__main__':
                         use options specified in the config file
   update:all            Regenerates all menus
   update:applications   Regenerates the applications menu
-                        Equivalent to uxm-daemon:update -a
+                    )   Equivalent to uxm-daemon:update -a
   update:apps           Alias for update:applications
   update:bookmarks      Regenerates the bookmarks menu
                         Equivalent to uxm-daemon:update -b
@@ -48,6 +48,10 @@ if __name__ == '__main__':
 
   clear:recent-files    Clears and regenerates the recent files menu
   clear:cache           Clears the icon cache, then regenerates menus
+
+  device:mount DEVICE   Mounts the specified device
+  device:unmount DEVICE Unmounts the specified device
+  device:open DEVICE    Mounts and open the specified device
 
   debug:config          Outputs the computed config values
   debug:applications    Outputs a representation of the parsed data
@@ -114,6 +118,9 @@ Defaults to 'uxm-applications.menu'"""
         if ns == 'update':
             if action == 'apps':
                 action = 'applications'
+        if ns == "device":
+            if len(args) < 2:
+                die()
         action = "_".join([ns, action])
 
     try:
@@ -124,7 +131,10 @@ Defaults to 'uxm-applications.menu'"""
     if options.progress:
         progress_dialog("", action, options)
     else:
-        action(options)
+        if ns == "device":
+            action(options, args[1])
+        else:
+            action(options)
 
     if options.verbose:
         end_t = time.clock()

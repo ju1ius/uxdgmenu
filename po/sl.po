@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Odklopi izbrani nosilec"
+
 msgid "Clear cache"
 msgstr "Počisti predpomnilnik"
+
+msgid "Mount the selected volume"
+msgstr "Priklopi izbrani nosilec"
+
+msgid "Clear List"
+msgstr "Počisti seznam"
+
+msgid "Generate"
+msgstr "Ustvari"
 
 msgid "Menu"
 msgstr "Meni"
@@ -10,12 +22,9 @@ msgstr "Možnosti"
 msgid "Refresh"
 msgstr "Osveži"
 
+msgid "Devices"
+msgstr "Naprave"
+
 msgid "Open"
 msgstr "Odpri"
-
-msgid "Clear List"
-msgstr "Počisti seznam"
-
-msgid "Generate"
-msgstr "Ustvari"
 

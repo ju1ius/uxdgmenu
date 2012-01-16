@@ -1,0 +1,9 @@
+msgid "Unmount the selected volume"
+msgstr "Yehlisa umsindo okhethiwe"
+
+msgid "Mount the selected volume"
+msgstr "Khuphula umsindo okhethiwe"
+
+msgid "Devices"
+msgstr "Izisekelo ku"
+

@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "A kijelölt kötet leválasztása"
+
 msgid "Clear cache"
 msgstr "Gyorsítótár törlése"
+
+msgid "Mount the selected volume"
+msgstr "A kijelölt kötet csatolása"
+
+msgid "Clear List"
+msgstr "Lista törlése"
+
+msgid "Generate"
+msgstr "Létrehozás"
 
 msgid "Menu"
 msgstr "Menü"
@@ -10,12 +22,9 @@ msgstr "Beállítások"
 msgid "Refresh"
 msgstr "Frissítés"
 
+msgid "Devices"
+msgstr "Eszközök"
+
 msgid "Open"
 msgstr "Megnyitás"
-
-msgid "Clear List"
-msgstr "Lista törlése"
-
-msgid "Generate"
-msgstr "Létrehozás"
 

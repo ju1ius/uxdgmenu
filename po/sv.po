@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Avmontera den markerade volymen"
+
 msgid "Clear cache"
 msgstr "Töm cache"
+
+msgid "Mount the selected volume"
+msgstr "Montera den markerade volymen"
+
+msgid "Clear List"
+msgstr "Töm lista"
+
+msgid "Generate"
+msgstr "Skapa"
 
 msgid "Menu"
 msgstr "Meny"
@@ -10,12 +22,9 @@ msgstr "Inställningar"
 msgid "Refresh"
 msgstr "Uppdatera"
 
+msgid "Devices"
+msgstr "Enheter"
+
 msgid "Open"
 msgstr "Öppna"
-
-msgid "Clear List"
-msgstr "Töm lista"
-
-msgid "Generate"
-msgstr "Skapa"
 

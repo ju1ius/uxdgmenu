@@ -121,6 +121,7 @@ open_cmd: gnome-open
 monitor_applications: yes
 monitor_bookmarks: yes
 monitor_recent_files: yes
+monitor_devices: yes
 
 [Applications]
 menu_file: uxm-applications.menu
@@ -145,6 +146,12 @@ application: application-x-executable
 bookmark: user-bookmarks
 folder: gtk-directory
 file: gtk-file
+
+internal_drive: gtk-harddisk
+optical_drive: gtk-cdrom
+removable_drive: gnome-dev-removable
+mount: gtk-execute
+unmount: media-eject
 """         
 
 ########################################################

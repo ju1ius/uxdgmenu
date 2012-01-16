@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Demontează volumul selectat"
+
 msgid "Clear cache"
 msgstr "Șterge memoria cache"
+
+msgid "Mount the selected volume"
+msgstr "Montează volumul selectat"
+
+msgid "Clear List"
+msgstr "Golește lista"
+
+msgid "Generate"
+msgstr "Generează"
 
 msgid "Menu"
 msgstr "Meniu"
@@ -10,12 +22,9 @@ msgstr "Preferințe"
 msgid "Refresh"
 msgstr "Reîmprospătează"
 
+msgid "Devices"
+msgstr "Dispozitive"
+
 msgid "Open"
 msgstr "Deschide"
-
-msgid "Clear List"
-msgstr "Golește lista"
-
-msgid "Generate"
-msgstr "Generează"
 

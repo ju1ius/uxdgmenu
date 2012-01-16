@@ -1,3 +1,6 @@
+msgid "Clear List"
+msgstr "Gyawo olukalala"
+
 msgid "Menu"
 msgstr ""
 
@@ -9,7 +12,4 @@ msgstr ""
 
 msgid "Open"
 msgstr "Bikkula"
-
-msgid "Clear List"
-msgstr "Gyawo olukalala"
 

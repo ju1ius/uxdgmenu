@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "Disevel ar bezhienn diuzet"
+
+msgid "Mount the selected volume"
+msgstr "Sevel ar bezhienn diuzet"
+
+msgid "Clear List"
+msgstr "Skarzhañ ar roll"
+
+msgid "Generate"
+msgstr "Genel"
+
 msgid "Menu"
 msgstr "Meuziad"
 
@@ -7,12 +19,9 @@ msgstr "Gwellvezioù"
 msgid "Refresh"
 msgstr "Azgrenaat"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Digeriñ"
-
-msgid "Clear List"
-msgstr "Skarzhañ ar roll"
-
-msgid "Generate"
-msgstr "Genel"
 

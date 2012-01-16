@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "پیاده کردن جلد انتخاب شده"
+
+msgid "Mount the selected volume"
+msgstr "سوار کردن جلد انتخاب شده"
+
+msgid "Clear List"
+msgstr "پاک کردن فهرست"
+
+msgid "Generate"
+msgstr "تولید"
+
 msgid "Menu"
 msgstr "منو"
 
@@ -7,12 +19,9 @@ msgstr "ترجیحات"
 msgid "Refresh"
 msgstr "نوسازی"
 
+msgid "Devices"
+msgstr "دستگاه‌ها"
+
 msgid "Open"
 msgstr "باز کردن"
-
-msgid "Clear List"
-msgstr "پاک کردن فهرست"
-
-msgid "Generate"
-msgstr "تولید"
 

@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "تاللانغان دىسكىنى ئېگەرسىزلەيدۇ"
+
+msgid "Mount the selected volume"
+msgstr "تاللانغان دىسكىنى ئېگەرلەيدۇ"
+
+msgid "Clear List"
+msgstr "تىزىمنى تازىلا(C)"
+
+msgid "Generate"
+msgstr "قۇر(G)"
+
 msgid "Menu"
 msgstr "تىزىملىك"
 
@@ -7,12 +19,9 @@ msgstr "مايىللىق(P)"
 msgid "Refresh"
 msgstr "يېڭىلا(R)"
 
+msgid "Devices"
+msgstr "ئۈسكۈنىلەر"
+
 msgid "Open"
 msgstr "ئاچ(O)"
-
-msgid "Clear List"
-msgstr "تىزىمنى تازىلا(C)"
-
-msgid "Generate"
-msgstr "قۇر(G)"
 

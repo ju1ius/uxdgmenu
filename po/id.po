@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "Melepas kaitan volume yang dipilih"
+
+msgid "Mount the selected volume"
+msgstr "Mengaitkan volume yang dipilih"
+
+msgid "Clear List"
+msgstr "Kosongkan Daftar"
+
+msgid "Generate"
+msgstr "Tetapkan"
+
 msgid "Menu"
 msgstr "Menu"
 
@@ -7,12 +19,9 @@ msgstr "Preferensi"
 msgid "Refresh"
 msgstr "Segarkan"
 
+msgid "Devices"
+msgstr "Perangkat"
+
 msgid "Open"
 msgstr "Buka"
-
-msgid "Clear List"
-msgstr "Kosongkan Daftar"
-
-msgid "Generate"
-msgstr "Tetapkan"
 

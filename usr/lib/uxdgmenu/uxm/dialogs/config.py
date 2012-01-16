@@ -129,10 +129,10 @@ class ConfigEditor(object):
         self.use_gtk_theme_cb = builder.get_object('use_gtk_theme_cb')
         self.icons_theme_entry = builder.get_object('icons_theme_entry')
         # ----- defaults
-        self.icons_default_app_entry = builder.get_object('icons_default_app_entry')
-        self.icons_default_folder_entry = builder.get_object('icons_default_folder_entry')
-        self.icons_default_file_entry = builder.get_object('icons_default_file_entry')
-        self.icons_default_bookmark_entry = builder.get_object('icons_default_bookmark_entry')
+        for d in ['application','folder','file','bookmark','internal_drive',
+                    'optical_drive','removable_drive','mount','unmount']:
+            obj = 'icons_default_%s_entry' % d
+            setattr(self, obj, builder.get_object(obj))
         
         # Menus
         # ----- applications
@@ -156,6 +156,7 @@ class ConfigEditor(object):
         self.monitor_apps_cb = builder.get_object('monitor_apps_cb')
         self.monitor_bookmarks_cb = builder.get_object('monitor_bookmarks_cb')
         self.monitor_recent_cb = builder.get_object('monitor_recent_cb')
+        self.monitor_devices_cb = builder.get_object('monitor_devices_cb')
         self.formatters_list = ComboBoxTextDecorator(
             builder.get_object('formatters_list')
         )
@@ -206,18 +207,10 @@ class ConfigEditor(object):
             not self.use_gtk_theme_cb.get_active()
         )
         # ----- defaults
-        self.icons_default_app_entry.set_text(
-            self.config.get('Icons', 'application')        
-        )
-        self.icons_default_folder_entry.set_text(
-            self.config.get('Icons', 'folder')        
-        )
-        self.icons_default_file_entry.set_text(
-            self.config.get('Icons', 'file')        
-        )
-        self.icons_default_bookmark_entry.set_text(
-            self.config.get('Icons', 'bookmark')        
-        )
+        for d in ['application','folder','file','bookmark','internal_drive',
+                    'optical_drive','removable_drive','mount','unmount']:
+            attr = getattr(self, 'icons_default_%s_entry' % d)
+            attr.set_text(self.config.get('Icons', d))
         # Menus
         # ----- apps
         for f in self._get_menus_list():
@@ -253,6 +246,9 @@ class ConfigEditor(object):
         self.monitor_recent_cb.set_active(
             self.config.getboolean('Daemon', 'monitor_recent_files')        
         )
+        self.monitor_devices_cb.set_active(
+            self.config.getboolean('Daemon', 'monitor_devices')        
+        )
         for f in self._get_formatters_list():
             self.formatters_list.append_text(f)
 
@@ -276,14 +272,11 @@ class ConfigEditor(object):
         self.config.set('Icons', 'theme', theme)
 
         # ----- defaults
-        app_icon = self.icons_default_app_entry.get_text()
-        self.config.set('Icons', 'application', app_icon)
-        folder_icon = self.icons_default_folder_entry.get_text()
-        self.config.set('Icons', 'folder', folder_icon)
-        file_icon = self.icons_default_file_entry.get_text()
-        self.config.set('Icons', 'file', file_icon)
-        bk_icon = self.icons_default_bookmark_entry.get_text()
-        self.config.set('Icons', 'bookmark', bk_icon)
+        for d in ['application','folder','file','bookmark','internal_drive',
+                    'optical_drive','removable_drive','mount','unmount']:
+            attr = getattr(self, 'icons_default_%s_entry' % d)
+            self.config.set('Icons', d, attr.get_text())
+            attr.set_text(self.config.get('Icons', d))
 
         # Menus
 
@@ -317,6 +310,10 @@ class ConfigEditor(object):
         monitor_recent = self.monitor_recent_cb.get_active()
         self.config.set('Daemon', 'monitor_recent_files',
             str(monitor_recent).lower()
+        )
+        monitor_devices = self.monitor_devices_cb.get_active()
+        self.config.set('Daemon', 'monitor_devices',
+            str(monitor_devices).lower()
         )
 
 

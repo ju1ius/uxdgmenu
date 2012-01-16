@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr ""
+
 msgid "Clear cache"
 msgstr "Muchete e memwere"
+
+msgid "Mount the selected volume"
+msgstr "Abwesner li tchoezeye pårticion"
+
+msgid "Clear List"
+msgstr "Netyî djivêye"
+
+msgid "Generate"
+msgstr "Djenerå"
 
 msgid "Menu"
 msgstr "Menu"
@@ -10,12 +22,9 @@ msgstr "Preferinces"
 msgid "Refresh"
 msgstr "Rafrister"
 
+msgid "Devices"
+msgstr "Siervices waibe"
+
 msgid "Open"
 msgstr "Drovi"
-
-msgid "Clear List"
-msgstr "Netyî djivêye"
-
-msgid "Generate"
-msgstr "Djenerå"
 

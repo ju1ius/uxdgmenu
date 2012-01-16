@@ -1,0 +1,9 @@
+msgid "Unmount the selected volume"
+msgstr ""
+
+msgid "Mount the selected volume"
+msgstr ""
+
+msgid "Devices"
+msgstr ""
+

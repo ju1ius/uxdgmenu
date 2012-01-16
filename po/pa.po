@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "ਚੁਣੇ ਹਿੱਸੇ ਨੂੰ ਅਣ-ਮਾਊਂਟ ਕਰੋ"
+
 msgid "Clear cache"
 msgstr ""
+
+msgid "Mount the selected volume"
+msgstr "ਚੁਣੇ ਵਾਲੀਅਮ ਨੂੰ ਮਾਊਂਟ ਕਰੋ"
+
+msgid "Clear List"
+msgstr "ਲਿਸਟ ਸਾਫ਼ ਕਰੋ(C)"
+
+msgid "Generate"
+msgstr "ਬਣਾਓ(G)"
 
 msgid "Menu"
 msgstr "ਮੇਨੂ"
@@ -10,12 +22,9 @@ msgstr "ਮੇਰੀ ਪਸੰਦ(P)"
 msgid "Refresh"
 msgstr "ਤਾਜ਼ਾ(R)"
 
+msgid "Devices"
+msgstr "ਜੰਤਰ"
+
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ(O)"
-
-msgid "Clear List"
-msgstr "ਲਿਸਟ ਸਾਫ਼ ਕਰੋ(C)"
-
-msgid "Generate"
-msgstr "ਬਣਾਓ(G)"
 

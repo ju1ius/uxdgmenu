@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Desmontar el volumen seleccionado"
+
 msgid "Clear cache"
 msgstr "Limpiar la caché"
+
+msgid "Mount the selected volume"
+msgstr "Montar el volumen seleccionado"
+
+msgid "Clear List"
+msgstr "Limpiar lista"
+
+msgid "Generate"
+msgstr "Generar"
 
 msgid "Menu"
 msgstr "Menú"
@@ -10,12 +22,9 @@ msgstr "Preferencias"
 msgid "Refresh"
 msgstr "Actualizar"
 
+msgid "Devices"
+msgstr "Dispositivos"
+
 msgid "Open"
 msgstr "Abrir"
-
-msgid "Clear List"
-msgstr "Limpiar lista"
-
-msgid "Generate"
-msgstr "Generar"
 

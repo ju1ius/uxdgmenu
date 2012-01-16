@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "Aftengja valda gagnahirslu"
+
+msgid "Mount the selected volume"
+msgstr "Tengja valda gagnahirslu"
+
+msgid "Clear List"
+msgstr "Hreinsa"
+
+msgid "Generate"
+msgstr "Framleiða"
+
 msgid "Menu"
 msgstr ""
 
@@ -7,12 +19,9 @@ msgstr "Stillingar"
 msgid "Refresh"
 msgstr "Hressa"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Opna"
-
-msgid "Clear List"
-msgstr "Hreinsa"
-
-msgid "Generate"
-msgstr "Framleiða"
 

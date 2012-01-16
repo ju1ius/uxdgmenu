@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr "Танланган диск қисмини узиш"
+
+msgid "Mount the selected volume"
+msgstr "Танланган диск қисмини улаш"
+
+msgid "Clear List"
+msgstr "Рўйхатни тозалаш"
+
 msgid "Menu"
 msgstr "Меню"
 
@@ -7,9 +16,9 @@ msgstr "Параметрлар"
 msgid "Refresh"
 msgstr "Янгилаш"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Очиш"
-
-msgid "Clear List"
-msgstr "Рўйхатни тозалаш"
 

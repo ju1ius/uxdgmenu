@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "選択したボリュームをアンマウントします"
+
 msgid "Clear cache"
 msgstr "キャッシュのクリア"
+
+msgid "Mount the selected volume"
+msgstr "選択したボリュームをマウントします"
+
+msgid "Clear List"
+msgstr "一覧のクリア(C)"
+
+msgid "Generate"
+msgstr "生成(G)"
 
 msgid "Menu"
 msgstr "メニュー"
@@ -10,12 +22,9 @@ msgstr "設定(P)"
 msgid "Refresh"
 msgstr "更新(R)"
 
+msgid "Devices"
+msgstr "デバイス"
+
 msgid "Open"
 msgstr "開く(O)"
-
-msgid "Clear List"
-msgstr "一覧のクリア(C)"
-
-msgid "Generate"
-msgstr "生成(G)"
 

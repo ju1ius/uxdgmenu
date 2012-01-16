@@ -1,0 +1,9 @@
+msgid "Unmount the selected volume"
+msgstr "Ewelitekwala ụda ahụ a họọrọ"
+
+msgid "Mount the selected volume"
+msgstr "Welite ụda ahụ a họọrọ"
+
+msgid "Devices"
+msgstr "Ulọọrụ mgbasaozi na"
+

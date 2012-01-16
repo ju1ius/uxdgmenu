@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "卸载选中的文件卷"
+
 msgid "Clear cache"
 msgstr "清除缓存"
+
+msgid "Mount the selected volume"
+msgstr "挂载选中的卷"
+
+msgid "Clear List"
+msgstr "清除列表(C)"
+
+msgid "Generate"
+msgstr "生成(G)"
 
 msgid "Menu"
 msgstr "菜单"
@@ -10,12 +22,9 @@ msgstr "首选项(P)"
 msgid "Refresh"
 msgstr "刷新(R)"
 
+msgid "Devices"
+msgstr "设备"
+
 msgid "Open"
 msgstr "打开(O)"
-
-msgid "Clear List"
-msgstr "清除列表(C)"
-
-msgid "Generate"
-msgstr "生成(G)"
 

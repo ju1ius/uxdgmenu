@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Afmontér den valgte diskenhed"
+
 msgid "Clear cache"
 msgstr "Ryd mellemlager"
+
+msgid "Mount the selected volume"
+msgstr "Montér den valgte diskenhed"
+
+msgid "Clear List"
+msgstr "Ryd liste"
+
+msgid "Generate"
+msgstr "Generér"
 
 msgid "Menu"
 msgstr "Menu"
@@ -10,12 +22,9 @@ msgstr "Indstillinger"
 msgid "Refresh"
 msgstr "Opdatér"
 
+msgid "Devices"
+msgstr "Enheder"
+
 msgid "Open"
 msgstr "Åbn"
-
-msgid "Clear List"
-msgstr "Ryd liste"
-
-msgid "Generate"
-msgstr "Generér"
 

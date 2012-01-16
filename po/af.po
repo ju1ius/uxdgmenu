@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "Ontheg die geselekteerde volume"
+
+msgid "Mount the selected volume"
+msgstr "Heg die geselekteerde volume"
+
+msgid "Clear List"
+msgstr "Maak lys skoon"
+
+msgid "Generate"
+msgstr "Genereer"
+
 msgid "Menu"
 msgstr "Kieslys"
 
@@ -7,12 +19,9 @@ msgstr "Voorkeure"
 msgid "Refresh"
 msgstr "Verfris"
 
+msgid "Devices"
+msgstr "Web Services"
+
 msgid "Open"
 msgstr "Open"
-
-msgid "Clear List"
-msgstr "Maak lys skoon"
-
-msgid "Generate"
-msgstr "Genereer"
 

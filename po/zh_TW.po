@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "卸載選定的檔案系統"
+
 msgid "Clear cache"
 msgstr "記憶快取資料"
+
+msgid "Mount the selected volume"
+msgstr "掛載選定的檔案系統"
+
+msgid "Clear List"
+msgstr "清除清單(C)"
+
+msgid "Generate"
+msgstr "產生(G)"
 
 msgid "Menu"
 msgstr "選單"
@@ -10,12 +22,9 @@ msgstr "偏好設定(P)"
 msgid "Refresh"
 msgstr "重新整理(R)"
 
+msgid "Devices"
+msgstr "裝置"
+
 msgid "Open"
 msgstr "開啟(O)"
-
-msgid "Clear List"
-msgstr "清除清單(C)"
-
-msgid "Generate"
-msgstr "產生(G)"
 

@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "চিহ্নিত ভলিউম আন-মাউন্ট কৰক"
+
 msgid "Clear cache"
 msgstr "কেশ্বেৰ তথ্য আঁতৰাওক"
+
+msgid "Mount the selected volume"
+msgstr "চিহ্নিত ভলিউমটি মাউন্ট কৰক"
+
+msgid "Clear List"
+msgstr "তালিকা পৰিষ্কাৰ কৰক"
+
+msgid "Generate"
+msgstr "উত্‌পন্ন কৰুন"
 
 msgid "Menu"
 msgstr "মেনু"
@@ -10,12 +22,9 @@ msgstr "পছন্দ"
 msgid "Refresh"
 msgstr "নতুনকৈ প্ৰদৰ্শন"
 
+msgid "Devices"
+msgstr "ডিভাইচসমূহ"
+
 msgid "Open"
 msgstr "খোলক"
-
-msgid "Clear List"
-msgstr "তালিকা পৰিষ্কাৰ কৰক"
-
-msgid "Generate"
-msgstr "উত্‌পন্ন কৰুন"
 

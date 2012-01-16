@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr "Tanlangan disk qismini uzish"
+
+msgid "Mount the selected volume"
+msgstr "Tanlangan disk qismini ulash"
+
+msgid "Clear List"
+msgstr "Roʻyxatni tozalash"
+
 msgid "Menu"
 msgstr "Menyu"
 
@@ -7,9 +16,9 @@ msgstr "Parametrlar"
 msgid "Refresh"
 msgstr "Yangilash"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Ochish"
-
-msgid "Clear List"
-msgstr "Roʻyxatni tozalash"
 

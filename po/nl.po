@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Het geselecteerde volumen ontkoppelen."
+
 msgid "Clear cache"
 msgstr "Geheugenbuffer legen"
+
+msgid "Mount the selected volume"
+msgstr "Het geselecteerde volumen aankoppelen."
+
+msgid "Clear List"
+msgstr "Lijst wissen"
+
+msgid "Generate"
+msgstr "Genereren"
 
 msgid "Menu"
 msgstr "Menu"
@@ -10,12 +22,9 @@ msgstr "Voorkeuren"
 msgid "Refresh"
 msgstr "Verversen"
 
+msgid "Devices"
+msgstr "Apparaten"
+
 msgid "Open"
 msgstr "Openen"
-
-msgid "Clear List"
-msgstr "Lijst wissen"
-
-msgid "Generate"
-msgstr "Genereren"
 

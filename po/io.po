@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr "Desmuntez la selektata volumino"
+
+msgid "Mount the selected volume"
+msgstr "Muntez la selektata volumino"
+
+msgid "Clear List"
+msgstr "Vakuigez Listo"
+
 msgid "Menu"
 msgstr ""
 
@@ -7,9 +16,9 @@ msgstr "Preferi"
 msgid "Refresh"
 msgstr "Rifreshigez"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Apertez"
-
-msgid "Clear List"
-msgstr "Vakuigez Listo"
 

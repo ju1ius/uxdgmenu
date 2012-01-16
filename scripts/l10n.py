@@ -12,11 +12,15 @@ if __name__ == "__main__":
         "_clear list": "gtk+",
         "_open": "gtk+",
         "clear cache": "epiphany-extensions",
+        "Mount the selected volume": "nautilus",
+        "Unmount the selected volume": "nautilus",
+        "Devices": "nautilus"
     }
     ini_strings = {
         "recently used": ("gtk+","uxm-menu-recent-files.directory"),
         "bookmarks": ('nautilus','uxm-menu-bookmarks.directory'),
-        "places": ('nautilus','uxm-menu-places.directory')
+        "places": ('nautilus','uxm-menu-places.directory'),
+        "devices": ('nautilus','uxm-menu-devices.directory')
     }
 
     usage = """%prog [options]"""

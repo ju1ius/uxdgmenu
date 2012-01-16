@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Atjungti pasirinktą laikmeną"
+
 msgid "Clear cache"
 msgstr "Išvalyti podėlį"
+
+msgid "Mount the selected volume"
+msgstr "Prijungti pasirinktą laikmeną"
+
+msgid "Clear List"
+msgstr "Išvalyti sąrašą"
+
+msgid "Generate"
+msgstr "Generuoti"
 
 msgid "Menu"
 msgstr "Meniu"
@@ -10,12 +22,9 @@ msgstr "Nustatymai"
 msgid "Refresh"
 msgstr "Atnaujinti"
 
+msgid "Devices"
+msgstr "Įrenginiai"
+
 msgid "Open"
 msgstr "Atverti"
-
-msgid "Clear List"
-msgstr "Išvalyti sąrašą"
-
-msgid "Generate"
-msgstr "Generuoti"
 

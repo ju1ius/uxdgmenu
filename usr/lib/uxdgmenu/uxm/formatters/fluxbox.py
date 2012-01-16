@@ -3,6 +3,11 @@ import uxm.config as config
 
 class FluxboxFormatter(uxm.formatter.TreeFormatter):
 
+    def __init__(self):
+        super(FluxboxFormatter, self).__init__()
+        self.config = config.get()
+        self.apps_as_submenu = self.config.get('Applications', 'as_submenu')
+
     def escape_label(self, label):
         return label.replace('(', ':: ').replace(')', ' ::')
 
@@ -21,10 +26,10 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
             self.escape_label(data['label'])
         )
 
-    def format_include(self, data, level=0):
+    def format_include(self, filename, data, level=0):
         return "%s[include] (%s)" % (
             self.indent(level),
-            self.escape_label(data['file'])
+            self.escape_label(filename)
         )
 
     def format_separator(self, data, level=0):
@@ -48,6 +53,8 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
             return self.format_bookmarks_menu(data, level)
         elif id == 'uxm-recent-files':
             return self.format_recent_files_menu(data, level)
+        elif id == 'uxm-devices':
+            return self.format_recent_files_menu(data, level)
         elif id == 'uxm-wm-config':
             return self.format_wm_menu(data, level)
         elif id == 'uxm-menu':
@@ -64,32 +71,32 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
         }
 
     def format_applications_menu(self, data, level=0):
-        return """%(i)s[submenu] (%(n)s) <%(icn)s>
-%(i)s%(i)s[include] (%(menu))
-%(i)s[end]""" % {
-            "i": self.indent(level),
-            "n": self.escape_label(data['label']),
-            "icn": data['icon'],
-            "menu": "%s/applications.fluxbox" % config.CACHE_DIR
-        }
+        cache = "%s/applications.fluxbox" % config.CACHE_DIR
+        include = self.format_include(cache, data)
+        if not self.apps_as_submenu:
+            return include
+        return self.format_include_submenu(cache, data, level)
 
     def format_bookmarks_menu(self, data, level=0):
-        return """%(i)s[submenu] (%(n)s) <%(icn)s>
-%(i)s%(i)s[include] (%(menu))
-%(i)s[end]""" % {
-            "i": self.indent(level),
-            "n": self.escape_label(data['label']),
-            "icn": data['icon'],
-            "menu": "%s/bookmarks.fluxbox" % config.CACHE_DIR
-        }
+        cache = "%s/bookmarks.fluxbox" % config.CACHE_DIR
+        return self.format_include_submenu(cache, data, level)
+
     def format_recent_files_menu(self, data, level=0):
+        cache = "%s/recent-files.fluxbox" % config.CACHE_DIR
+        return self.format_include_submenu(cache, data, level)
+
+    def format_devices_menu(self, data, level=0):
+        cache = "%s/devices.fluxbox" % config.CACHE_DIR
+        return self.format_include_submenu(cache, data, level)
+
+    def format_include_submenu(self, filepath, data, level=0):
         return """%(i)s[submenu] (%(n)s) <%(icn)s>
 %(i)s%(i)s[include] (%(menu))
 %(i)s[end]""" % {
             "i": self.indent(level),
             "n": self.escape_label(data['label']),
             "icn": data['icon'],
-            "menu": "%s/recent-files.fluxbox" % config.CACHE_DIR
+            "menu": filepath
         }
 
     def format_wm_menu(self, data, level=0):

@@ -1,3 +1,6 @@
+msgid "Clear List"
+msgstr ""
+
 msgid "Menu"
 msgstr ""
 
@@ -8,8 +11,5 @@ msgid "Refresh"
 msgstr ""
 
 msgid "Open"
-msgstr ""
-
-msgid "Clear List"
 msgstr ""
 

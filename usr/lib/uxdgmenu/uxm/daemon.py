@@ -48,12 +48,15 @@ def update(opts):
         update_bookmarks(opts)
     if opts.with_recent_files:
         update_recent_files(opts)
+    if opts.with_devices:
+        update_devices(opts)
 
 def update_all(opts):
     """Updates all menus"""
     update_applications(opts)
     update_bookmarks(opts)
     update_recent_files(opts)
+    update_devices(opts)
     update_rootmenu(opts)
     
 def update_applications(opts):
@@ -87,6 +90,16 @@ def update_recent_files(opts):
     with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
+def update_devices(opts):
+    from uxm.parsers.devices import Parser
+    parser = Parser(opts.formatter)
+    data = parser.parse_devices()
+    fmt = formatter.get_formatter(opts.formatter)
+    output = fmt.format_menu(data)
+    menu_cache = get_menu_cache(opts.formatter, 'devices')
+    with open(menu_cache, 'w+') as fp:
+        fp.write(output)
+
 def update_rootmenu(opts):
     from uxm.parsers.rootmenu import Parser
     parser = Parser()
@@ -108,6 +121,22 @@ def clear_cache(opts):
 def clear_recent_files(opts):
     os.remove(config.RECENT_FILES_FILE) 
     update_recent_files(opts)
+
+def device_mount(opts, dev):
+    import uxm.udisks
+    uxm.udisks.mount(dev)
+
+def device_unmount(opts, dev):
+    import uxm.udisks
+    uxm.udisks.unmount(dev)
+
+def device_open(opts, dev):
+    import uxm.udisks
+    device = uxm.udisks.mount(dev)
+    cfg = config.get()
+    fm = cfg.get('General', 'filemanager');
+    cmd = [fm, device.mount_paths[0].encode('utf-8')]
+    subprocess.call(cmd)
 
 def options_from_config(opts):
     if (not opts.with_applications and not opts.with_bookmarks and

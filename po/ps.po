@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "ټاکل شوی ډکون نادرول"
+
+msgid "Mount the selected volume"
+msgstr "ټاکل شوی ډکون درول"
+
+msgid "Clear List"
+msgstr "لړ پاکول"
+
+msgid "Generate"
+msgstr "جوړول"
+
 msgid "Menu"
 msgstr "غورنۍ"
 
@@ -7,12 +19,9 @@ msgstr "غوراوي"
 msgid "Refresh"
 msgstr "تاندول"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "پرانيستل"
-
-msgid "Clear List"
-msgstr "لړ پاکول"
-
-msgid "Generate"
-msgstr "جوړول"
 

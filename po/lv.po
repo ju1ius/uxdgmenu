@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Atmontēt izvēlēto sējumu"
+
 msgid "Clear cache"
 msgstr "Attīrīt kešu"
+
+msgid "Mount the selected volume"
+msgstr "Montēt izvēlēto sējumu"
+
+msgid "Clear List"
+msgstr "Attīrīt sarakstu"
+
+msgid "Generate"
+msgstr "Ģenerēt"
 
 msgid "Menu"
 msgstr "Izvēlne"
@@ -10,12 +22,9 @@ msgstr "Iestatījumi"
 msgid "Refresh"
 msgstr "Atsvaidzināt"
 
+msgid "Devices"
+msgstr "Ierīces"
+
 msgid "Open"
 msgstr "Atvērt"
-
-msgid "Clear List"
-msgstr "Attīrīt sarakstu"
-
-msgid "Generate"
-msgstr "Ģenerēt"
 

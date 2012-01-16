@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr "Fokotša bolumo e kgethilwego"
+
+msgid "Mount the selected volume"
+msgstr "Godiša bolumo e kgethilwego"
+
+msgid "Clear List"
+msgstr "Phumola"
+
 msgid "Menu"
 msgstr "Lelokelelo la dikagare"
 
@@ -7,9 +16,9 @@ msgstr "Tše ratwago"
 msgid "Refresh"
 msgstr "Thoma o tšwelepele"
 
+msgid "Devices"
+msgstr "Ditirelo tšeo di lego go"
+
 msgid "Open"
 msgstr "Bula"
-
-msgid "Clear List"
-msgstr "Phumola"
 

@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr ""
+
+msgid "Mount the selected volume"
+msgstr ""
+
+msgid "Clear List"
+msgstr "Тізімді тазарту"
+
 msgid "Menu"
 msgstr "Орташа"
 
@@ -7,9 +16,9 @@ msgstr "Баптаулар"
 msgid "Refresh"
 msgstr "Жаңарту"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Ашу"
-
-msgid "Clear List"
-msgstr "Тізімді тазарту"
 

@@ -1,3 +1,6 @@
+msgid "Clear List"
+msgstr "depurar"
+
 msgid "Menu"
 msgstr ""
 
@@ -9,7 +12,4 @@ msgstr "Rubor:"
 
 msgid "Open"
 msgstr "Aperir"
-
-msgid "Clear List"
-msgstr "depurar"
 

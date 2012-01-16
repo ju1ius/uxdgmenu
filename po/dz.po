@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "སེལ་འཐུ་འབད་མི་སྐད་ཤུགས་ སྦྱར་བརྩེགས་བཤོལ།"
+
 msgid "Clear cache"
 msgstr "འདྲ་མཛོད་བསལ།"
+
+msgid "Mount the selected volume"
+msgstr "སེལ་འཐུ་འབད་མི་སྐད་ཤུགས་སྦྱར་བརྩེགས་འབད།"
+
+msgid "Clear List"
+msgstr "ཐོ་ཡིག་བསལ།(C)"
+
+msgid "Generate"
+msgstr "བཟོ་བསྐྲུན་འབད།(G)"
 
 msgid "Menu"
 msgstr "དཀར་ཆག"
@@ -10,12 +22,9 @@ msgstr "དགའ་གདམ་ཚུ།(P)"
 msgid "Refresh"
 msgstr "ཡང་སེལ།(R)"
 
+msgid "Devices"
+msgstr "ནང་ལུ་ཞབས་ཏོག"
+
 msgid "Open"
 msgstr "ཁ་ཕྱེ།(O)"
-
-msgid "Clear List"
-msgstr "ཐོ་ཡིག་བསལ།(C)"
-
-msgid "Generate"
-msgstr "བཟོ་བསྐྲུན་འབད།(G)"
 

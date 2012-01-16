@@ -1,3 +1,6 @@
+msgid "Clear List"
+msgstr "Buşat"
+
 msgid "Menu"
 msgstr "Saylaq"
 
@@ -9,7 +12,4 @@ msgstr "Yañart"
 
 msgid "Open"
 msgstr "Açu"
-
-msgid "Clear List"
-msgstr "Buşat"
 

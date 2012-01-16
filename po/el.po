@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Αποπροσάρτηση του επιλεγμένου τόμου"
+
 msgid "Clear cache"
 msgstr "Καθαρισμός μνήμης"
+
+msgid "Mount the selected volume"
+msgstr "Προσάρτηση του επιλεγμένου τόμου"
+
+msgid "Clear List"
+msgstr "Εκκαθάριση λίστας"
+
+msgid "Generate"
+msgstr "Δημιουργία"
 
 msgid "Menu"
 msgstr "Μενού"
@@ -10,12 +22,9 @@ msgstr "Προτιμήσεις"
 msgid "Refresh"
 msgstr "Ανανέωση"
 
+msgid "Devices"
+msgstr "Συσκευές"
+
 msgid "Open"
 msgstr "Άνοιγμα"
-
-msgid "Clear List"
-msgstr "Εκκαθάριση λίστας"
-
-msgid "Generate"
-msgstr "Δημιουργία"
 

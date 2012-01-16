@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "선택한 볼륨을 마운트 해제합니다"
+
 msgid "Clear cache"
 msgstr "캐시 지우기"
+
+msgid "Mount the selected volume"
+msgstr "선택한 볼륨을 마운트합니다"
+
+msgid "Clear List"
+msgstr "목록 지우기(C)"
+
+msgid "Generate"
+msgstr "만들기(G)"
 
 msgid "Menu"
 msgstr "메뉴"
@@ -10,12 +22,9 @@ msgstr "기본 설정(P)"
 msgid "Refresh"
 msgstr "새로 고침(R)"
 
+msgid "Devices"
+msgstr "장치"
+
 msgid "Open"
 msgstr "열기(O)"
-
-msgid "Clear List"
-msgstr "목록 지우기(C)"
-
-msgid "Generate"
-msgstr "만들기(G)"
 

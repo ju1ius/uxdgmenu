@@ -16,6 +16,7 @@ ROOT_MENU =   os.path.join(config.CACHE_DIR, 'rootmenu.pckl')
 APPS_MENU =   os.path.join(config.CACHE_DIR, 'applications.pckl')
 BOOK_MENU =   os.path.join(config.CACHE_DIR, 'bookmarks.pckl')
 RECENT_MENU = os.path.join(config.CACHE_DIR, 'recent-files.pckl')
+DEVICES_MENU = os.path.join(config.CACHE_DIR, 'devices.pckl')
 
 def clear_cache():
     for f in [ROOT_MENU, APPS_MENU, BOOK_MENU, RECENT_MENU]:
@@ -139,6 +140,8 @@ class Menu(gtk.Menu):
                 self.load_places_menu()
             elif name == 'uxm-recent-files':
                 self.load_submenu(item, RECENT_MENU)
+            elif name == 'uxm-devices':
+                self.load_submenu(item, DEVICES_MENU)
             elif name == 'uxm-menu':
                 self.load_uxm_menu(item)
             elif name == 'uxm-wm-config':

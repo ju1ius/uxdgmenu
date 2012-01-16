@@ -362,7 +362,7 @@ uxm_udisks_worker(UxmSharedData *data)
                                          &error);
   if (proxy == NULL)
   {
-    g_printerr("Error creating proxy: %s\n", error->message);
+    syslog(LOG_ERR, "Error creating proxy: %s", error->message);
     g_error_free(error);
     goto out;
   }

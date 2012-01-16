@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Irrota valittu asema"
+
 msgid "Clear cache"
 msgstr "Tyhjennä välimuisti"
+
+msgid "Mount the selected volume"
+msgstr "Liitä valittu asema"
+
+msgid "Clear List"
+msgstr "Tyhjennä luettelo"
+
+msgid "Generate"
+msgstr "Luo"
 
 msgid "Menu"
 msgstr "Valikko"
@@ -10,12 +22,9 @@ msgstr "Asetukset"
 msgid "Refresh"
 msgstr "Päivitä"
 
+msgid "Devices"
+msgstr "Laitteet"
+
 msgid "Open"
 msgstr "Avaa"
-
-msgid "Clear List"
-msgstr "Tyhjennä luettelo"
-
-msgid "Generate"
-msgstr "Luo"
 

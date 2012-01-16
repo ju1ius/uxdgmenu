@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "Hlisa umthamo"
+
+msgid "Mount the selected volume"
+msgstr "Nyusa umthamo okhethiweyo"
+
+msgid "Clear List"
+msgstr "Cima"
+
+msgid "Generate"
+msgstr "Yenza"
+
 msgid "Menu"
 msgstr "Imenyu"
 
@@ -7,12 +19,9 @@ msgstr "Okukhethayo"
 msgid "Refresh"
 msgstr "Hlaziya"
 
+msgid "Devices"
+msgstr "Iinkonzo kwi"
+
 msgid "Open"
 msgstr "Vula"
-
-msgid "Clear List"
-msgstr "Cima"
-
-msgid "Generate"
-msgstr "Yenza"
 

@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "निवडलेला खंड अनारोहीत करा"
+
 msgid "Clear cache"
 msgstr "कॅशे पुसा"
+
+msgid "Mount the selected volume"
+msgstr "निवडलेला खंड आरोहीत करा"
+
+msgid "Clear List"
+msgstr "यादी साफ करा(C)"
+
+msgid "Generate"
+msgstr "बनवा"
 
 msgid "Menu"
 msgstr "मेनू"
@@ -10,12 +22,9 @@ msgstr "आवड निवड"
 msgid "Refresh"
 msgstr "पुन्ह दाखल करा"
 
+msgid "Devices"
+msgstr "उपकरण"
+
 msgid "Open"
 msgstr "उघडा"
-
-msgid "Clear List"
-msgstr "यादी साफ करा(C)"
-
-msgid "Generate"
-msgstr "बनवा"
 

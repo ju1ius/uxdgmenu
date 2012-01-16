@@ -1,0 +1,9 @@
+msgid "Unmount the selected volume"
+msgstr "Cire maunt ga ƙarfin muryar da aka zaɓa"
+
+msgid "Mount the selected volume"
+msgstr "Yi maunt ga ƙarfin muryar da aka zaɓa"
+
+msgid "Devices"
+msgstr "Ayuka na cikin"
+

@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr ""
+
+msgid "Mount the selected volume"
+msgstr ""
+
+msgid "Clear List"
+msgstr "Glan Liosta"
+
+msgid "Generate"
+msgstr "Gin"
+
 msgid "Menu"
 msgstr "Roghchlár"
 
@@ -7,12 +19,9 @@ msgstr "Sainroghanna"
 msgid "Refresh"
 msgstr "Athnuaigh"
 
+msgid "Devices"
+msgstr "Gléasanna"
+
 msgid "Open"
 msgstr "Oscail"
-
-msgid "Clear List"
-msgstr "Glan Liosta"
-
-msgid "Generate"
-msgstr "Gin"
 

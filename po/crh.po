@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr "Seçilen sistemi ayır"
+
+msgid "Mount the selected volume"
+msgstr "Seçilen sistemi bağla"
+
+msgid "Clear List"
+msgstr "Listeni Temizle"
+
 msgid "Menu"
 msgstr "Menü"
 
@@ -7,9 +16,9 @@ msgstr "Tercihler"
 msgid "Refresh"
 msgstr "Tazert"
 
+msgid "Devices"
+msgstr ""
+
 msgid "Open"
 msgstr "Aç"
-
-msgid "Clear List"
-msgstr "Listeni Temizle"
 

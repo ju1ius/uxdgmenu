@@ -1,3 +1,15 @@
+msgid "Unmount the selected volume"
+msgstr "Сонгосон хуваалтыг салгах"
+
+msgid "Mount the selected volume"
+msgstr "Сонгосон хуваалтыг залгах"
+
+msgid "Clear List"
+msgstr "Цэвэрлэх"
+
+msgid "Generate"
+msgstr "Ерөнхий"
+
 msgid "Menu"
 msgstr "Цэс"
 
@@ -7,12 +19,9 @@ msgstr "Тохируулгууд"
 msgid "Refresh"
 msgstr "Сэргээх"
 
+msgid "Devices"
+msgstr "Үйлчилгээ"
+
 msgid "Open"
 msgstr "Нээх"
-
-msgid "Clear List"
-msgstr "Цэвэрлэх"
-
-msgid "Generate"
-msgstr "Ерөнхий"
 

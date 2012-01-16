@@ -1,3 +1,6 @@
+msgid "Clear List"
+msgstr "vunzae lutaangulu"
+
 msgid "Menu"
 msgstr "katikati"
 
@@ -9,7 +12,4 @@ msgstr "vutukila"
 
 msgid "Open"
 msgstr "ziezula"
-
-msgid "Clear List"
-msgstr "vunzae lutaangulu"
 

@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "ବଚ୍ଛିତ ଆକାରକୁ ବିସ୍ଥାପନ କରନ୍ତୁ"
+
 msgid "Clear cache"
 msgstr "ପରିଷ୍କାର କ୍ୟାଶେ"
+
+msgid "Mount the selected volume"
+msgstr "ବଚ୍ଛିତ ଆକରାକୁ ସ୍ଥାପନ କରନ୍ତୁ"
+
+msgid "Clear List"
+msgstr "ତାଲିକାକୁ ସଫା କରନ୍ତୁ"
+
+msgid "Generate"
+msgstr "ସ୍ରୁଷ୍ଟି କରନ୍ତୁ"
 
 msgid "Menu"
 msgstr "ତାଲିକା"
@@ -10,12 +22,9 @@ msgstr "ପସନ୍ଦ"
 msgid "Refresh"
 msgstr "ସତେଜିତ କରନ୍ତୁ"
 
+msgid "Devices"
+msgstr "ଉପକରଣଗୁଡ଼ିକ"
+
 msgid "Open"
 msgstr "ଖୋଲନ୍ତୁ"
-
-msgid "Clear List"
-msgstr "ତାଲିକାକୁ ସଫା କରନ୍ତୁ"
-
-msgid "Generate"
-msgstr "ସ୍ରୁଷ୍ଟି କରନ୍ତୁ"
 

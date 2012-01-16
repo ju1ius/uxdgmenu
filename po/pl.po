@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "Odmontowuje wybrany wolumin"
+
 msgid "Clear cache"
 msgstr ""
+
+msgid "Mount the selected volume"
+msgstr "Montuje wybrany wolumin"
+
+msgid "Clear List"
+msgstr "Wyczyść listę"
+
+msgid "Generate"
+msgstr "Utworzenie"
 
 msgid "Menu"
 msgstr "Menu"
@@ -10,12 +22,9 @@ msgstr "Preferencje"
 msgid "Refresh"
 msgstr "Odśwież"
 
+msgid "Devices"
+msgstr "Urządzenia"
+
 msgid "Open"
 msgstr "Otwórz"
-
-msgid "Clear List"
-msgstr "Wyczyść listę"
-
-msgid "Generate"
-msgstr "Utworzenie"
 

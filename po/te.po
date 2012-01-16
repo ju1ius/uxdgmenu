@@ -1,5 +1,17 @@
+msgid "Unmount the selected volume"
+msgstr "ఎంచుకున్న సంపుటమును అన్‌మౌంటుచేయి"
+
 msgid "Clear cache"
 msgstr "క్యాచీను శుభ్రముచేయి"
+
+msgid "Mount the selected volume"
+msgstr "ఎంచుకున్న సంపుటమును మౌంటుచేయి"
+
+msgid "Clear List"
+msgstr "జాబితాను శుభ్రంచేయి"
+
+msgid "Generate"
+msgstr "జనియింపచేయుము"
 
 msgid "Menu"
 msgstr "జాబితా"
@@ -10,12 +22,9 @@ msgstr "ప్రాధాన్యతలు"
 msgid "Refresh"
 msgstr "తాజాపరుచు"
 
+msgid "Devices"
+msgstr "పరికరాలు"
+
 msgid "Open"
 msgstr "తెరవు"
-
-msgid "Clear List"
-msgstr "జాబితాను శుభ్రంచేయి"
-
-msgid "Generate"
-msgstr "జనియింపచేయుము"
 

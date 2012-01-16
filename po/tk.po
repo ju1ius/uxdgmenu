@@ -1,3 +1,12 @@
+msgid "Unmount the selected volume"
+msgstr "Saýlanan hejmi baglamadan aýyr"
+
+msgid "Mount the selected volume"
+msgstr "Saýlanan hejmi bagla"
+
+msgid "Clear List"
+msgstr "Durla"
+
 msgid "Menu"
 msgstr ""
 
@@ -7,9 +16,9 @@ msgstr "Seçenekler"
 msgid "Refresh"
 msgstr "Ýene Ýükle"
 
+msgid "Devices"
+msgstr "Web Servisler"
+
 msgid "Open"
 msgstr "Aç"
-
-msgid "Clear List"
-msgstr "Durla"
 

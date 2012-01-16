@@ -58,6 +58,10 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
             data['command'] = "cat %s/recent-files.openbox" % (
                 config.CACHE_DIR)
             return self.format_pipemenu(data, level)
+        elif id == 'uxm-devices':
+            data['command'] = "cat %s/devices.openbox" % (
+                config.CACHE_DIR)
+            return self.format_pipemenu(data, level)
         elif id == 'uxm-wm-config':
             return self.format_wm_menu(data, level)
         elif id == 'uxm-menu':
