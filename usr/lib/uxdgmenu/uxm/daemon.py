@@ -12,24 +12,30 @@ def start(opts):
     opts = options_from_config(opts)
     stop(opts)
     update(opts)
-    cmd = [config.APP_WATCH, 'start', '-D']
+    cmd = [config.APP_WATCH, 'start']
+    cmd_flags = "-D"
     # Apps
     if opts.with_applications:
-        cmd.append('-a')
+        cmd_flags += 'a'
+        #cmd.append('-a')
     # Gtk Bookmarks
     if opts.with_bookmarks:
-        cmd.append('-b')
+        cmd_flags += 'b'
+        #cmd.append('-b')
     # Recent Files
     if opts.with_recent_files:
-        cmd.append('-r')
+        cmd_flags += 'r'
+        #cmd.append('-r')
     # Devices
     if opts.with_devices:
-        cmd.append('-d')
+        cmd_flags += 'd'
+        #cmd.append('-d')
     # Log events
     if opts.verbose:
-        cmd.append('-v')
+        cmd_flags += 'v'
+        #cmd.append('-v')
     # Formatter
-    cmd.extend(['-f', opts.formatter])
+    cmd.extend([cmd_flags, '-f', opts.formatter])
 
     if opts.verbose:
         print "Starting daemon..."
@@ -138,20 +144,6 @@ def device_open(dev):
     cmd = [fm, device.mount_paths[0].encode('utf-8')]
     subprocess.call(cmd)
 
-def options_from_config(opts):
-    if (not opts.with_applications and not opts.with_bookmarks and
-            not opts.with_recent_files):
-        cfg = config.get()
-        opts.with_applications = cfg.getboolean(
-            'Daemon', 'monitor_applications'
-        )
-        opts.with_bookmarks = cfg.getboolean(
-            'Daemon', 'monitor_bookmarks'
-        )
-        opts.with_recent_files = cfg.getboolean(
-            'Daemon', 'monitor_recent_files'
-        )
-    return opts
 
 def debug_config(opts):
     print config.to_string()
@@ -177,6 +169,13 @@ def debug_recent_files(opts):
     data = parser.parse_bookmarks()
     pprint(data)
 
+def debug_devices(opts):
+    from pprint import pprint
+    from uxm.parsers.devices import Parser
+    parser = Parser()
+    data = parser.parse_devices()
+    pprint(data)
+
 def debug_rootmenu(opts):
     from pprint import pprint
     from uxm.parsers.rootmenu import Parser
@@ -187,5 +186,17 @@ def debug_rootmenu(opts):
 ######################################
 # Utilities
 #
+def options_from_config(opts):
+    """When no flags from the command line, fetch config values"""
+    if (not opts.with_applications and not opts.with_bookmarks and
+            not opts.with_recent_files and not opts.with_devices):
+        cfg = config.get()
+        for p in ['applications','bookmarks','recent_files','devices']:
+            setattr(
+                opts, "with_%s" % p,
+                cfg.getboolean('Daemon', "monitor_%s" % p)
+            )
+    return opts
+
 def get_menu_cache(fmt, menu_file):
     return os.path.join(config.CACHE_DIR, '%s.%s' % (menu_file, fmt.lower()))

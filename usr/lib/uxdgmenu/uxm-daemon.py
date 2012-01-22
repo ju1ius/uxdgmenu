@@ -58,6 +58,7 @@ if __name__ == '__main__':
   debug:applications    Outputs a representation of the parsed data
   debug:bookmarks
   debug:recent-files
+  debug:devices
   debug:rootmenu
 
 """
@@ -108,6 +109,8 @@ Defaults to 'uxm-applications.menu'"""
         import time
         start_t = time.clock()
 
+    ns = None
+    action = None
     command = args[0].split(':')
 
     if len(command) == 1:
@@ -129,13 +132,18 @@ Defaults to 'uxm-applications.menu'"""
     except:
         die()
 
-    if ns == "device":
-        options = args[1]
+    use_progress = options.progress
 
-    if options.progress:
-        progress_dialog("", action, options)
+    if ns == "device":
+        if options.progress:
+            progress_dialog("", action, args[1])
+        else:
+            action(args[1])
     else:
-        action(options)
+        if options.progress:
+            progress_dialog("", action, options)
+        else:
+            action(options)
 
     if options.verbose:
         end_t = time.clock()

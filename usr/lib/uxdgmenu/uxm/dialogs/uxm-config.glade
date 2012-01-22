@@ -1204,7 +1204,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="spacing">6</property>
                                 <child>
-                                  <object class="GtkCheckButton" id="monitor_apps_cb">
+                                  <object class="GtkCheckButton" id="monitor_applications_cb">
                                     <property name="label" translatable="yes">Monitor applications</property>
                                     <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
@@ -1240,7 +1240,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkCheckButton" id="monitor_recent_cb">
+                                  <object class="GtkCheckButton" id="monitor_recent_files_cb">
                                     <property name="label" translatable="yes">Monitor recent files</property>
                                     <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
