@@ -122,8 +122,9 @@ int main(int argc, char **argv)
    *  Core Functionnalities
    ****************************************/
 
-  if(!g_thread_supported())
+  if(!g_thread_supported()) {
     g_thread_init(NULL);
+  }
 
   queue = g_async_queue_new();
 
@@ -147,7 +148,6 @@ int main(int argc, char **argv)
       syslog(LOG_ERR, "Error: %s\n", error->message );
       exit(EXIT_FAILURE);
     }
-    g_thread_join(udisks_thread);
   }
 
   if(use_inotify) {
@@ -263,8 +263,7 @@ uxm_inotify_worker(UxmSharedData *data)
         syslog(LOG_INFO, "Watching %s", home_dir);
       }                   
     }                     
-    g_free(home_dir);     
-                          
+    g_free(home_dir);                     
   }                       
   /**                     
    * Watch $XDG_DATA_DIR or $HOME
@@ -290,11 +289,10 @@ uxm_inotify_worker(UxmSharedData *data)
         if (verbose) {    
           syslog(LOG_INFO, "Watching %s", recent_files_dir);
         }                 
-      }                   
+      }
       g_free(recent_files_path);
       g_free(recent_files_dir);
-    }                     
-                          
+    }
   }                       
 
   if(!inotifytools_get_num_watches()) {
@@ -393,8 +391,6 @@ uxm_udisks_signal_handler (GDBusProxy *proxy,
 {
   gchar *parameters_str;
   UxmSharedData *data = (UxmSharedData *) user_data;
-
-  g_print("%s\n", signal_name);
 
   if(strcmp(signal_name, "DeviceChanged") == 0) {
     UxmMessage *msg = uxm_msg_new(UXM_MSG_TYPE_DEVICE);
