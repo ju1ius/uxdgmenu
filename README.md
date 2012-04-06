@@ -15,7 +15,7 @@ and comes with a standalone GTK app-launcher and a GUI for configuration.
 Install
 =======
 
-[Debian packages are provided](https://github.com/ju1ius/udxgmenu/downloads),
+[Debian packages are provided](https://github.com/ju1ius/uxdgmenu/downloads),
 but you can also build from source:
 
 Install dependencies:
