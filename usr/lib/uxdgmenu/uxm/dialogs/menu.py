@@ -33,16 +33,20 @@ class GtkFormatter(TreeFormatter):
         self.launch_callback = cb
 
     def _get_item(self, label, icon):
-        pixbuf = gtk.gdk.pixbuf_new_from_file(icon)
-        ick = gtk.IconSet(pixbuf)
-        scaled = ick.render_icon(
-            gtk.Style(),
-            gtk.TEXT_DIR_LTR, gtk.STATE_NORMAL,
-            gtk.ICON_SIZE_MENU, None, None
-        )
-        img = gtk.image_new_from_pixbuf(scaled)
-        item = gtk.ImageMenuItem(stock_id = label)
-        item.set_image(img)
+        try:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(icon)
+            ick = gtk.IconSet(pixbuf)
+            scaled = ick.render_icon(
+                gtk.Style(),
+                gtk.TEXT_DIR_LTR, gtk.STATE_NORMAL,
+                gtk.ICON_SIZE_MENU, None, None
+            )
+            img = gtk.image_new_from_pixbuf(scaled)
+            item = gtk.ImageMenuItem(stock_id = label)
+            item.set_image(img)
+        except:
+            # Icon not found
+            item = gtk.MenuItem(label = label)
         return item
 
     def format_menu(self, data, level=0):
