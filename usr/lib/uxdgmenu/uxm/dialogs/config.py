@@ -170,18 +170,18 @@ class ConfigEditor(object):
         self.builder = builder
 
     def _load_config(self):
-        self.config = config.get()
+        self.prefs = config.preferences()
         # General
         for p in ['filemanager','terminal','open_cmd']:
             getattr(self, "%s_entry" % p).set_text(
-                self.config.get('General', p)
+                self.prefs.get('General', p)
             )
         # Icons
         self.icons_show_cb.set_active(
-            self.config.getboolean('Icons', 'show')        
+            self.prefs.getboolean('Icons', 'show')        
         )
         # ----- get icon size
-        s = self.config.getint('Icons', 'size')
+        s = self.prefs.getint('Icons', 'size')
         if s < 16: s = 16
         # ---------- round to the nearest multiple of 8
         icon_size = utils.round_base(s, 8)
@@ -189,10 +189,10 @@ class ConfigEditor(object):
         self.icons_size_select.set_active((icon_size / 8) - 2)
         # ----- theme
         self.use_gtk_theme_cb.set_active(
-            self.config.getboolean('Icons', 'use_gtk_theme')        
+            self.prefs.getboolean('Icons', 'use_gtk_theme')        
         )
         self.icons_theme_entry.set_text(
-            self.config.get('Icons', 'theme')        
+            self.prefs.get('Icons', 'theme')        
         )
         self.icons_theme_entry.set_sensitive(
             not self.use_gtk_theme_cb.get_active()
@@ -201,37 +201,37 @@ class ConfigEditor(object):
         for d in ['application','folder','file','bookmark','internal_drive',
                     'optical_drive','removable_drive','mount','unmount']:
             attr = getattr(self, 'icons_default_%s_entry' % d)
-            attr.set_text(self.config.get('Icons', d))
+            attr.set_text(self.prefs.get('Icons', d))
 
         # Menus
         # ----- apps
         for f in self._get_menus_list():
             self.menu_file_list.append_text(f)
         self.menu_file_list.set_active_text(
-            self.config.get('Applications', 'menu_file')        
+            self.prefs.get('Applications', 'menu_file')        
         )
         self.menus_apps_show_all_cb.set_active(
-            self.config.getboolean('Applications', 'show_all')        
+            self.prefs.getboolean('Applications', 'show_all')        
         )
         self.menus_apps_as_submenu_cb.set_active(
-            self.config.getboolean('Applications', 'as_submenu')        
+            self.prefs.getboolean('Applications', 'as_submenu')        
         )
         # ----- recent
         self.menus_recent_files_max_items_btn.set_value(
-            self.config.getint('Recent Files', 'max_items')        
+            self.prefs.getint('Recent Files', 'max_items')        
         )
         # ----- places
         self.menus_places_start_dir_chooser_btn.set_current_folder(
-            os.path.expanduser(self.config.get('Places', 'start_dir'))
+            os.path.expanduser(self.prefs.get('Places', 'start_dir'))
         )
         self.menus_places_show_files_cb.set_active(
-            self.config.getboolean('Places', 'show_files')        
+            self.prefs.getboolean('Places', 'show_files')        
         )
 
         # Daemon
         for a in ['applications','bookmarks','recent_files','devices']:
             getattr(self, 'monitor_%s_cb' % a).set_active(
-                self.config.getboolean('Daemon', 'monitor_%s' % a)            
+                self.prefs.getboolean('Daemon', 'monitor_%s' % a)            
             )
         for f in self._get_formatters_list():
             self.formatters_list.append_text(f)
@@ -239,47 +239,47 @@ class ConfigEditor(object):
     def _gather_data(self):
         # General
         for p in ['filemanager','terminal','open_cmd']:
-            self.config.set(
+            self.prefs.set(
                 'General', p,
                 getattr(self, "%s_entry" % p).get_text()
             )
         # Icons
         show_icons = self.icons_show_cb.get_active()
-        self.config.set('Icons', 'show', str(show_icons).lower())
+        self.prefs.set('Icons', 'show', str(show_icons).lower())
         size = self.icons_size_select.get_active_text()
-        self.config.set('Icons', 'size', size)
+        self.prefs.set('Icons', 'size', size)
         use_gtk_theme = self.use_gtk_theme_cb.get_active()
-        self.config.set('Icons', 'use_gtk_theme', str(use_gtk_theme).lower())
+        self.prefs.set('Icons', 'use_gtk_theme', str(use_gtk_theme).lower())
         theme = self.icons_theme_entry.get_text()
-        self.config.set('Icons', 'theme', theme)
+        self.prefs.set('Icons', 'theme', theme)
         # ----- defaults
         for d in ['application','folder','file','bookmark','internal_drive',
                     'optical_drive','removable_drive','mount','unmount']:
             attr = getattr(self, 'icons_default_%s_entry' % d)
-            self.config.set('Icons', d, attr.get_text())
-            attr.set_text(self.config.get('Icons', d))
+            self.prefs.set('Icons', d, attr.get_text())
+            attr.set_text(self.prefs.get('Icons', d))
 
         # Menus
         # ----- apps
         menu_file = self.menu_file_list.get_active_text()
-        self.config.set('Applications', 'menu_file', menu_file)
+        self.prefs.set('Applications', 'menu_file', menu_file)
         show_all = self.menus_apps_show_all_cb.get_active()
-        self.config.set('Applications', 'show_all', str(show_all).lower())
+        self.prefs.set('Applications', 'show_all', str(show_all).lower())
         as_submenu = self.menus_apps_as_submenu_cb.get_active()
-        self.config.set('Applications', 'as_submenu', str(as_submenu).lower())
+        self.prefs.set('Applications', 'as_submenu', str(as_submenu).lower())
         # ----- recent
         max_items = self.menus_recent_files_max_items_btn.get_value()
-        self.config.set('Recent Files', 'max_items', int(max_items))
+        self.prefs.set('Recent Files', 'max_items', int(max_items))
         # ----- places
         start_dir = self.menus_places_start_dir_chooser_btn.get_filename()
-        self.config.set('Places', 'start_dir', start_dir)
+        self.prefs.set('Places', 'start_dir', start_dir)
         show_files = self.menus_places_show_files_cb.get_active()
-        self.config.set('Places', 'show_files', str(show_files).lower())
+        self.prefs.set('Places', 'show_files', str(show_files).lower())
 
         # Daemon
         for a in ['applications','bookmarks','recent_files','devices']:
             val = getattr(self, "monitor_%s_cb" % a).get_active()
-            self.config.set('Daemon', 'monitor_%s' % a, str(val).lower())
+            self.prefs.set('Daemon', 'monitor_%s' % a, str(val).lower())
 
     def open(self):
         self.window.show_all()
@@ -349,7 +349,7 @@ class ConfigEditor(object):
     def on_save(self, widget, data=None):
         self._gather_data()
         with open(config.USER_CONFIG_FILE, 'w') as fp:
-            self.config.write(fp)
+            self.prefs.write(fp)
             self.save_btn.set_sensitive(False)
 
     def on_daemon_status_change(self, monitor, status):

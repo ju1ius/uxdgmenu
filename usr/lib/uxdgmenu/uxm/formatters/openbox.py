@@ -47,20 +47,20 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
     def format_submenu(self, data, level=0):
         id = data['id']
         if id == 'uxm-applications':
-            data['command'] = "cat %s/uxm-applications.menu.openbox" % (
-                config.CACHE_DIR)
+            data['command'] = "cat %s.openbox" % (
+                config.APPS_CACHE)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-bookmarks':
-            data['command'] = "cat %s/bookmarks.openbox" % (
-                config.CACHE_DIR)
+            data['command'] = "cat %s.openbox" % (
+                config.BOOKMARKS_CACHE)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-recent-files':
-            data['command'] = "cat %s/recent-files.openbox" % (
-                config.CACHE_DIR)
+            data['command'] = "cat %s.openbox" % (
+                config.RECENT_FILES_CACHE)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-devices':
-            data['command'] = "cat %s/devices.openbox" % (
-                config.CACHE_DIR)
+            data['command'] = "cat %s.openbox" % (
+                config.DEVICES_CACHE)
             return self.format_pipemenu(data, level)
         elif id == 'uxm-wm-config':
             return self.format_wm_menu(data, level)

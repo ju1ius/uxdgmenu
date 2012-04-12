@@ -22,7 +22,7 @@ class Parser(parser.BaseParser):
     def __init__(self):
         super(Parser, self).__init__()
         self.exe_regex = re.compile(r"'(.*) %[a-zA-Z]'")
-        self.max_items = self.config.getint("Recent Files", "max_items")
+        self.max_items = self.preferences.getint("Recent Files", "max_items")
         if self.show_icons:
             self.clear_icon = self.icon_finder.find_by_name('gtk-clear')
         else:

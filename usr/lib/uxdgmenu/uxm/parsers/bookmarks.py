@@ -6,9 +6,9 @@ class Parser(parser.BaseParser):
 
     def __init__(self):
         super(Parser, self).__init__()
-        self.file_manager = self.config.get("General", "filemanager")
+        self.file_manager = self.preferences.get("General", "filemanager")
         if self.show_icons:
-            icon = self.config.get("Icons", "bookmark")
+            icon = self.preferences.get("Icons", "bookmark")
             self.bookmark_icon = self.icon_finder.find_by_name(icon)
         else:
             self.bookmark_icon = ''

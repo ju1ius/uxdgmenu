@@ -10,11 +10,11 @@ class Parser(parser.BaseParser):
     def __init__(self, formatter="pckl"):
         super(Parser, self).__init__()
         self.formatter = formatter
-        self.file_manager = self.config.get('General', 'filemanager')
+        self.file_manager = self.preferences.get('General', 'filemanager')
         if self.show_icons:
             for name in ['folder','internal_drive','optical_drive',
                         'removable_drive', 'mount','unmount']:
-                icn_cfg = self.config.get('Icons', name)
+                icn_cfg = self.preferences.get('Icons', name)
                 icn = self.icon_finder.find_by_name(icn_cfg)
                 setattr(self, "%s_icn" % name, icn)
 

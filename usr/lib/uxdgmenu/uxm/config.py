@@ -20,7 +20,7 @@ class OptionParser(optparse.OptionParser):
     def format_epilog(self, formatter):
         return "\n%s\n" % self.expand_prog_name(self.epilog)
 
-def get():
+def preferences():
     """Returns the config parser"""
     return __parser
 
@@ -68,6 +68,16 @@ def get_recent_files_path():
     return os.path.join(xdg.BaseDirectory.xdg_data_home, 'recently-used.xbel')
 
 
+def guess_wm():
+    formatters = set()
+    for path in PLUGINS_DIRS:
+        for f in os.listdir(path):
+            if os.path.isfile(f) and f.endswith('.py'):
+                name,_ = os.path.splitext(os.path.basename(f))
+                formatters.add(name)
+    for formatter in formatters:
+        if utils.pgrep(formatter, user=os.environ['USER']):
+            return formatter
 
 #########################################################
 #                                                       #
@@ -104,12 +114,15 @@ SYSTEM_CONFIG_FILE = os.path.join(SYSCONFDIR, PKG_NAME, 'menu.conf')
 USER_CONFIG_FILE = os.path.join(CONFIG_DIR, 'menu.conf')
 
 CACHE_DB = os.path.join(CACHE_DIR, 'cache.db')
-MENU_CACHE = os.path.join(CACHE_DIR, 'applications')
+APPS_CACHE = os.path.join(CACHE_DIR, 'applications')
 BOOKMARKS_CACHE = os.path.join(CACHE_DIR, 'bookmarks')
 RECENT_FILES_CACHE = os.path.join(CACHE_DIR, 'recent-files')
+DEVICES_CACHE = os.path.join(CACHE_DIR, 'devices')
+ROOTMENU_CACHE = os.path.join(CACHE_DIR, 'rootmenu')
 
 PLUGINS_DIRS = [d for d in xdg.BaseDirectory.load_data_paths(PKG_NAME,'formatters')]
 PLUGINS_DIRS.append(os.path.join(os.path.dirname(__file__), "formatters"))
+
 
 DEFAULT_CONFIG = """
 [General]

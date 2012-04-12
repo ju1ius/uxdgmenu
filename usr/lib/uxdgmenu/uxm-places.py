@@ -20,7 +20,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     if len(args) < 1:
-        start_dir = uxm.config.get().get('Places', 'start_dir')
+        start_dir = uxm.config.preferences().get('Places', 'start_dir')
     else:
         start_dir = args[0]
 

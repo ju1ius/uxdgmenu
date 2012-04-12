@@ -11,8 +11,8 @@ class Parser(parser.BaseParser):
     def __init__(self, formatter="pckl"):
         super(Parser, self).__init__()
         self.formatter = formatter
-        self.file_manager = self.config.get('General', 'filemanager')
-        self.open_cmd = self.config.get('General', 'open_cmd')
+        self.file_manager = self.preferences.get('General', 'filemanager')
+        self.open_cmd = self.preferences.get('General', 'open_cmd')
         self.folder_icon = ''
         if self.show_icons:
             self.folder_icon = self.icon_finder.find_by_mime_type('inode/directory').encode('utf-8')

@@ -5,8 +5,8 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
 
     def __init__(self):
         super(FluxboxFormatter, self).__init__()
-        self.config = config.get()
-        self.apps_as_submenu = self.config.get('Applications', 'as_submenu')
+        self.preferences = config.preferences()
+        self.apps_as_submenu = self.preferences.get('Applications', 'as_submenu')
 
     def escape_label(self, label):
         return label.replace('(', ':: ').replace(')', ' ::')
@@ -71,22 +71,22 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
         }
 
     def format_applications_menu(self, data, level=0):
-        cache = "%s/applications.fluxbox" % config.CACHE_DIR
+        cache = "%s.fluxbox" % config.APPS_CACHE
         include = self.format_include(cache, data)
         if not self.apps_as_submenu:
             return include
         return self.format_include_submenu(cache, data, level)
 
     def format_bookmarks_menu(self, data, level=0):
-        cache = "%s/bookmarks.fluxbox" % config.CACHE_DIR
+        cache = "%s.fluxbox" % config.BOOKMARKS_CACHE
         return self.format_include_submenu(cache, data, level)
 
     def format_recent_files_menu(self, data, level=0):
-        cache = "%s/recent-files.fluxbox" % config.CACHE_DIR
+        cache = "%s.fluxbox" % config.RECENT_FILES_CACHE
         return self.format_include_submenu(cache, data, level)
 
     def format_devices_menu(self, data, level=0):
-        cache = "%s/devices.fluxbox" % config.CACHE_DIR
+        cache = "%s.fluxbox" % config.DEVICES_CACHE
         return self.format_include_submenu(cache, data, level)
 
     def format_include_submenu(self, filepath, data, level=0):

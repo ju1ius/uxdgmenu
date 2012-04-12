@@ -1,11 +1,16 @@
+release v0.4
+
 menus:
   compatibility with gnome categories, implies renaming of .directory files
+icons:
+  compatibility with GTK3 themes
 
 GUI menu editor:
   fork alacarte ???
 
 l10n for config editor...
 
-update wiki...
+update wiki:
+  howto debugging
 
 unit tests...

@@ -17,23 +17,18 @@ def start(opts):
     # Apps
     if opts.with_applications:
         cmd_flags += 'a'
-        #cmd.append('-a')
     # Gtk Bookmarks
     if opts.with_bookmarks:
         cmd_flags += 'b'
-        #cmd.append('-b')
     # Recent Files
     if opts.with_recent_files:
         cmd_flags += 'r'
-        #cmd.append('-r')
     # Devices
     if opts.with_devices:
         cmd_flags += 'd'
-        #cmd.append('-d')
     # Log events
     if opts.verbose:
         cmd_flags += 'v'
-        #cmd.append('-v')
     # Formatter
     cmd.extend([cmd_flags, '-f', opts.formatter])
 
@@ -72,7 +67,7 @@ def update_applications(opts):
     data = parser.parse_menu_file(opts.menu_file)
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    menu_cache = get_menu_cache(opts.formatter, 'applications')
+    menu_cache = get_menu_cache(opts.formatter, config.APPS_CACHE)
     with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
@@ -82,7 +77,7 @@ def update_bookmarks(opts):
     data = parser.parse_bookmarks()
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    menu_cache = get_menu_cache(opts.formatter, 'bookmarks')
+    menu_cache = get_menu_cache(opts.formatter, config.BOOKMARKS_CACHE)
     with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
@@ -92,7 +87,7 @@ def update_recent_files(opts):
     data = parser.parse_bookmarks()
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    menu_cache = get_menu_cache(opts.formatter, 'recent-files')
+    menu_cache = get_menu_cache(opts.formatter, config.RECENT_FILES_CACHE)
     with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
@@ -102,7 +97,7 @@ def update_devices(opts):
     data = parser.parse_devices()
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_menu(data)
-    menu_cache = get_menu_cache(opts.formatter, 'devices')
+    menu_cache = get_menu_cache(opts.formatter, config.DEVICES_CACHE)
     with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
@@ -112,7 +107,7 @@ def update_rootmenu(opts):
     data = parser.parse_menu_file(config.ROOTMENU_FILE)
     fmt = formatter.get_formatter(opts.formatter)
     output = fmt.format_rootmenu(data)
-    menu_cache = get_menu_cache(opts.formatter, 'rootmenu')
+    menu_cache = get_menu_cache(opts.formatter, config.ROOTMENU_CACHE)
     with open(menu_cache, 'w+') as fp:
         fp.write(output)
 
@@ -139,8 +134,7 @@ def device_unmount(dev):
 def device_open(dev):
     import uxm.udisks
     device = uxm.udisks.mount(dev)
-    cfg = config.get()
-    fm = cfg.get('General', 'filemanager');
+    fm = config.preferences().get('General', 'filemanager');
     cmd = [fm, device.mount_paths[0].encode('utf-8')]
     subprocess.call(cmd)
 
@@ -190,13 +184,13 @@ def options_from_config(opts):
     """When no flags from the command line, fetch config values"""
     if (not opts.with_applications and not opts.with_bookmarks and
             not opts.with_recent_files and not opts.with_devices):
-        cfg = config.get()
+        prefs = config.preferences()
         for p in ['applications','bookmarks','recent_files','devices']:
             setattr(
                 opts, "with_%s" % p,
-                cfg.getboolean('Daemon', "monitor_%s" % p)
+                prefs.getboolean('Daemon', "monitor_%s" % p)
             )
     return opts
 
-def get_menu_cache(fmt, menu_file):
-    return os.path.join(config.CACHE_DIR, '%s.%s' % (menu_file, fmt.lower()))
+def get_menu_cache(fmt, cache_file):
+    return '%s.%s' % (cache_file, fmt.lower())

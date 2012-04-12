@@ -12,11 +12,11 @@ from uxm.formatter import TreeFormatter
 import uxm.dialogs.error
 
 
-ROOT_MENU =   os.path.join(config.CACHE_DIR, 'rootmenu.pckl')
-APPS_MENU =   os.path.join(config.CACHE_DIR, 'applications.pckl')
-BOOK_MENU =   os.path.join(config.CACHE_DIR, 'bookmarks.pckl')
-RECENT_MENU = os.path.join(config.CACHE_DIR, 'recent-files.pckl')
-DEVICES_MENU = os.path.join(config.CACHE_DIR, 'devices.pckl')
+ROOT_MENU =   '%s.pckl' % config.ROOTMENU_CACHE
+APPS_MENU =   '%s.pckl' % config.APPS_CACHE
+BOOK_MENU =   '%s.pckl' % config.BOOKMARKS_CACHE
+RECENT_MENU = '%s.pckl' % config.RECENT_FILES_CACHE
+DEVICES_MENU ='%s.pckl' % config.DEVICES_CACHE
 
 def clear_cache():
     for f in [ROOT_MENU, APPS_MENU, BOOK_MENU, RECENT_MENU]:
@@ -89,10 +89,10 @@ class Menu(gtk.Menu):
     def __init__(self):
         super(Menu, self).__init__()
         self.standalone = False
-        self.applications_menu_file = config.MENU_FILE
+        self.apps_menu_file = config.MENU_FILE
 
-        self.config = config.get()
-        self.apps_as_submenu = self.config.getboolean('Applications', 'as_submenu')
+        self.preferences = config.preferences()
+        self.apps_as_submenu = self.preferences.getboolean('Applications', 'as_submenu')
 
         self.formatter = GtkFormatter()
         self.formatter.set_launch_callback(self.exec_command)
@@ -100,7 +100,7 @@ class Menu(gtk.Menu):
         self.path_cache = {}
 
     def set_applications_menu_file(self,filename):
-        self.applications_menu_file = filename
+        self.apps_menu_file = filename
 
     def open(self):
         gtk.gdk.threads_init()
@@ -223,7 +223,7 @@ class Menu(gtk.Menu):
             import uxm.dialogs.progress as progress
             class Options:
                 formatter = 'pckl'
-                menu_file = self.applications_menu_file
+                menu_file = self.apps_menu_file
             progress.indeterminate(
                 "Generating menus", daemon.update_all, Options()
             )
