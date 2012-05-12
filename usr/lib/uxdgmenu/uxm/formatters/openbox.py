@@ -131,8 +131,8 @@ class OpenboxFormatter(uxm.formatter.TreeFormatter):
 %(i)s  </item>
 %(i)s</menu>""" % {
             "i": self.indent(level),
-            "name": data['label'],
-            "icon": data['icon'],
+            "name": quoteattr(data['label']),
+            "icon": quoteattr(data['icon']),
             "update": "Update menus",
             "regen": "Regenerate rootmenu",
             'clear': "Clear cache"

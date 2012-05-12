@@ -122,7 +122,7 @@ class FluxboxFormatter(uxm.formatter.TreeFormatter):
 %(i)s  [exec] (%(clear)s) { uxm-daemon clear:cache -p -f fluxbox }
 %(i)s[end]""" % {
             "i": self.indent(level),
-            "name": data['label'],
+            "name": self.escape_label(data['label']),
             "icon": data['icon'],
             "update": "Update menus",
             "regen": "Regenerate rootmenu",
