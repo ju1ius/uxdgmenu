@@ -47,7 +47,7 @@ class Parser(parser.BaseParser):
         ])
         return {
             "type": "menu",
-            "label": "Recent Files",
+            "label": "Recently Used",
             "id": "uxdgmenu-recent-files",
             "icon": "",
             "items": items

@@ -11,6 +11,7 @@ if __name__ == "__main__":
         "_preferences": 'gtk+',
         "_clear list": "gtk+",
         "_open": "gtk+",
+        "recently used": "gtk+",
         "clear cache": "epiphany-extensions",
         "Mount the selected volume": "nautilus",
         "Unmount the selected volume": "nautilus",

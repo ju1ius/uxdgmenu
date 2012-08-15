@@ -21,7 +21,7 @@ static int uxm_stop_event = 0;
  * MAIN
  **/
 int main(int argc, char **argv)
-{
+{/*{{{*/
   int next_option;
   /* list of short options */
   const char *short_options = "abrdDvf:";
@@ -176,7 +176,7 @@ int main(int argc, char **argv)
   uxm_cleanup();
 
   return 0;
-}
+}/*}}}*/
 
 /**
  * Functions
@@ -184,7 +184,7 @@ int main(int argc, char **argv)
 
 static int
 uxm_inotify_worker(UxmSharedData *data)
-{
+{/*{{{*/
   /* log message */
   char msg_buf[256];
 
@@ -335,11 +335,11 @@ uxm_inotify_worker(UxmSharedData *data)
     g_free(recent_files_name);
     g_async_queue_unref(data->queue);
   return 0;
-}
+}/*}}}*/
 
 static int
 uxm_udisks_worker(UxmSharedData *data)
-{
+{/*{{{*/
   GMainContext *context = NULL;
   GDBusProxy *proxy = NULL;
   GError *error = NULL;
@@ -380,7 +380,7 @@ uxm_udisks_worker(UxmSharedData *data)
     g_main_context_unref(context);
 
   return 0; 
-}
+}/*}}}*/
 
 static void
 uxm_udisks_signal_handler (GDBusProxy *proxy,
@@ -388,7 +388,7 @@ uxm_udisks_signal_handler (GDBusProxy *proxy,
                             gchar      *signal_name,
                             GVariant   *parameters,
                             gpointer    user_data)
-{
+{/*{{{*/
   gchar *parameters_str;
   UxmSharedData *data = (UxmSharedData *) user_data;
 
@@ -403,11 +403,11 @@ uxm_udisks_signal_handler (GDBusProxy *proxy,
     }
     g_async_queue_push(data->queue, msg);
   }
-}
+}/*}}}*/
 
 static int
 uxm_monitor_listener(UxmSharedData *data)
-{
+{/*{{{*/
   UxmMessage *msg;
   gint l;
   int types = 0;
@@ -462,13 +462,13 @@ uxm_monitor_listener(UxmSharedData *data)
 
   g_async_queue_unref(data->queue);
   return 0;
-}
+}/*}}}*/
 
 static UxmSharedData *
 uxm_shared_data_new(GAsyncQueue *queue,
                     int flags,
                     char *formatter)
-{
+{/*{{{*/
   UxmSharedData *data = (UxmSharedData*) g_malloc(sizeof(UxmSharedData));
   if(!data) {
     g_printf("Could not allocate %d bytes for UxmSharedData\n", (int)sizeof(UxmSharedData));
@@ -478,11 +478,11 @@ uxm_shared_data_new(GAsyncQueue *queue,
   data->flags = flags;
   data->formatter = formatter;
   return data;
-}
+}/*}}}*/
 
 UxmMessage *
 uxm_msg_new(UxmMessageType type)
-{
+{/*{{{*/
   UxmMessage *msg = (UxmMessage*) g_malloc(sizeof(UxmMessage));
   if(!msg) {
     g_printf("Could not allocate %d bytes for UxmMessage\n", (int)sizeof(UxmMessage));
@@ -490,7 +490,7 @@ uxm_msg_new(UxmMessageType type)
   }
   msg->type = type;
   return msg;
-}
+}/*}}}*/
 
 static void
 uxm_msg_dispatch(GAsyncQueue *queue,
@@ -498,34 +498,34 @@ uxm_msg_dispatch(GAsyncQueue *queue,
                   UxmMessageType type,
                   char *msg_buf,
                   int verbose)
-{
+{/*{{{*/
   UxmMessage *msg = uxm_msg_new(type);
   if (verbose) {
     inotifytools_snprintf(msg_buf, 256, event, "%T %e %w%f\n");
     msg->data = g_strdup(msg_buf);
   }
   g_async_queue_push(queue, msg);
-}
+}/*}}}*/
 
 static void 
 uxm_cleanup(void)
-{
+{/*{{{*/
   syslog(LOG_INFO, "Exiting...");
   closelog();
-}
+}/*}}}*/
 
 static void
 uxm_signal_handler(int signum)
-{
+{/*{{{*/
   (void) signum;
   uxm_stop_event = 1;
   uxm_cleanup();
   exit(0);
-}
+}/*}}}*/
 
 static GSList *
 uxm_get_monitored_directories(void)
-{
+{/*{{{*/
   const gchar* const *data_dirs = g_get_system_data_dirs();
   const gchar* const *config_dirs = g_get_system_config_dirs();
   const gchar* user_data_dir = g_get_user_data_dir();
@@ -558,11 +558,11 @@ uxm_get_monitored_directories(void)
   if(uxm_path_is_dir(path)) monitored = g_slist_prepend(monitored, path);
 
   return monitored;
-}
+}/*}}}*/
 
 static void
 uxm_gslist_free_full(GSList *list)
-{
+{/*{{{*/
   if(!GLIB_CHECK_VERSION(2,28,0)) {
     GSList *iter;
     for(iter = list; iter; iter = iter->next) {
@@ -572,11 +572,11 @@ uxm_gslist_free_full(GSList *list)
   } else {
     g_slist_free_full(list, g_free);
   }
-}
+}/*}}}*/
 
 static gchar *
 uxm_get_recent_files_path(void)
-{
+{/*{{{*/
   const gchar *home_dir = g_get_home_dir();
   const gchar *user_data_dir = g_get_user_data_dir();
   gchar *filepath;
@@ -591,11 +591,11 @@ uxm_get_recent_files_path(void)
     return filepath;
   }
   return NULL;
-}
+}/*}}}*/
 
 static gboolean
 uxm_path_is_dir(const gchar *path)
-{
+{/*{{{*/
   struct stat stat_buf;
 
   if(path == NULL || stat(path, &stat_buf) == -1) {
@@ -605,13 +605,13 @@ uxm_path_is_dir(const gchar *path)
     return TRUE;
   }
   return FALSE;
-}
+}/*}}}*/
 
 static gchar *
 uxm_path_ensure_trailing_slash(const gchar * path)
-{
+{/*{{{*/
   if(!g_str_has_suffix("/", path)){
     return g_strconcat(path, "/", NULL);
   }
   return g_strdup(path);
-}
+}/*}}}*/

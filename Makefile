@@ -13,9 +13,10 @@ SRC     := src/uxdgmenud.c
 all: uxdgmenud locale
 
 uxdgmenud:
+	mkdir -p usr/bin
 	# add -g -O0 flags for debugging,
 	# along with "ulimit -c unlimited" in the debugging console session
-	$(CC) $(SRC) -o $(EXEC) $(LDFLAGS) $(CFLAGS) -g -O0
+	$(CC) $(SRC) -o $(EXEC) $(LDFLAGS) $(CFLAGS)
 
 locale:
 	./scripts/make-locale.sh

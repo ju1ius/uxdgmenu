@@ -13,6 +13,7 @@ class Parser(parser.BaseParser):
     def parse_config(self):
         super(Parser, self).parse_config()
         show_all = self.preferences.getboolean('Applications', 'show_all')
+        self.show_flags = adapters.NONE
         if show_all:
             self.show_flags = adapters.SHOW_EMPTY
         self.terminal_emulator = self.preferences.get('General', 'terminal')
