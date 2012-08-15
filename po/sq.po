@@ -1,7 +1,10 @@
-msgid "Unmount the selected volume"
-msgstr "Zmonton volumin e zgjedhur"
-
 msgid "Clear cache"
+msgstr ""
+
+msgid "Refresh"
+msgstr "Rifresko"
+
+msgid "Devices"
 msgstr ""
 
 msgid "Mount the selected volume"
@@ -13,18 +16,18 @@ msgstr "Pastro listën"
 msgid "Generate"
 msgstr "Gjenero"
 
-msgid "Menu"
-msgstr "Menu"
+msgid "Open"
+msgstr "Hap"
+
+msgid "menu"
+msgstr "Nënmenu"
 
 msgid "Preferences"
 msgstr "Preferimet"
 
-msgid "Refresh"
-msgstr "Rifresko"
+msgid "Recently Used"
+msgstr "Përdorur së fundmi"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "Hap"
+msgid "Unmount the selected volume"
+msgstr "Zmonton volumin e zgjedhur"
 

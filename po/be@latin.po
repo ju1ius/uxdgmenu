@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Admantoŭvaje abrany masiŭ"
+msgid "Refresh"
+msgstr "Abnavi"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "Mantuje abrany masiŭ"
@@ -10,18 +13,18 @@ msgstr "Vyčyść śpis"
 msgid "Generate"
 msgstr "Zhieneruj"
 
-msgid "Menu"
-msgstr "Menu"
+msgid "Open"
+msgstr "Adčyni"
+
+msgid "menu"
+msgstr "Submenu"
 
 msgid "Preferences"
 msgstr "Nałady"
 
-msgid "Refresh"
-msgstr "Abnavi"
+msgid "Recently Used"
+msgstr "Niadaŭna ŭžyvanyja"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "Adčyni"
+msgid "Unmount the selected volume"
+msgstr "Admantoŭvaje abrany masiŭ"
 

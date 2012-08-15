@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Desmontar el volume esbilláu"
+msgid "Refresh"
+msgstr "Anovar"
+
+msgid "Devices"
+msgstr "Preseos"
 
 msgid "Mount the selected volume"
 msgstr "Montar el volume esbilláu"
@@ -10,18 +13,18 @@ msgstr "Llimpiar llista"
 msgid "Generate"
 msgstr "Xenerar"
 
-msgid "Menu"
-msgstr "Menú"
+msgid "Open"
+msgstr "Abrir"
+
+msgid "menu"
+msgstr "Submenú"
 
 msgid "Preferences"
 msgstr "Preferencies"
 
-msgid "Refresh"
-msgstr "Anovar"
+msgid "Recently Used"
+msgstr "Usaos recientemente"
 
-msgid "Devices"
-msgstr "Preseos"
-
-msgid "Open"
-msgstr "Abrir"
+msgid "Unmount the selected volume"
+msgstr "Desmontar el volume esbilláu"
 

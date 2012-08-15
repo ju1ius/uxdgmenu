@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "เลิกเมานท์โวลุมที่เลือก"
-
 msgid "Clear cache"
 msgstr "ล้างแคช"
+
+msgid "Refresh"
+msgstr "เรียกใหม่"
+
+msgid "Devices"
+msgstr "อุปกรณ์"
 
 msgid "Mount the selected volume"
 msgstr "เมานท์โวลุมที่เลือก"
@@ -13,18 +16,18 @@ msgstr "ล้างรายการ"
 msgid "Generate"
 msgstr "สุ่ม"
 
-msgid "Menu"
+msgid "Open"
+msgstr "เปิด"
+
+msgid "menu"
 msgstr ""
 
 msgid "Preferences"
 msgstr "ปรับแต่ง"
 
-msgid "Refresh"
-msgstr "เรียกใหม่"
+msgid "Recently Used"
+msgstr "เอกสารล่าสุด"
 
-msgid "Devices"
-msgstr "อุปกรณ์"
-
-msgid "Open"
-msgstr "เปิด"
+msgid "Unmount the selected volume"
+msgstr "เลิกเมานท์โวลุมที่เลือก"
 

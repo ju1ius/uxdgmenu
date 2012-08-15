@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Avmonter det valde datalageret"
+msgid "Refresh"
+msgstr "Oppfrisk"
+
+msgid "Devices"
+msgstr "Einingar"
 
 msgid "Mount the selected volume"
 msgstr "Monter det valde volumet"
@@ -10,18 +13,18 @@ msgstr "Tøm lista"
 msgid "Generate"
 msgstr "Opprett"
 
-msgid "Menu"
-msgstr "Meny"
+msgid "Open"
+msgstr "Opna"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Innstillingar"
 
-msgid "Refresh"
-msgstr "Oppfrisk"
+msgid "Recently Used"
+msgstr "Sist brukt"
 
-msgid "Devices"
-msgstr "Einingar"
-
-msgid "Open"
-msgstr "Opna"
+msgid "Unmount the selected volume"
+msgstr "Avmonter det valde datalageret"
 

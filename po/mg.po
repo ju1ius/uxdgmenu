@@ -1,5 +1,5 @@
-msgid "Unmount the selected volume"
-msgstr "Mandatsaka ilay kapila voafaritra"
+msgid "Devices"
+msgstr "Sampan'asa anaty"
 
 msgid "Mount the selected volume"
 msgstr "Mampakatra ilay kapila voafaritra"
@@ -7,6 +7,6 @@ msgstr "Mampakatra ilay kapila voafaritra"
 msgid "Generate"
 msgstr "Hamorona"
 
-msgid "Devices"
-msgstr "Sampan'asa anaty"
+msgid "Unmount the selected volume"
+msgstr "Mandatsaka ilay kapila voafaritra"
 

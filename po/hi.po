@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "चयनित वॉल्यूम अनमाउण्ट करें"
+msgid "Refresh"
+msgstr "ताज़ा करें"
+
+msgid "Devices"
+msgstr "उपकरण"
 
 msgid "Mount the selected volume"
 msgstr "चयनित वॉल्यूम माउण्ट करें"
@@ -10,18 +13,18 @@ msgstr "सूची साफ करें"
 msgid "Generate"
 msgstr "उत्पन्न करें"
 
-msgid "Menu"
-msgstr "मेनू"
+msgid "Open"
+msgstr "खोलें"
+
+msgid "menu"
+msgstr "उप मेन्यू"
 
 msgid "Preferences"
 msgstr "वरीयता"
 
-msgid "Refresh"
-msgstr "ताज़ा करें"
+msgid "Recently Used"
+msgstr "हाल में प्रयुक्त"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "खोलें"
+msgid "Unmount the selected volume"
+msgstr "चयनित वॉल्यूम अनमाउण्ट करें"
 

@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Tanlangan disk qismini uzish"
+msgid "Refresh"
+msgstr "Yangilash"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "Tanlangan disk qismini ulash"
@@ -7,18 +10,18 @@ msgstr "Tanlangan disk qismini ulash"
 msgid "Clear List"
 msgstr "Roʻyxatni tozalash"
 
-msgid "Menu"
-msgstr "Menyu"
+msgid "Open"
+msgstr "Ochish"
+
+msgid "menu"
+msgstr "Quyi menyu"
 
 msgid "Preferences"
 msgstr "Parametrlar"
 
-msgid "Refresh"
-msgstr "Yangilash"
+msgid "Recently Used"
+msgstr "Yaqinda ishlatilganlar"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "Ochish"
+msgid "Unmount the selected volume"
+msgstr "Tanlangan disk qismini uzish"
 

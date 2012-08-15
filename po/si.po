@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "තෝරාගත් පරිමාව අස්ථාපනය කරන්න"
+msgid "Refresh"
+msgstr "ප්‍රබෝධ කරීම"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "තෝරාගත් පරීමාව ස්ථාපනය කරන්න"
@@ -10,18 +13,18 @@ msgstr "ලැයිස්තුව පැහැදිලි කරන්න"
 msgid "Generate"
 msgstr "ජනනය"
 
-msgid "Menu"
-msgstr "මෙනුව"
+msgid "Open"
+msgstr "විවෘත කරන්න"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "අභිප්‍රේත"
 
-msgid "Refresh"
-msgstr "ප්‍රබෝධ කරීම"
+msgid "Recently Used"
+msgstr "මැතකදි භාවිතා කළ"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "විවෘත කරන්න"
+msgid "Unmount the selected volume"
+msgstr "තෝරාගත් පරිමාව අස්ථාපනය කරන්න"
 

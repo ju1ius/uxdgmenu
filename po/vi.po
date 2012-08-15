@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Tháo gắn kết khối tin đã chọn"
-
 msgid "Clear cache"
 msgstr "Xoá bộ nhớ tạm"
+
+msgid "Refresh"
+msgstr "Cập nhật"
+
+msgid "Devices"
+msgstr "Thiết bị"
 
 msgid "Mount the selected volume"
 msgstr "Gắn kết khối tin được chọn"
@@ -13,18 +16,18 @@ msgstr "Xóa danh sách"
 msgid "Generate"
 msgstr "Tạo ra"
 
-msgid "Menu"
-msgstr "Trình đơn"
+msgid "Open"
+msgstr "Mở"
+
+msgid "menu"
+msgstr "Trình đơn con"
 
 msgid "Preferences"
 msgstr "Tùy thích"
 
-msgid "Refresh"
-msgstr "Cập nhật"
+msgid "Recently Used"
+msgstr "Vừa dùng"
 
-msgid "Devices"
-msgstr "Thiết bị"
-
-msgid "Open"
-msgstr "Mở"
+msgid "Unmount the selected volume"
+msgstr "Tháo gắn kết khối tin đã chọn"
 

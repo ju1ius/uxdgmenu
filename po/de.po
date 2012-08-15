@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Den gewählten Datenträger aushängen"
-
 msgid "Clear cache"
 msgstr "Zwischenspeicher leeren"
+
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+msgid "Devices"
+msgstr "Geräte"
 
 msgid "Mount the selected volume"
 msgstr "Den gewählten Datenträger einhängen"
@@ -13,18 +16,18 @@ msgstr "Liste leeren"
 msgid "Generate"
 msgstr "Erzeugen"
 
-msgid "Menu"
-msgstr "Menü"
+msgid "Open"
+msgstr "Öffnen"
+
+msgid "menu"
+msgstr "Untermenü"
 
 msgid "Preferences"
 msgstr "Einstellungen"
 
-msgid "Refresh"
-msgstr "Aktualisieren"
+msgid "Recently Used"
+msgstr "Zuletzt verwendet"
 
-msgid "Devices"
-msgstr "Geräte"
-
-msgid "Open"
-msgstr "Öffnen"
+msgid "Unmount the selected volume"
+msgstr "Den gewählten Datenträger aushängen"
 

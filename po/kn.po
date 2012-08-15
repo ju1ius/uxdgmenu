@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "ಆರಿಸಲಾದ ಪರಿಮಾಣವನ್ನು ಅವರೋಹಿಸು"
-
 msgid "Clear cache"
 msgstr "ಕ್ಯಾಶೆಯನ್ನು ಅಳಿಸಿಹಾಕು"
+
+msgid "Refresh"
+msgstr "ಪುನಶ್ಚೇತನಗೊಳಿಸು(R)"
+
+msgid "Devices"
+msgstr "ಸಾಧನಗಳು"
 
 msgid "Mount the selected volume"
 msgstr "ಆರಿಸಲಾದ ಪರಿಮಾಣವನ್ನು ಅವರೋಹಿಸು"
@@ -13,18 +16,18 @@ msgstr "ಪಟ್ಟಿಯನ್ನು ಅಳಿಸಿಹಾಕು(C)"
 msgid "Generate"
 msgstr "ಉತ್ಪಾದಿಸು(G)"
 
-msgid "Menu"
-msgstr "ಅಂಶ ಪಟ್ಟಿ"
+msgid "Open"
+msgstr "ತೆರೆ(O)"
+
+msgid "menu"
+msgstr "ಉಪಪರಿವಿಡಿ"
 
 msgid "Preferences"
 msgstr "ಆದ್ಯತೆಗಳು(P)"
 
-msgid "Refresh"
-msgstr "ಪುನಶ್ಚೇತನಗೊಳಿಸು(R)"
+msgid "Recently Used"
+msgstr "ಇತ್ತೀಚೆಗೆ ಬಳಸಲ್ಪಟ್ಟ"
 
-msgid "Devices"
-msgstr "ಸಾಧನಗಳು"
-
-msgid "Open"
-msgstr "ತೆರೆ(O)"
+msgid "Unmount the selected volume"
+msgstr "ಆರಿಸಲಾದ ಪರಿಮಾಣವನ್ನು ಅವರೋಹಿಸು"
 

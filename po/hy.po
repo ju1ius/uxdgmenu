@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Անջատել ընտրված հատորը"
+msgid "Refresh"
+msgstr ""
+
+msgid "Devices"
+msgstr "Ծառայություններ"
 
 msgid "Mount the selected volume"
 msgstr "Միացնել ընտրված հատորը"
@@ -7,18 +10,18 @@ msgstr "Միացնել ընտրված հատորը"
 msgid "Clear List"
 msgstr "Մաքրել ցուցակը"
 
-msgid "Menu"
-msgstr "Մենյու"
+msgid "Open"
+msgstr "Բացել Հղումը"
+
+msgid "menu"
+msgstr "Ենթամենյու"
 
 msgid "Preferences"
 msgstr ""
 
-msgid "Refresh"
-msgstr ""
+msgid "Recently Used"
+msgstr "Վերջերս օգտագործված"
 
-msgid "Devices"
-msgstr "Ծառայություններ"
-
-msgid "Open"
-msgstr "Բացել Հղումը"
+msgid "Unmount the selected volume"
+msgstr "Անջատել ընտրված հատորը"
 

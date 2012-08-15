@@ -1,15 +1,18 @@
+msgid "Refresh"
+msgstr "vutukila"
+
 msgid "Clear List"
 msgstr "vunzae lutaangulu"
 
-msgid "Menu"
-msgstr "katikati"
+msgid "Open"
+msgstr "ziezula"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "nkalulu"
 
-msgid "Refresh"
-msgstr "vutukila"
-
-msgid "Open"
-msgstr "ziezula"
+msgid "Recently Used"
+msgstr "biampa"
 

@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "चयन गरिएको भोल्युम अनमाउन्ट गर्नुहोस्"
-
 msgid "Clear cache"
 msgstr "क्यास खाली गर्नुहोस्"
+
+msgid "Refresh"
+msgstr "ताजा पार्नुहोस्"
+
+msgid "Devices"
+msgstr "यसमा सेवाहरू"
 
 msgid "Mount the selected volume"
 msgstr "चयन गरिएको भोल्युम माउण्ट गर्नुहोस्"
@@ -13,18 +16,18 @@ msgstr "खाली गर्नुहोस्"
 msgid "Generate"
 msgstr "जेनरेट गर्नुहोस्"
 
-msgid "Menu"
-msgstr "मेनु"
+msgid "Open"
+msgstr "खोल्नुहोस्"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "प्राथमिकताहरू"
 
-msgid "Refresh"
-msgstr "ताजा पार्नुहोस्"
+msgid "Recently Used"
+msgstr ""
 
-msgid "Devices"
-msgstr "यसमा सेवाहरू"
-
-msgid "Open"
-msgstr "खोल्नुहोस्"
+msgid "Unmount the selected volume"
+msgstr "चयन गरिएको भोल्युम अनमाउन्ट गर्नुहोस्"
 

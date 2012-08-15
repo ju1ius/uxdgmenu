@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Valitud kettaseadme lahtihaakimine"
+msgid "Refresh"
+msgstr "Värskenda"
+
+msgid "Devices"
+msgstr "Seadmed"
 
 msgid "Mount the selected volume"
 msgstr "Valitud kettaseadme haakimine"
@@ -10,18 +13,18 @@ msgstr "Tühjenda loend"
 msgid "Generate"
 msgstr "Genereeri"
 
-msgid "Menu"
-msgstr "Menüü"
+msgid "Open"
+msgstr "Ava"
+
+msgid "menu"
+msgstr "Alammenüü"
 
 msgid "Preferences"
 msgstr "Eelistused"
 
-msgid "Refresh"
-msgstr "Värskenda"
+msgid "Recently Used"
+msgstr "Viimati kasutatud"
 
-msgid "Devices"
-msgstr "Seadmed"
-
-msgid "Open"
-msgstr "Ava"
+msgid "Unmount the selected volume"
+msgstr "Valitud kettaseadme lahtihaakimine"
 

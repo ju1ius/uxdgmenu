@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Byahiswemo Igice"
-
 msgid "Clear cache"
 msgstr "ububikoremezo y'Ubwihisho"
+
+msgid "Refresh"
+msgstr "Kugira gishya"
+
+msgid "Devices"
+msgstr "in"
 
 msgid "Mount the selected volume"
 msgstr "Byahiswemo Igice"
@@ -13,18 +16,18 @@ msgstr "Gusiba"
 msgid "Generate"
 msgstr ""
 
-msgid "Menu"
-msgstr "ibikubiyemo"
+msgid "Open"
+msgstr "Gufungura"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Ibyahiswemo"
 
-msgid "Refresh"
-msgstr "Kugira gishya"
+msgid "Recently Used"
+msgstr ""
 
-msgid "Devices"
-msgstr "in"
-
-msgid "Open"
-msgstr "Gufungura"
+msgid "Unmount the selected volume"
+msgstr "Byahiswemo Igice"
 

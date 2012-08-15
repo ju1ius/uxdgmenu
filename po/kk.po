@@ -1,24 +1,27 @@
-msgid "Unmount the selected volume"
-msgstr ""
-
-msgid "Mount the selected volume"
-msgstr ""
-
-msgid "Clear List"
-msgstr "Тізімді тазарту"
-
-msgid "Menu"
-msgstr "Орташа"
-
-msgid "Preferences"
-msgstr "Баптаулар"
-
 msgid "Refresh"
 msgstr "Жаңарту"
 
 msgid "Devices"
-msgstr ""
+msgstr "Құрылғылар"
+
+msgid "Mount the selected volume"
+msgstr "Таңдалған бөлімді тіркеу"
+
+msgid "Clear List"
+msgstr "Тізімді тазарту"
 
 msgid "Open"
 msgstr "Ашу"
+
+msgid "menu"
+msgstr ""
+
+msgid "Preferences"
+msgstr "Баптаулар"
+
+msgid "Recently Used"
+msgstr "Соңғы қолданылған"
+
+msgid "Unmount the selected volume"
+msgstr "Таңдалған бөлімді тіркеуден шығару"
 

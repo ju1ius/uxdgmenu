@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Демонтирај ја избраната јачина"
+msgid "Refresh"
+msgstr "Освежи"
+
+msgid "Devices"
+msgstr "Уреди"
 
 msgid "Mount the selected volume"
 msgstr "Монтирај го означениот уред (партиција)"
@@ -10,18 +13,18 @@ msgstr "Исчисти ја листата"
 msgid "Generate"
 msgstr "Генерирај"
 
-msgid "Menu"
-msgstr "Мени"
+msgid "Open"
+msgstr "Отвори"
+
+msgid "menu"
+msgstr "Подмени"
 
 msgid "Preferences"
 msgstr "Преференци"
 
-msgid "Refresh"
-msgstr "Освежи"
+msgid "Recently Used"
+msgstr "Скорешно користени"
 
-msgid "Devices"
-msgstr "Уреди"
-
-msgid "Open"
-msgstr "Отвори"
+msgid "Unmount the selected volume"
+msgstr "Демонтирај ја избраната јачина"
 

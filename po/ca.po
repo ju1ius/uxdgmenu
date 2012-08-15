@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Desmunta el volum seleccionat"
-
 msgid "Clear cache"
 msgstr "Buida la memòria cau"
+
+msgid "Refresh"
+msgstr "Actualitza"
+
+msgid "Devices"
+msgstr "Dispositius"
 
 msgid "Mount the selected volume"
 msgstr "Munta el volum seleccionat"
@@ -13,18 +16,18 @@ msgstr "Neteja la llista"
 msgid "Generate"
 msgstr "Genera"
 
-msgid "Menu"
-msgstr "Menú"
+msgid "Open"
+msgstr "Obre"
+
+msgid "menu"
+msgstr "Submenú"
 
 msgid "Preferences"
 msgstr "Preferències"
 
-msgid "Refresh"
-msgstr "Actualitza"
+msgid "Recently Used"
+msgstr "Utilitzats recentment"
 
-msgid "Devices"
-msgstr "Dispositius"
-
-msgid "Open"
-msgstr "Obre"
+msgid "Unmount the selected volume"
+msgstr "Desmunta el volum seleccionat"
 

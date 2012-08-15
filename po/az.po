@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Seçili sürücünü ayır"
+msgid "Refresh"
+msgstr "Yenilə"
+
+msgid "Devices"
+msgstr "Xidmətlər"
 
 msgid "Mount the selected volume"
 msgstr "Seçili sürücünü bağla"
@@ -10,18 +13,18 @@ msgstr "Təmizlə"
 msgid "Generate"
 msgstr "Ümumi"
 
-msgid "Menu"
-msgstr "Menü"
+msgid "Open"
+msgstr "Aç"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Seçimlər"
 
-msgid "Refresh"
-msgstr "Yenilə"
+msgid "Recently Used"
+msgstr ""
 
-msgid "Devices"
-msgstr "Xidmətlər"
-
-msgid "Open"
-msgstr "Aç"
+msgid "Unmount the selected volume"
+msgstr "Seçili sürücünü ayır"
 

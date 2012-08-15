@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Avmonter valgt volum"
-
 msgid "Clear cache"
 msgstr ""
+
+msgid "Refresh"
+msgstr "Oppdater"
+
+msgid "Devices"
+msgstr "Enheter"
 
 msgid "Mount the selected volume"
 msgstr "Monter valgt volum"
@@ -13,18 +16,18 @@ msgstr "Tøm listen"
 msgid "Generate"
 msgstr "Generer"
 
-msgid "Menu"
-msgstr "Meny"
+msgid "Open"
+msgstr "Åpne"
+
+msgid "menu"
+msgstr "Undermeny"
 
 msgid "Preferences"
 msgstr "Brukervalg"
 
-msgid "Refresh"
-msgstr "Oppdater"
+msgid "Recently Used"
+msgstr "Sist brukt"
 
-msgid "Devices"
-msgstr "Enheter"
-
-msgid "Open"
-msgstr "Åpne"
+msgid "Unmount the selected volume"
+msgstr "Avmonter valgt volum"
 

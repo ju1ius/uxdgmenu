@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "ניתוק הכרך הנבחר"
-
 msgid "Clear cache"
 msgstr "נקה מטמון"
+
+msgid "Refresh"
+msgstr "רענון"
+
+msgid "Devices"
+msgstr "התקנים"
 
 msgid "Mount the selected volume"
 msgstr "עיגון הכרך הנבחר"
@@ -13,18 +16,18 @@ msgstr "פינוי הרשימה"
 msgid "Generate"
 msgstr "יצירה"
 
-msgid "Menu"
-msgstr "Menu"
+msgid "Open"
+msgstr "פתיחה"
+
+msgid "menu"
+msgstr "Submenu"
 
 msgid "Preferences"
 msgstr "העדפות"
 
-msgid "Refresh"
-msgstr "רענון"
+msgid "Recently Used"
+msgstr "בשימוש לאחרונה"
 
-msgid "Devices"
-msgstr "התקנים"
-
-msgid "Open"
-msgstr "פתיחה"
+msgid "Unmount the selected volume"
+msgstr "ניתוק הכרך הנבחר"
 

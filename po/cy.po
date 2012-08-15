@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Dadosod y gyfrol ddewisedig"
+msgid "Refresh"
+msgstr "Diweddaru"
+
+msgid "Devices"
+msgstr "Gwasanaethau i mewn"
 
 msgid "Mount the selected volume"
 msgstr "Gosod y gyfrol ddewisedig"
@@ -10,18 +13,18 @@ msgstr "Clirio'r Rhestr"
 msgid "Generate"
 msgstr "Creu"
 
-msgid "Menu"
-msgstr "Dewislen"
+msgid "Open"
+msgstr "Agor"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Hoffterau"
 
-msgid "Refresh"
-msgstr "Diweddaru"
+msgid "Recently Used"
+msgstr "Defnyddiwyd yn Ddiweddar"
 
-msgid "Devices"
-msgstr "Gwasanaethau i mewn"
-
-msgid "Open"
-msgstr "Agor"
+msgid "Unmount the selected volume"
+msgstr "Dadosod y gyfrol ddewisedig"
 

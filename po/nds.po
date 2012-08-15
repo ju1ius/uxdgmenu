@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Utwähltes Lööpwark utbinnen"
+msgid "Refresh"
+msgstr "Opfrischen"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "Utwähltes Lööpwark inbinnen"
@@ -10,18 +13,18 @@ msgstr "List opklaren"
 msgid "Generate"
 msgstr ""
 
-msgid "Menu"
-msgstr "Menü"
+msgid "Open"
+msgstr "Opmaken"
+
+msgid "menu"
+msgstr "Unnermenü"
 
 msgid "Preferences"
 msgstr "Instellens"
 
-msgid "Refresh"
-msgstr "Opfrischen"
+msgid "Recently Used"
+msgstr "Tolest brukt"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "Opmaken"
+msgid "Unmount the selected volume"
+msgstr "Utwähltes Lööpwark utbinnen"
 

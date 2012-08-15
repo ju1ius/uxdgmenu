@@ -1,4 +1,7 @@
-msgid "Unmount the selected volume"
+msgid "Refresh"
+msgstr "በድጋሚ ጀምር"
+
+msgid "Devices"
 msgstr ""
 
 msgid "Mount the selected volume"
@@ -10,18 +13,18 @@ msgstr "ሰርዝ"
 msgid "Generate"
 msgstr "አጠቃላይ"
 
-msgid "Menu"
-msgstr "ሜኑ"
+msgid "Open"
+msgstr "ክፈት"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "ምርጫዎች"
 
-msgid "Refresh"
-msgstr "በድጋሚ ጀምር"
-
-msgid "Devices"
+msgid "Recently Used"
 msgstr ""
 
-msgid "Open"
-msgstr "ክፈት"
+msgid "Unmount the selected volume"
+msgstr ""
 

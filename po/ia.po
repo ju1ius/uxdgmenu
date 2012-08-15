@@ -1,15 +1,18 @@
+msgid "Refresh"
+msgstr "Rubor:"
+
 msgid "Clear List"
 msgstr "depurar"
 
-msgid "Menu"
+msgid "Open"
+msgstr "Aperir"
+
+msgid "menu"
 msgstr ""
 
 msgid "Preferences"
 msgstr ""
 
-msgid "Refresh"
-msgstr "Rubor:"
-
-msgid "Open"
-msgstr "Aperir"
+msgid "Recently Used"
+msgstr ""
 

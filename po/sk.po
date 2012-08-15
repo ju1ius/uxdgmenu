@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Odpojí vybraný disk"
-
 msgid "Clear cache"
 msgstr "Pamäťová vyrovnávacia pamäť"
+
+msgid "Refresh"
+msgstr "Obnoviť"
+
+msgid "Devices"
+msgstr "Zariadenia"
 
 msgid "Mount the selected volume"
 msgstr "Pripojí vybraný disk"
@@ -13,18 +16,18 @@ msgstr "Vyčistiť zoznam"
 msgid "Generate"
 msgstr "Vygenerovať"
 
-msgid "Menu"
-msgstr "Ponuka"
+msgid "Open"
+msgstr "Otvoriť"
+
+msgid "menu"
+msgstr "Podponuka"
 
 msgid "Preferences"
 msgstr "Nastavenia"
 
-msgid "Refresh"
-msgstr "Obnoviť"
+msgid "Recently Used"
+msgstr "Nedávno použité"
 
-msgid "Devices"
-msgstr "Zariadenia"
-
-msgid "Open"
-msgstr "Otvoriť"
+msgid "Unmount the selected volume"
+msgstr "Odpojí vybraný disk"
 

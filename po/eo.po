@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Demeti la elektitan datumportilon"
+msgid "Refresh"
+msgstr "Aktualigi"
+
+msgid "Devices"
+msgstr "Aparatoj"
 
 msgid "Mount the selected volume"
 msgstr "Surmeti la elektitan datumportilon"
@@ -10,18 +13,18 @@ msgstr "Vakigi liston"
 msgid "Generate"
 msgstr "Generu"
 
-msgid "Menu"
-msgstr "Menuo"
+msgid "Open"
+msgstr "Malfermi"
+
+msgid "menu"
+msgstr "Submenuo"
 
 msgid "Preferences"
 msgstr "Agordoj"
 
-msgid "Refresh"
-msgstr "Aktualigi"
+msgid "Recently Used"
+msgstr "Lastatempe uzata"
 
-msgid "Devices"
-msgstr "Aparatoj"
-
-msgid "Open"
-msgstr "Malfermi"
+msgid "Unmount the selected volume"
+msgstr "Demeti la elektitan datumportilon"
 

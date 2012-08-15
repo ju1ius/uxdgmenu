@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Unmount 𐑞 𐑕𐑩𐑤𐑧𐑒𐑑𐑩𐑛 𐑝𐑪𐑤𐑿𐑥"
+msgid "Refresh"
+msgstr "𐑮𐑰𐑓𐑮𐑧𐑖"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "𐑥𐑬𐑯𐑑 𐑞 𐑕𐑩𐑤𐑧𐑒𐑑𐑩𐑛 𐑝𐑪𐑤𐑿𐑥"
@@ -10,18 +13,18 @@ msgstr "𐑒𐑤𐑻 𐑤𐑦𐑕𐑑"
 msgid "Generate"
 msgstr "𐑡𐑧𐑯𐑼𐑱𐑑"
 
-msgid "Menu"
-msgstr "𐑥𐑧𐑯𐑿"
+msgid "Open"
+msgstr "𐑴𐑐𐑩𐑯"
+
+msgid "menu"
+msgstr "Submenu"
 
 msgid "Preferences"
 msgstr "𐑐𐑮𐑧𐑓𐑼𐑩𐑯𐑕𐑩𐑟"
 
-msgid "Refresh"
-msgstr "𐑮𐑰𐑓𐑮𐑧𐑖"
+msgid "Recently Used"
+msgstr "𐑮𐑰𐑕𐑩𐑯𐑑𐑤𐑦 𐑿𐑕𐑑"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "𐑴𐑐𐑩𐑯"
+msgid "Unmount the selected volume"
+msgstr "Unmount 𐑞 𐑕𐑩𐑤𐑧𐑒𐑑𐑩𐑛 𐑝𐑪𐑤𐑿𐑥"
 

@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Desmuntatu hautatutako bolumena"
-
 msgid "Clear cache"
 msgstr "Garbitu cache-a"
+
+msgid "Refresh"
+msgstr "Freskatu"
+
+msgid "Devices"
+msgstr "Gailuak"
 
 msgid "Mount the selected volume"
 msgstr "Muntatu hautatutako bolumena"
@@ -13,18 +16,18 @@ msgstr "Garbitu zerrenda"
 msgid "Generate"
 msgstr "Sortu"
 
-msgid "Menu"
-msgstr "Menua"
+msgid "Open"
+msgstr "Ireki"
+
+msgid "menu"
+msgstr "Azpimenua"
 
 msgid "Preferences"
 msgstr "Hobespenak"
 
-msgid "Refresh"
-msgstr "Freskatu"
+msgid "Recently Used"
+msgstr "Duela gutxi erabilita"
 
-msgid "Devices"
-msgstr "Gailuak"
-
-msgid "Open"
-msgstr "Ireki"
+msgid "Unmount the selected volume"
+msgstr "Desmuntatu hautatutako bolumena"
 

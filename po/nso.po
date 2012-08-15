@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Fokotša bolumo e kgethilwego"
+msgid "Refresh"
+msgstr "Thoma o tšwelepele"
+
+msgid "Devices"
+msgstr "Ditirelo tšeo di lego go"
 
 msgid "Mount the selected volume"
 msgstr "Godiša bolumo e kgethilwego"
@@ -7,18 +10,18 @@ msgstr "Godiša bolumo e kgethilwego"
 msgid "Clear List"
 msgstr "Phumola"
 
-msgid "Menu"
-msgstr "Lelokelelo la dikagare"
+msgid "Open"
+msgstr "Bula"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Tše ratwago"
 
-msgid "Refresh"
-msgstr "Thoma o tšwelepele"
+msgid "Recently Used"
+msgstr ""
 
-msgid "Devices"
-msgstr "Ditirelo tšeo di lego go"
-
-msgid "Open"
-msgstr "Bula"
+msgid "Unmount the selected volume"
+msgstr "Fokotša bolumo e kgethilwego"
 

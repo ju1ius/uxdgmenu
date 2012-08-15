@@ -1,4 +1,7 @@
-msgid "Unmount the selected volume"
+msgid "Refresh"
+msgstr "ပြန်နှိုးပါ"
+
+msgid "Devices"
 msgstr ""
 
 msgid "Mount the selected volume"
@@ -10,18 +13,18 @@ msgstr "စာရင်းကို ရှင်းလင်းပါ"
 msgid "Generate"
 msgstr "G စကားဝှက်ထုတ်လုပ်မည်"
 
-msgid "Menu"
-msgstr "စာရင်းမှတ်"
+msgid "Open"
+msgstr "ဖွင့်ပါ"
+
+msgid "menu"
+msgstr "စာရင်းမှတ်ခွဲ"
 
 msgid "Preferences"
 msgstr "ဦးစားပေးချက်များ"
 
-msgid "Refresh"
-msgstr "ပြန်နှိုးပါ"
+msgid "Recently Used"
+msgstr "လတ်တလော သုံးစွဲမှု"
 
-msgid "Devices"
+msgid "Unmount the selected volume"
 msgstr ""
-
-msgid "Open"
-msgstr "ဖွင့်ပါ"
 

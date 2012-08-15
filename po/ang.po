@@ -1,15 +1,18 @@
+msgid "Refresh"
+msgstr ""
+
 msgid "Clear List"
 msgstr ""
 
-msgid "Menu"
+msgid "Open"
+msgstr "Openian"
+
+msgid "menu"
 msgstr ""
 
 msgid "Preferences"
 msgstr ""
 
-msgid "Refresh"
+msgid "Recently Used"
 msgstr ""
-
-msgid "Open"
-msgstr "Openian"
 

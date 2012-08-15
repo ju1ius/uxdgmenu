@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Demontiraj izabrani disk"
+msgid "Refresh"
+msgstr "Osvježi"
+
+msgid "Devices"
+msgstr "Servisi u"
 
 msgid "Mount the selected volume"
 msgstr "Montiraj izabrani disk"
@@ -7,18 +10,18 @@ msgstr "Montiraj izabrani disk"
 msgid "Clear List"
 msgstr "Očisti"
 
-msgid "Menu"
-msgstr "Meni"
+msgid "Open"
+msgstr "Otvori"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Opcije"
 
-msgid "Refresh"
-msgstr "Osvježi"
+msgid "Recently Used"
+msgstr ""
 
-msgid "Devices"
-msgstr "Servisi u"
-
-msgid "Open"
-msgstr "Otvori"
+msgid "Unmount the selected volume"
+msgstr "Demontiraj izabrani disk"
 

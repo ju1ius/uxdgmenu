@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Демонтиране на избраната файлова система"
-
 msgid "Clear cache"
 msgstr "Изчистване на кеша"
+
+msgid "Refresh"
+msgstr "Обновяване"
+
+msgid "Devices"
+msgstr "Устройства"
 
 msgid "Mount the selected volume"
 msgstr "Монтиране на избраната файлова система"
@@ -13,18 +16,18 @@ msgstr "Изчистване на списък"
 msgid "Generate"
 msgstr "Генериране"
 
-msgid "Menu"
-msgstr "Меню"
+msgid "Open"
+msgstr "Отваряне"
+
+msgid "menu"
+msgstr "меню"
 
 msgid "Preferences"
 msgstr "Предпочитания"
 
-msgid "Refresh"
-msgstr "Обновяване"
+msgid "Recently Used"
+msgstr "Скоро отваряни"
 
-msgid "Devices"
-msgstr "Устройства"
-
-msgid "Open"
-msgstr "Отваряне"
+msgid "Unmount the selected volume"
+msgstr "Демонтиране на избраната файлова система"
 

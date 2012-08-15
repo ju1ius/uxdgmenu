@@ -1,9 +1,9 @@
-msgid "Unmount the selected volume"
-msgstr "Dismonte il volum selezionât"
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "Monte il volum selezionât"
 
-msgid "Devices"
-msgstr ""
+msgid "Unmount the selected volume"
+msgstr "Dismonte il volum selezionât"
 

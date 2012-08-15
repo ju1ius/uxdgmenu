@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Pergala ku hatiye hilbijartin veqetîne"
+msgid "Refresh"
+msgstr "Tezekirin"
+
+msgid "Devices"
+msgstr "Amûr"
 
 msgid "Mount the selected volume"
 msgstr "Pergala ku hatiye hilbijartin girê bide"
@@ -10,18 +13,18 @@ msgstr "Lîsteyê Paqij Bike"
 msgid "Generate"
 msgstr "Hilberîne"
 
-msgid "Menu"
-msgstr "Menu"
+msgid "Open"
+msgstr "Vekirin"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Vebijêrk"
 
-msgid "Refresh"
-msgstr "Tezekirin"
+msgid "Recently Used"
+msgstr "Teze Bikaranî"
 
-msgid "Devices"
-msgstr "Amûr"
-
-msgid "Open"
-msgstr "Vekirin"
+msgid "Unmount the selected volume"
+msgstr "Pergala ku hatiye hilbijartin veqetîne"
 

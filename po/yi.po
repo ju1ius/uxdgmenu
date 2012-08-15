@@ -1,4 +1,7 @@
-msgid "Unmount the selected volume"
+msgid "Refresh"
+msgstr "דערהײַנטיק"
+
+msgid "Devices"
 msgstr ""
 
 msgid "Mount the selected volume"
@@ -7,18 +10,18 @@ msgstr ""
 msgid "Clear List"
 msgstr "מעק אָפּ"
 
-msgid "Menu"
-msgstr "מעניו"
+msgid "Open"
+msgstr "עפֿן"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "פּרעפֿערענצן"
 
-msgid "Refresh"
-msgstr "דערהײַנטיק"
-
-msgid "Devices"
+msgid "Recently Used"
 msgstr ""
 
-msgid "Open"
-msgstr "עפֿן"
+msgid "Unmount the selected volume"
+msgstr ""
 

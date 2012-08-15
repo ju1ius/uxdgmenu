@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "চিহ্নিত ভলিউম আন-মাউন্ট করুন"
+msgid "Refresh"
+msgstr "রিফ্রেশ করুন"
+
+msgid "Devices"
+msgstr "ডিভাইস"
 
 msgid "Mount the selected volume"
 msgstr "চিহ্নিত ভলিউমটি মাউন্ট করুন"
@@ -10,18 +13,18 @@ msgstr "তালিকা মুছে ফেলুন"
 msgid "Generate"
 msgstr "তৈরি করুন"
 
-msgid "Menu"
-msgstr "মেনু"
+msgid "Open"
+msgstr "খুলুন"
+
+msgid "menu"
+msgstr "সাব-মেনু"
 
 msgid "Preferences"
 msgstr "পছন্দসমূহ"
 
-msgid "Refresh"
-msgstr "রিফ্রেশ করুন"
+msgid "Recently Used"
+msgstr "সম্প্রতি ব্যবহৃত"
 
-msgid "Devices"
-msgstr "ডিভাইস"
-
-msgid "Open"
-msgstr "খুলুন"
+msgid "Unmount the selected volume"
+msgstr "চিহ্নিত ভলিউম আন-মাউন্ট করুন"
 

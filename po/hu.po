@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "A kijelölt kötet leválasztása"
-
 msgid "Clear cache"
 msgstr "Gyorsítótár törlése"
+
+msgid "Refresh"
+msgstr "Frissítés"
+
+msgid "Devices"
+msgstr "Eszközök"
 
 msgid "Mount the selected volume"
 msgstr "A kijelölt kötet csatolása"
@@ -13,18 +16,18 @@ msgstr "Lista törlése"
 msgid "Generate"
 msgstr "Létrehozás"
 
-msgid "Menu"
-msgstr "Menü"
+msgid "Open"
+msgstr "Megnyitás"
+
+msgid "menu"
+msgstr "Almenü"
 
 msgid "Preferences"
 msgstr "Beállítások"
 
-msgid "Refresh"
-msgstr "Frissítés"
+msgid "Recently Used"
+msgstr "Nemrég használt"
 
-msgid "Devices"
-msgstr "Eszközök"
-
-msgid "Open"
-msgstr "Megnyitás"
+msgid "Unmount the selected volume"
+msgstr "A kijelölt kötet leválasztása"
 

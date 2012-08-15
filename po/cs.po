@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Odpojit vybraný svazek"
-
 msgid "Clear cache"
 msgstr "Vymazat mezipaměť"
+
+msgid "Refresh"
+msgstr "Obnovit"
+
+msgid "Devices"
+msgstr "Zařízení"
 
 msgid "Mount the selected volume"
 msgstr "Připojit vybraný svazek"
@@ -13,18 +16,18 @@ msgstr "Vymazat seznam"
 msgid "Generate"
 msgstr "Vygenerovat"
 
-msgid "Menu"
-msgstr "Menu"
+msgid "Open"
+msgstr "Otevřít"
+
+msgid "menu"
+msgstr "Podřazená nabídka"
 
 msgid "Preferences"
 msgstr "Nastavení"
 
-msgid "Refresh"
-msgstr "Obnovit"
+msgid "Recently Used"
+msgstr "Naposledy použité"
 
-msgid "Devices"
-msgstr "Zařízení"
-
-msgid "Open"
-msgstr "Otevřít"
+msgid "Unmount the selected volume"
+msgstr "Odpojit vybraný svazek"
 

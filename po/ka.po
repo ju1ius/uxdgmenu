@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "შერჩეული ტომის მოხსნა"
+msgid "Refresh"
+msgstr "განახლება"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "ამორჩეული ტომის მიერთება"
@@ -10,18 +13,18 @@ msgstr "სიის გასუფთავება"
 msgid "Generate"
 msgstr "გენერაცია"
 
-msgid "Menu"
-msgstr "მენიუ"
+msgid "Open"
+msgstr "გახსნა"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "პარამეტრები"
 
-msgid "Refresh"
-msgstr "განახლება"
+msgid "Recently Used"
+msgstr "ბოლოს გამოყენებული"
 
-msgid "Devices"
-msgstr ""
-
-msgid "Open"
-msgstr "გახსნა"
+msgid "Unmount the selected volume"
+msgstr "შერჩეული ტომის მოხსნა"
 

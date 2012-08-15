@@ -1,8 +1,11 @@
-msgid "Unmount the selected volume"
-msgstr "Seçilen birimi ayır"
-
 msgid "Clear cache"
 msgstr ""
+
+msgid "Refresh"
+msgstr "Tazele"
+
+msgid "Devices"
+msgstr "Aygıtlar"
 
 msgid "Mount the selected volume"
 msgstr "Seçilen birimi bağla"
@@ -13,18 +16,18 @@ msgstr "Listeyi Temizle"
 msgid "Generate"
 msgstr "Üret"
 
-msgid "Menu"
-msgstr "Menü"
+msgid "Open"
+msgstr "Aç"
+
+msgid "menu"
+msgstr "Alt menü"
 
 msgid "Preferences"
 msgstr "Tercihler"
 
-msgid "Refresh"
-msgstr "Tazele"
+msgid "Recently Used"
+msgstr "Yakında Kullanılan"
 
-msgid "Devices"
-msgstr "Aygıtlar"
-
-msgid "Open"
-msgstr "Aç"
+msgid "Unmount the selected volume"
+msgstr "Seçilen birimi ayır"
 

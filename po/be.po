@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Адмацаваць вылучаны дыскавы том"
+msgid "Refresh"
+msgstr "Абнавіць"
+
+msgid "Devices"
+msgstr "Прыстасаванні"
 
 msgid "Mount the selected volume"
 msgstr "Прымацаваць вылучаны дыскавы том"
@@ -10,18 +13,18 @@ msgstr "Ачысціць спіс"
 msgid "Generate"
 msgstr "Згенэраваць"
 
-msgid "Menu"
-msgstr "Мэню"
+msgid "Open"
+msgstr "Адкрыць"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Настройкі"
 
-msgid "Refresh"
-msgstr "Абнавіць"
+msgid "Recently Used"
+msgstr "Нядаўнія файлы"
 
-msgid "Devices"
-msgstr "Прыстасаванні"
-
-msgid "Open"
-msgstr "Адкрыць"
+msgid "Unmount the selected volume"
+msgstr "Адмацаваць вылучаны дыскавы том"
 

@@ -1,9 +1,9 @@
-msgid "Unmount the selected volume"
-msgstr "Jea-chiangley yn ym-lioar eih't"
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "Chaingley yn ym-lioar reih't"
 
-msgid "Devices"
-msgstr ""
+msgid "Unmount the selected volume"
+msgstr "Jea-chiangley yn ym-lioar eih't"
 

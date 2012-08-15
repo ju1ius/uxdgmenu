@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "'t geselekteerde volume óntkoppelen."
+msgid "Refresh"
+msgstr "Verfrisje"
+
+msgid "Devices"
+msgstr "Wèbdeenste"
 
 msgid "Mount the selected volume"
 msgstr "'t geselekteerde volume óntkoppelen."
@@ -7,18 +10,18 @@ msgstr "'t geselekteerde volume óntkoppelen."
 msgid "Clear List"
 msgstr "Wösje"
 
-msgid "Menu"
-msgstr "Menu"
+msgid "Open"
+msgstr "Äöpene"
+
+msgid "menu"
+msgstr ""
 
 msgid "Preferences"
 msgstr "Prifferensies"
 
-msgid "Refresh"
-msgstr "Verfrisje"
+msgid "Recently Used"
+msgstr ""
 
-msgid "Devices"
-msgstr "Wèbdeenste"
-
-msgid "Open"
-msgstr "Äöpene"
+msgid "Unmount the selected volume"
+msgstr "'t geselekteerde volume óntkoppelen."
 

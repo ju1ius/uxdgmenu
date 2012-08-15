@@ -1,5 +1,8 @@
-msgid "Unmount the selected volume"
-msgstr "Kotia te whiringa"
+msgid "Refresh"
+msgstr "Whakārahina"
+
+msgid "Devices"
+msgstr ""
 
 msgid "Mount the selected volume"
 msgstr "Kotia te whiringa"
@@ -7,18 +10,18 @@ msgstr "Kotia te whiringa"
 msgid "Clear List"
 msgstr "Whakawātea"
 
-msgid "Menu"
+msgid "Open"
+msgstr "Huaki"
+
+msgid "menu"
 msgstr ""
 
 msgid "Preferences"
 msgstr "Ngā Tina Hiahia"
 
-msgid "Refresh"
-msgstr "Whakārahina"
-
-msgid "Devices"
+msgid "Recently Used"
 msgstr ""
 
-msgid "Open"
-msgstr "Huaki"
+msgid "Unmount the selected volume"
+msgstr "Kotia te whiringa"
 
