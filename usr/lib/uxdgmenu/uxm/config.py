@@ -57,7 +57,8 @@ def translate(*args, **kwargs):
     global __ugettext
     if __ugettext is None:
         import gettext
-        t = gettext.translation("uxdgmenu", os.path.join(PREFIX,"share/locale"))
+        t = gettext.translation("uxdgmenu", os.path.join(PREFIX,"share/locale"),
+                fallback=True)
         __ugettext = t.ugettext
     return __ugettext(*args, **kwargs)
 
