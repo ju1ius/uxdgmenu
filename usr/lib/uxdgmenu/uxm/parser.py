@@ -13,8 +13,7 @@ class BaseParser(object):
             if self.use_gtk_theme:
                 t = icon_finder.get_gtk_theme()
                 if t: self.theme = t
-            self.cache = cache.Cache()
-            self.cache.open()
+            self.cache = cache.Cache().open()
             self.icon_finder = icon_finder.IconFinder(
                 self.theme, self.icon_size, self.default_icon, self.cache
             )

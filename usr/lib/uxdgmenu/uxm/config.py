@@ -4,7 +4,6 @@ import cStringIO as StringIO
 import xdg.BaseDirectory
 
 import uxm.utils as utils
-import uxm.icon_finder as icon_finder
 
 
 
@@ -25,7 +24,7 @@ def preferences():
     return __parser
 
 def check():
-    for d in [CONFIG_DIR, CACHE_DIR]:
+    for d in [CONFIG_DIR, CACHE_DIR, ICON_CACHE_PATH]:
         if not os.path.isdir(d):
             try:
                 os.makedirs(d)
@@ -37,11 +36,12 @@ def check():
             __parser.write(f)
 
 def guess():
+    import uxm.icon_finder
     open_cmd = utils.guess_open_cmd()
     __parser.set('General', 'open_cmd', open_cmd)
     fm = utils.guess_file_manager()
     __parser.set('General', 'filemanager', fm)
-    theme = icon_finder.get_gtk_theme()
+    theme = uxm.icon_finder.get_gtk_theme()
     __parser.set('Icons', 'theme', theme)
 
 def to_string():
@@ -115,6 +115,7 @@ SYSTEM_CONFIG_FILE = os.path.join(SYSCONFDIR, PKG_NAME, 'menu.conf')
 USER_CONFIG_FILE = os.path.join(CONFIG_DIR, 'menu.conf')
 
 CACHE_DB = os.path.join(CACHE_DIR, 'cache.db')
+ICON_CACHE_PATH = os.path.join(CACHE_DIR, 'icons')
 APPS_CACHE = os.path.join(CACHE_DIR, 'applications')
 BOOKMARKS_CACHE = os.path.join(CACHE_DIR, 'bookmarks')
 RECENT_FILES_CACHE = os.path.join(CACHE_DIR, 'recent-files')

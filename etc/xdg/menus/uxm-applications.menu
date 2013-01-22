@@ -1,198 +1,204 @@
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
- "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+    "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
 
 <Menu>
 
-	<Name>Applications</Name>
-	<Directory>uxm-menu-applications.directory</Directory>
+    <Name>Applications</Name>
+    <Directory>uxm-menu-applications.directory</Directory>
 
-  <!-- Read standard .directory and .desktop file locations -->
-  <DefaultAppDirs/>
-  <DefaultDirectoryDirs/>
-  <!-- Read only provided .directory and .desktop file locations -->
-  <!--<AppDir>/usr/share/applications</AppDir>-->
-  <!--<DirectoryDir>/usr/share/desktop-directories</DirectoryDir>-->
+    <!-- Read standard .directory and .desktop file locations -->
+    <DefaultAppDirs/>
+    <DefaultDirectoryDirs/>
+    <!-- Read only provided .directory and .desktop file locations -->
+    <!--<AppDir>/usr/share/applications</AppDir>-->
+    <!--<DirectoryDir>/usr/share/desktop-directories</DirectoryDir>-->
 
-	<!-- Read in overrides and child menus from applications-merged/ -->
-  <DefaultMergeDirs/>
+    <!-- Read in overrides and child menus from applications-merged/ -->
+    <DefaultMergeDirs/>
 
-	<!-- Accessories submenu -->
-	<Menu>
-		<Name>Accessories</Name>
-		<Directory>uxm-utility.directory</Directory>
-		<Include>
-			<And>
-				<Category>Utility</Category>
-	<!-- Accessibility spec must have either the Utility or Settings
-			 category, and we display an accessibility submenu already for
-			 the ones that do not have Settings, so don't display accessibility
-			 applications here -->
-				<Not><Category>Accessibility</Category></Not>
-				<Not><Category>System</Category></Not>
-			</And>
-		</Include>
-		<Exclude>
-		  <Filename>emacs.desktop</Filename>
-			<Filename>gvim.desktop</Filename>
-		</Exclude>
-	</Menu> <!-- End Accessories -->
+    <!-- Accessories submenu -->
+    <Menu>
+        <Name>Accessories</Name>
+        <Directory>uxm-utility.directory</Directory>
+        <Include>
+            <And>
+                <Category>Utility</Category>
+                <!-- Accessibility spec must have either the Utility or Settings
+                  category, and we display an accessibility submenu already for
+                  the ones that do not have Settings, so don't display accessibility
+                  applications here -->
+                <Not><Category>Accessibility</Category></Not>
+                <Not><Category>System</Category></Not>
+            </And>
+        </Include>
+        <Exclude>
+            <Filename>emacs.desktop</Filename>
+            <Filename>gvim.desktop</Filename>
+        </Exclude>
+        <Menu>
+            <Name>Screensavers</Name>
+            <Include>
+                <Category>Screensaver</Category>
+            </Include>
+        </Menu>
+    </Menu> <!-- End Accessories -->
 
-	<!-- Accessibility submenu -->
-	<Menu>
-		<Name>Universal Access</Name>
-		<Directory>uxm-utility-accessibility.directory</Directory>
-		<Include>
-			<And>
-				<Category>Accessibility</Category>
-				<Not><Category>Settings</Category></Not>
-			</And>
-		</Include>
-	</Menu> <!-- End Accessibility -->
+    <!-- Accessibility submenu -->
+    <Menu>
+        <Name>Universal Access</Name>
+        <Directory>uxm-utility-accessibility.directory</Directory>
+        <Include>
+            <And>
+                <Category>Accessibility</Category>
+                <Not><Category>Settings</Category></Not>
+            </And>
+        </Include>
+    </Menu> <!-- End Accessibility -->
 
-	<!-- Education -->
-	<Menu>
-		<Name>Education</Name>
-		<Directory>uxm-education.directory</Directory>
-		<Include>
-			<And>
-				<Category>Education</Category>
-			</And>
-		</Include>
-	</Menu> <!-- End Education -->
+    <!-- Education -->
+    <Menu>
+        <Name>Education</Name>
+        <Directory>uxm-education.directory</Directory>
+        <Include>
+            <And>
+                <Category>Education</Category>
+            </And>
+        </Include>
+    </Menu> <!-- End Education -->
 
-		<!-- Office -->
-	<Menu>
-		<Name>Office</Name>
-		<Directory>uxm-office.directory</Directory>
-		<Include>
-			<And>
-				<Category>Office</Category>
-			</And>
-		</Include>
-	</Menu> <!-- End Office -->
+    <!-- Office -->
+    <Menu>
+        <Name>Office</Name>
+        <Directory>uxm-office.directory</Directory>
+        <Include>
+            <And>
+                <Category>Office</Category>
+            </And>
+        </Include>
+    </Menu> <!-- End Office -->
 
-	<!-- Games -->
-	<Menu>
-		<Name>Games</Name>
-		<Directory>uxm-game.directory</Directory>
-		<Include>
-			<And>
-				<Category>Game</Category>
-			</And>
-		</Include>
-	</Menu> <!-- End Games -->
+    <!-- Games -->
+    <Menu>
+        <Name>Games</Name>
+        <Directory>uxm-game.directory</Directory>
+        <Include>
+            <And>
+                <Category>Game</Category>
+            </And>
+        </Include>
+    </Menu> <!-- End Games -->
 
-	<!-- Graphics -->
-	<Menu>
-		<Name>Graphics</Name>
-		<Directory>uxm-graphics.directory</Directory>
-		<Include>
-			<And>
-				<Category>Graphics</Category>
-				<Not><Category>Utility</Category></Not>
-			</And>
-		</Include>
-	</Menu> <!-- End Graphics -->
+    <!-- Graphics -->
+    <Menu>
+        <Name>Graphics</Name>
+        <Directory>uxm-graphics.directory</Directory>
+        <Include>
+            <And>
+                <Category>Graphics</Category>
+                <Not><Category>Utility</Category></Not>
+            </And>
+        </Include>
+    </Menu> <!-- End Graphics -->
 
-	<!-- Internet -->
-	<Menu>
-		<Name>Network</Name>
-		<Directory>uxm-network.directory</Directory>
-		<Include>
-			<And>
-				<Category>Network</Category>
-			</And>
-		</Include>
-	</Menu>	 <!-- End Internet -->
+    <!-- Internet -->
+    <Menu>
+        <Name>Network</Name>
+        <Directory>uxm-network.directory</Directory>
+        <Include>
+            <And>
+                <Category>Network</Category>
+            </And>
+        </Include>
+    </Menu>	 <!-- End Internet -->
 
-	<!-- Multimedia -->
-	<Menu>
-		<Name>Multimedia</Name>
-		<Directory>uxm-audio-video.directory</Directory>
-		<Include>
-			<And>
-				<Category>AudioVideo</Category>
-			</And>
-		</Include>
-	</Menu>	 <!-- End Multimedia -->
+    <!-- Multimedia -->
+    <Menu>
+        <Name>Multimedia</Name>
+        <Directory>uxm-audio-video.directory</Directory>
+        <Include>
+            <And>
+                <Category>AudioVideo</Category>
+            </And>
+        </Include>
+    </Menu>	 <!-- End Multimedia -->
 
-	<!-- Development Tools -->
-	<Menu>
-		<Name>Development</Name>
-		<Directory>uxm-development.directory</Directory>
-		<Include>
-			<And>
-				<Category>Development</Category>
-			</And>
-			<Filename>emacs.desktop</Filename>
-			<Filename>gvim.desktop</Filename>
-		</Include>
-	</Menu> <!-- End Development Tools -->
+    <!-- Development Tools -->
+    <Menu>
+        <Name>Development</Name>
+        <Directory>uxm-development.directory</Directory>
+        <Include>
+            <And>
+                <Category>Development</Category>
+            </And>
+            <Filename>emacs.desktop</Filename>
+            <Filename>gvim.desktop</Filename>
+        </Include>
+    </Menu> <!-- End Development Tools -->
 
-	<!-- System Tools-->
-	<Menu>
-		<Name>System</Name>
-    <Directory>uxm-system-tools.directory</Directory>
-    <Include>
-			<Category>PackageManager</Category>
-      <Category>System</Category>
-      <And>
-        <Category>Settings</Category>
-        <Category>System</Category>
-      </And>
-    </Include>
-	</Menu>	 <!-- End System Tools -->
-
-	<Menu>
-		<Name>DesktopSettings</Name>
-		<Directory>uxm-settings.directory</Directory>
-    <Include>
-      <And>
-        <Or>
-          <Category>Settings</Category>
-				  <Category>DesktopSettings</Category>
-        </Or>
-        <Not>
-          <Or>
+    <!-- System Tools-->
+    <Menu>
+        <Name>System</Name>
+        <Directory>uxm-system-tools.directory</Directory>
+        <Include>
+            <Category>PackageManager</Category>
             <Category>System</Category>
-            <Filename>gnomecc.desktop</Filename>
-          </Or>
-        </Not>
-      </And>
-    </Include>
-	</Menu> <!-- End Settings -->
+            <And>
+                <Category>Settings</Category>
+                <Category>System</Category>
+            </And>
+        </Include>
+    </Menu>	 <!-- End System Tools -->
 
-	<!-- Other -->
-	<Menu>
-		<Name>Other</Name>
-		<Directory>uxm-other.directory</Directory>
-		<OnlyUnallocated/>
-    <Include>
-      <Not>
-        <Or>
-          <Category>Core</Category>
-          <Category>Settings</Category>
-          <Category>DesktopSettings</Category>
-        </Or>
-      </Not>
-    </Include>
-  </Menu> <!-- End Other -->
+    <Menu>
+        <Name>DesktopSettings</Name>
+        <Directory>uxm-settings.directory</Directory>
+        <Include>
+            <And>
+                <Or>
+                    <Category>Settings</Category>
+                    <Category>DesktopSettings</Category>
+                </Or>
+                <Not>
+                    <Or>
+                        <Category>System</Category>
+                        <Filename>gnomecc.desktop</Filename>
+                    </Or>
+                </Not>
+            </And>
+        </Include>
+    </Menu> <!-- End Settings -->
 
-  <Menu>
-    <Name>Wine</Name>
-    <Directory>uxm-wine.directory</Directory>
-    <Include>
-      <Category>Wine</Category>
-    </Include>
-  </Menu>
+    <!-- Other -->
+    <Menu>
+        <Name>Other</Name>
+        <Directory>uxm-other.directory</Directory>
+        <OnlyUnallocated/>
+        <Include>
+            <Not>
+                <Or>
+                    <Category>Core</Category>
+                    <Category>Settings</Category>
+                    <Category>DesktopSettings</Category>
+                </Or>
+            </Not>
+        </Include>
+    </Menu> <!-- End Other -->
+
+    <Menu>
+        <Name>Wine</Name>
+        <Directory>uxm-wine.directory</Directory>
+        <Include>
+            <Category>Wine</Category>
+        </Include>
+    </Menu>
 
 
-	<Layout>
-		<Merge type="files"/>
-		<Merge type="menus"/>
-		<Separator/>
-		<Menuname>System</Menuname>
-		<Menuname>DesktopSettings</Menuname>
-	</Layout>
+    <Layout>
+        <Merge type="files"/>
+        <Merge type="menus"/>
+        <Separator/>
+        <Menuname>System</Menuname>
+        <Menuname>DesktopSettings</Menuname>
+    </Layout>
 
 </Menu> <!-- End Applications -->
