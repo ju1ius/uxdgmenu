@@ -1,46 +1,42 @@
 import xdg.Menu
 
-from uxm.adapters import NONE, TYPE_DIRECTORY, TYPE_ENTRY, TYPE_SEPARATOR
+from uxm.adapters import NONE, TreeAdapter, DirectoryAdapter, EntryAdapter, SeparatorAdapter
 
-class XdgAdapter(object):
-    def get_type(self):
-        return TYPE_DIRECTORY;
-    def get_root_directory(self, menu_file, flags=NONE):
+class XdgAdapter(TreeAdapter):
+    def parse(self, menu_file, flags=NONE):
         return XdgDirectoryAdapter(xdg.Menu.parse(menu_file))
 
-class XdgDirectoryAdapter(object):
+class XdgDirectoryAdapter(DirectoryAdapter):
     def __init__(self, adaptee):
         self.adaptee = adaptee
 
-    def get_type(self):
-        return TYPE_DIRECTORY;
-
-    def get_menu_id(self):
-        return self.adaptee.Name
     def get_name(self):
+        return self.adaptee.Name
+    def get_display_name(self):
         return self.adaptee.getName()
     def get_icon(self):
         return self.adaptee.getIcon()
+    def get_filename(self):
+        return self.adaptee.Directory and \
+            self.adaptee.Directory.DesktopEntry.filename \
+            or None
 
-    def get_contents(self):
+    def __iter__(self):
         for entry in self.adaptee.getEntries():
             if isinstance(entry, xdg.Menu.Separator):
-                yield XdgSeparatorAdapter()
+                yield XdgSeparatorAdapter(entry)
             elif isinstance(entry, xdg.Menu.Menu):
                 yield XdgDirectoryAdapter(entry)
             elif isinstance(entry, xdg.Menu.MenuEntry):
                 yield XdgEntryAdapter(entry)
 
-class XdgEntryAdapter(object):
+class XdgEntryAdapter(EntryAdapter):
     
     def __init__(self, adaptee):
         self.adaptee = adaptee
         self.entry = adaptee.DesktopEntry
 
-    def get_type(self):
-        return TYPE_ENTRY;
-
-    def get_desktop_file_path(self):
+    def get_filename(self):
         return self.entry.getFileName()
     def get_display_name(self):
         return self.entry.getName()
@@ -48,11 +44,11 @@ class XdgEntryAdapter(object):
         return self.entry.getIcon()
     def get_exec(self):
         return self.entry.getExec()
-    def get_launch_in_terminal(self):
+    def is_terminal(self):
         return self.entry.getTerminal()
+    def is_visible(self):
+        return self.adaptee.Show is True
 
 
-class XdgSeparatorAdapter(object):
-    def get_type(self):
-        return TYPE_SEPARATOR;
-
+class XdgSeparatorAdapter(SeparatorAdapter):
+    pass

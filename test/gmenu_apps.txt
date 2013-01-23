@@ -1,0 +1,934 @@
++==MENU
+|- name: Applications
+|- id: Applications
+|- icon: applications-other
+|- file: /usr/share/desktop-directories/uxm-menu-applications.directory
+|
+ \
+  +==MENU
+  |- name: Accessoires
+  |- id: Accessories
+  |- icon: applications-accessories
+  |- file: /usr/share/desktop-directories/uxm-utility.directory
+  |
+   \
+    +==MENU
+    |- name: Screensavers
+    |- id: Screensavers
+    |- icon: None
+    |- file: None
+    |
+     \
+      +==APP
+      |- name: Abstractile
+      |- file: /usr/share/applications/screensavers/abstractile.desktop
+      |- exec: /usr/lib/xscreensaver/abstractile -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: CWaves
+      |- file: /usr/share/applications/screensavers/cwaves.desktop
+      |- exec: /usr/lib/xscreensaver/cwaves -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Deco
+      |- file: /usr/share/applications/screensavers/deco.desktop
+      |- exec: /usr/lib/xscreensaver/deco -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Distort
+      |- file: /usr/share/applications/screensavers/distort.desktop
+      |- exec: /usr/lib/xscreensaver/distort -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Fiberlamp
+      |- file: /usr/share/applications/screensavers/fiberlamp.desktop
+      |- exec: /usr/lib/xscreensaver/fiberlamp -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: FuzzyFlakes
+      |- file: /usr/share/applications/screensavers/fuzzyflakes.desktop
+      |- exec: /usr/lib/xscreensaver/fuzzyflakes -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Galaxy
+      |- file: /usr/share/applications/screensavers/galaxy.desktop
+      |- exec: /usr/lib/xscreensaver/galaxy -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: MetaBalls
+      |- file: /usr/share/applications/screensavers/metaballs.desktop
+      |- exec: /usr/lib/xscreensaver/metaballs -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Penrose
+      |- file: /usr/share/applications/screensavers/penrose.desktop
+      |- exec: /usr/lib/xscreensaver/penrose -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Ripples
+      |- file: /usr/share/applications/screensavers/ripples.desktop
+      |- exec: /usr/lib/xscreensaver/ripples -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: ShadeBobs
+      |- file: /usr/share/applications/screensavers/shadebobs.desktop
+      |- exec: /usr/lib/xscreensaver/shadebobs -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: SlideScreen
+      |- file: /usr/share/applications/screensavers/slidescreen.desktop
+      |- exec: /usr/lib/xscreensaver/slidescreen -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: Swirl
+      |- file: /usr/share/applications/screensavers/swirl.desktop
+      |- exec: /usr/lib/xscreensaver/swirl -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: XLyap
+      |- file: /usr/share/applications/screensavers/xlyap.desktop
+      |- exec: /usr/lib/xscreensaver/xlyap -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+      +==APP
+      |- name: m6502
+      |- file: /usr/share/applications/screensavers/m6502.desktop
+      |- exec: /usr/lib/xscreensaver/m6502 -root
+      |- icon: None
+      |- term: False
+      +- viz: True
+    +==APP
+    |- name: Aide
+    |- file: /usr/share/applications/yelp.desktop
+    |- exec: yelp %u
+    |- icon: help-browser
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Alarm Clock
+    |- file: /usr/share/applications/alarm-clock.desktop
+    |- exec: alarmclock
+    |- icon: alarm-clock
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Calculatrice
+    |- file: /usr/share/applications/gcalctool.desktop
+    |- exec: gcalctool
+    |- icon: accessories-calculator
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Elementary Test
+    |- file: /usr/local/share/applications/elementary_test.desktop
+    |- exec: elementary_test
+    |- icon: elementary
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: File Manager
+    |- file: /usr/share/applications/pcmanfm.desktop
+    |- exec: pcmanfm %U
+    |- icon: system-file-manager
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: GNU Emacs 23
+    |- file: /usr/share/applications/emacs23.desktop
+    |- exec: /usr/bin/emacs23 %F
+    |- icon: /usr/share/icons/hicolor/scalable/apps/emacs23.svg
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LXTerminal
+    |- file: /usr/share/applications/lxterminal.desktop
+    |- exec: lxterminal
+    |- icon: lxterminal
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Table de caractères
+    |- file: /usr/share/applications/gucharmap.desktop
+    |- exec: gucharmap
+    |- icon: accessories-character-map
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Terminal administrateur
+    |- file: /usr/share/applications/gksu.desktop
+    |- exec: gksu /usr/bin/x-terminal-emulator
+    |- icon: gksu-root-terminal
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Wakeup
+    |- file: /usr/share/applications/wakeup.desktop
+    |- exec: wakeup-settings
+    |- icon: appointment-new
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Xarchiver
+    |- file: /usr/share/applications/xarchiver.desktop
+    |- exec: xarchiver
+    |- icon: xarchiver.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: ipython
+    |- file: /usr/share/applications/ipython.desktop
+    |- exec: ipython
+    |- icon: ipython
+    |- term: True
+    +- viz: True
+  +==MENU
+  |- name: Bureautique
+  |- id: Office
+  |- icon: applications-office
+  |- file: /usr/share/desktop-directories/uxm-office.directory
+  |
+   \
+    +==APP
+    |- name: Getting Things GNOME!
+    |- file: /usr/share/applications/gtg.desktop
+    |- exec: /usr/bin/gtg %F
+    |- icon: gtg
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Iceowl
+    |- file: /usr/share/applications/iceowl.desktop
+    |- exec: iceowl %u
+    |- icon: iceowl
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LibreOffice 
+    |- file: /usr/share/applications/libreoffice-startcenter.desktop
+    |- exec: libreoffice %U
+    |- icon: libreoffice-startcenter
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LibreOffice Calc
+    |- file: /usr/share/applications/libreoffice-calc.desktop
+    |- exec: libreoffice --calc %U
+    |- icon: libreoffice-calc
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LibreOffice Draw
+    |- file: /usr/share/applications/libreoffice-draw.desktop
+    |- exec: libreoffice --draw %U
+    |- icon: libreoffice-draw
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LibreOffice Writer
+    |- file: /usr/share/applications/libreoffice-writer.desktop
+    |- exec: libreoffice --writer %U
+    |- icon: libreoffice-writer
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Verbiste
+    |- file: /usr/share/applications/verbiste.desktop
+    |- exec: verbiste
+    |- icon: verbiste
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Visionneur de documents
+    |- file: /usr/share/applications/evince.desktop
+    |- exec: evince %U
+    |- icon: evince
+    |- term: False
+    +- viz: True
+  +==MENU
+  |- name: Graphisme
+  |- id: Graphics
+  |- icon: applications-graphics
+  |- file: /usr/share/desktop-directories/uxm-graphics.directory
+  |
+   \
+    +==APP
+    |- name: Agave
+    |- file: /usr/share/applications/agave.desktop
+    |- exec: agave
+    |- icon: agave
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: FontForge
+    |- file: /usr/share/applications/fontforge.desktop
+    |- exec: fontforge
+    |- icon: fontforge
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: ImageMagick (display)
+    |- file: /usr/share/applications/display.im6.desktop
+    |- exec: /usr/bin/display.im6 %f
+    |- icon: display.im6
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Éditeur d’images vectorielles SVG Inkscape
+    |- file: /usr/share/applications/inkscape.desktop
+    |- exec: inkscape %F
+    |- icon: inkscape
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LibreOffice Draw
+    |- file: /usr/share/applications/libreoffice-draw.desktop
+    |- exec: libreoffice --draw %U
+    |- icon: libreoffice-draw
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Viewnior
+    |- file: /usr/share/applications/viewnior.desktop
+    |- exec: viewnior %F
+    |- icon: viewnior
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Visionneur de documents
+    |- file: /usr/share/applications/evince.desktop
+    |- exec: evince %U
+    |- icon: evince
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Éditeur d'image GIMP
+    |- file: /usr/share/applications/gimp.desktop
+    |- exec: gimp-2.8 %U
+    |- icon: gimp
+    |- term: False
+    +- viz: True
+  +==MENU
+  |- name: Internet
+  |- id: Network
+  |- icon: applications-internet
+  |- file: /usr/share/desktop-directories/uxm-network.directory
+  |
+   \
+    +==APP
+    |- name: FileZilla
+    |- file: /usr/share/applications/filezilla.desktop
+    |- exec: filezilla
+    |- icon: filezilla
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Google Chrome
+    |- file: /usr/local/share/applications/google-chrome.desktop
+    |- exec: /opt/google/chrome/google-chrome %U
+    |- icon: google-chrome
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Navigateur Web Iceweasel
+    |- file: /usr/share/applications/iceweasel.desktop
+    |- exec: iceweasel %u
+    |- icon: iceweasel
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Messagerie Icedove
+    |- file: /usr/share/applications/icedove.desktop
+    |- exec: icedove %u
+    |- icon: icedove
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Mozilla Firefox
+    |- file: /usr/local/share/applications/firefox.desktop
+    |- exec: /usr/bin/firefox %U
+    |- icon: /opt/firefox/icons/mozicon128.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Mozilla Thunderbird
+    |- file: /home/ju1ius/.local/share/applications/thunderbird.desktop
+    |- exec: /home/ju1ius/bin/thunderbird %u
+    |- icon: /home/ju1ius/bin/thunderbird_latest/chrome/icons/default/default256.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Navigateur Web Chromium
+    |- file: /usr/share/applications/chromium.desktop
+    |- exec: /usr/bin/chromium %U
+    |- icon: chromium
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Softphone Ekiga
+    |- file: /usr/share/applications/ekiga.desktop
+    |- exec: ekiga
+    |- icon: ekiga
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Client BitTorrent Transmission
+    |- file: /usr/share/applications/transmission-gtk.desktop
+    |- exec: transmission-gtk %U
+    |- icon: transmission
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: XChat IRC
+    |- file: /usr/share/applications/xchat.desktop
+    |- exec: xchat
+    |- icon: xchat
+    |- term: False
+    +- viz: True
+  +==MENU
+  |- name: Programmation
+  |- id: Development
+  |- icon: applications-development
+  |- file: /usr/share/desktop-directories/uxm-development.directory
+  |
+   \
+    +==APP
+    |- name: Anjuta
+    |- file: /usr/share/applications/anjuta.desktop
+    |- exec: anjuta
+    |- icon: anjuta
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Concepteur d'interface Glade
+    |- file: /usr/share/applications/glade-3.desktop
+    |- exec: glade-3 %F
+    |- icon: glade-3
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: D-Feet
+    |- file: /usr/share/applications/dfeet.desktop
+    |- exec: d-feet
+    |- icon: d-feet-icon
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Data Display Debugger
+    |- file: /usr/share/applications/ddd.desktop
+    |- exec: ddd
+    |- icon: ddd
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Devhelp
+    |- file: /usr/share/applications/devhelp.desktop
+    |- exec: devhelp
+    |- icon: devhelp
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Elementary Test
+    |- file: /usr/local/share/applications/elementary_test.desktop
+    |- exec: elementary_test
+    |- icon: elementary
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: GNU Emacs 23
+    |- file: /usr/share/applications/emacs23.desktop
+    |- exec: /usr/bin/emacs23 %F
+    |- icon: /usr/share/icons/hicolor/scalable/apps/emacs23.svg
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: GVim
+    |- file: /usr/share/applications/gvim.desktop
+    |- exec: gvim -f %F
+    |- icon: vim
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: KCachegrind
+    |- file: /usr/share/applications/kde4/kcachegrind.desktop
+    |- exec: kcachegrind -caption "%c" %u
+    |- icon: kcachegrind
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Meld visionneur de différences
+    |- file: /usr/share/applications/meld.desktop
+    |- exec: meld %F
+    |- icon: meld
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Qt 4 Assistant
+    |- file: /usr/share/applications/assistant-qt4.desktop
+    |- exec: /usr/bin/assistant-qt4
+    |- icon: assistant-qt4
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Qt 4 Linguist
+    |- file: /usr/share/applications/linguist-qt4.desktop
+    |- exec: /usr/bin/linguist-qt4
+    |- icon: linguist-qt4
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: SQLite database browser
+    |- file: /usr/share/applications/sqlitebrowser.desktop
+    |- exec: sqlitebrowser
+    |- icon: sqlitebrowser.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: ipython
+    |- file: /usr/share/applications/ipython.desktop
+    |- exec: ipython
+    |- icon: ipython
+    |- term: True
+    +- viz: True
+    +==APP
+    |- name: phpMyAdmin
+    |- file: /usr/share/applications/phpmyadmin.desktop
+    |- exec: sensible-browser http://localhost/phpmyadmin/
+    |- icon: phpmyadmin
+    |- term: False
+    +- viz: True
+  +==MENU
+  |- name: Son et vidéo
+  |- id: Multimedia
+  |- icon: applications-multimedia
+  |- file: /usr/share/desktop-directories/uxm-audio-video.directory
+  |
+   \
+    +==APP
+    |- name: Ardour Digital Audio Workstation
+    |- file: /usr/share/applications/ardour.desktop
+    |- exec: /usr/bin/ardour2
+    |- icon: /usr/share/ardour2/icons/ardour_icon_22px.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Ardour-2.8.16
+    |- file: /usr/local/share/applications/Ardour-Ardour_2.8.16.desktop
+    |- exec: /opt/Ardour-2.8.16_13591/bin/ardour2
+    |- icon: Ardour-Ardour_2.8.16
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Ardour-3.0beta3-dbg
+    |- file: /usr/share/applications/Ardour-Ardour_3.0beta3_dbg.desktop
+    |- exec: /opt/Ardour-3.0beta3_11482-dbg/bin/ardour3
+    |- icon: Ardour-Ardour_3.0beta3_dbg
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Audacity
+    |- file: /usr/share/applications/audacity.desktop
+    |- exec: audacity %F
+    |- icon: audacity
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Calf Plugin Pack for JACK
+    |- file: /usr/share/applications/calf.desktop
+    |- exec: calfjackhost
+    |- icon: calf
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: EasyTAG
+    |- file: /usr/share/applications/easytag.desktop
+    |- exec: easytag %F
+    |- icon: EasyTAG_icon
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Hydrogen
+    |- file: /usr/share/applications/hydrogen.desktop
+    |- exec: hydrogen %F
+    |- icon: h2-icon
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: JAMin
+    |- file: /usr/share/applications/jamin.desktop
+    |- exec: jamin
+    |- icon: jamin.svg
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: LADITray
+    |- file: /usr/share/applications/laditray.desktop
+    |- exec: laditray
+    |- icon: laditray
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Lecteur multimédia VLC
+    |- file: /usr/share/applications/vlc.desktop
+    |- exec: /usr/bin/vlc %U
+    |- icon: vlc
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: MPlayer
+    |- file: /home/ju1ius/.local/share/applications/mplayer.desktop
+    |- exec: mplayer %U
+    |- icon: video_player
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: MuseScore
+    |- file: /usr/share/applications/mscore.desktop
+    |- exec: mscore
+    |- icon: mscore
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: MusicBrainz Picard
+    |- file: /usr/share/applications/picard.desktop
+    |- exec: picard %F
+    |- icon: picard
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Patchage
+    |- file: /usr/share/applications/patchage.desktop
+    |- exec: /usr/bin/patchage
+    |- icon: patchage
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: QjackCtl
+    |- file: /usr/share/applications/qjackctl.desktop
+    |- exec: /usr/bin/qjackctl
+    |- icon: qjackctl
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Rakarrack
+    |- file: /usr/share/applications/rakarrack.desktop
+    |- exec: rakarrack
+    |- icon: icono_rakarrack_128x128
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Lecteur de musique Rhythmbox
+    |- file: /usr/share/applications/rhythmbox.desktop
+    |- exec: rhythmbox %U
+    |- icon: rhythmbox
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: SooperLooper
+    |- file: /usr/share/applications/sooperlooper.desktop
+    |- exec: /usr/bin/slgui
+    |- icon: sooperlooper
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: gladish
+    |- file: /usr/share/applications/gladish.desktop
+    |- exec: gladish
+    |- icon: gladish
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: gtklick
+    |- file: /usr/share/applications/gtklick.desktop
+    |- exec: gtklick
+    |- icon: gtklick
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Éditeur de sous-titres
+    |- file: /usr/share/applications/subtitleeditor.desktop
+    |- exec: subtitleeditor %F
+    |- icon: subtitleeditor
+    |- term: False
+    +- viz: True
+
+  ========================================================================================
+
+  +==MENU
+  |- name: Outils système
+  |- id: System
+  |- icon: applications-system
+  |- file: /usr/share/desktop-directories/uxm-system-tools.directory
+  |
+   \
+    +==APP
+    |- name: Analyseur d'utilisation des disques
+    |- file: /usr/share/applications/baobab.desktop
+    |- exec: baobab
+    |- icon: baobab
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: BootUp-Manager
+    |- file: /usr/share/applications/bum.desktop
+    |- exec: su-to-root -X -c bum
+    |- icon: bum
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Contrôleur d'indexation de fichiers de Nepomuk
+    |- file: /usr/share/applications/kde4/nepomukcontroller.desktop
+    |- exec: nepomukcontroller
+    |- icon: nepomuk
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Eiciel
+    |- file: /usr/share/applications/eiciel.desktop
+    |- exec: /usr/bin/eiciel
+    |- icon: /usr/share/eiciel/img/icon_eiciel_24.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Elementary Configuration
+    |- file: /usr/local/share/applications/elementary_config.desktop
+    |- exec: elementary_config
+    |- icon: elementary
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Fenêtre de connexion
+    |- file: /usr/share/gdm/applications/gdmsetup.desktop
+    |- exec: gksu /usr/sbin/gdmsetup
+    |- icon: gdmsetup
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: GADMIN-SAMBA
+    |- file: /usr/share/applications/gadmin-samba.desktop
+    |- exec: su-to-root -X -c /usr/sbin/gadmin-samba
+    |- icon: gadmin-samba
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Éditeur de partitions GParted
+    |- file: /usr/share/applications/gparted.desktop
+    |- exec: gksu gparted-pkexec
+    |- icon: gparted
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Gestionnaire de Fichiers Thunar
+    |- file: /usr/local/share/applications/Thunar.desktop
+    |- exec: thunar %F
+    |- icon: Thunar
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Gestionnaire des tâches
+    |- file: /usr/share/applications/lxtask.desktop
+    |- exec: lxtask
+    |- icon: utilities-system-monitor
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Gigolo
+    |- file: /usr/share/applications/gigolo.desktop
+    |- exec: gigolo
+    |- icon: gtk-network
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Installateur de paquets GDebi
+    |- file: /usr/share/applications/gdebi.desktop
+    |- exec: gdebi-gtk %f
+    |- icon: gnome-mime-application-x-deb
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Moniteur système
+    |- file: /usr/share/applications/gnome-system-monitor.desktop
+    |- exec: gnome-system-monitor
+    |- icon: utilities-system-monitor
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Nouvelle connexion
+    |- file: /usr/share/gdm/applications/gdmflexiserver.desktop
+    |- exec: gdmflexiserver
+    |- icon: gdmflexiserver
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Nouvelle connexion dans une fenêtre
+    |- file: /usr/share/gdm/applications/gdmflexiserver-xnest.desktop
+    |- exec: gdmflexiserver --xnest
+    |- icon: gdm-xnest
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Renommer en masse
+    |- file: /usr/local/share/applications/Thunar-bulk-rename.desktop
+    |- exec: /usr/local/lib/Thunar/ThunarBulkRename %F
+    |- icon: Thunar
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Reportbug
+    |- file: /usr/share/applications/reportbug.desktop
+    |- exec: reportbug --exit-prompt --ui gtk2
+    |- icon: /usr/share/reportbug/debian-swirl.svg
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Service de sauvegarde Nepomuk
+    |- file: /usr/share/applications/kde4/nepomukbackup.desktop
+    |- exec: nepomukbackup
+    |- icon: nepomuk
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: System Profiler and Benchmark
+    |- file: /usr/share/applications/hardinfo.desktop
+    |- exec: hardinfo
+    |- icon: /usr/share/hardinfo/pixmaps/logo.png
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Terminator
+    |- file: /usr/share/applications/terminator.desktop
+    |- exec: terminator
+    |- icon: terminator
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: UXTerm
+    |- file: /usr/share/applications/debian-uxterm.desktop
+    |- exec: uxterm
+    |- icon: xterm-color_48x48
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: XTerm
+    |- file: /usr/share/applications/debian-xterm.desktop
+    |- exec: xterm
+    |- icon: xterm-color_48x48
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: pyBootchartGUI
+    |- file: /usr/share/applications/pybootchartgui.desktop
+    |- exec: gksu pybootchartgui
+    |- icon: None
+    |- term: False
+    +- viz: True
+  +==MENU
+  |- name: Préférences
+  |- id: DesktopSettings
+  |- icon: preferences-desktop
+  |- file: /usr/share/desktop-directories/uxm-settings.directory
+  |
+   \
+    +==APP
+    |- name: Connexions réseau
+    |- file: /usr/share/applications/nm-connection-editor.desktop
+    |- exec: nm-connection-editor
+    |- icon: preferences-system-network
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Disques amovibles et médias
+    |- file: /usr/local/share/applications/thunar-volman-settings.desktop
+    |- exec: thunar-volman-settings
+    |- icon: drive-removable-media
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Gestionnaire de fichiers
+    |- file: /usr/local/share/applications/thunar-settings.desktop
+    |- exec: thunar-settings
+    |- icon: system-file-manager
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Linux Audio Configuration
+    |- file: /usr/share/applications/ladiconf.desktop
+    |- exec: ladiconf
+    |- icon: ladiconf
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: OpenJDK Java 6 Policy Tool
+    |- file: /usr/share/applications/openjdk-6-policytool.desktop
+    |- exec: /usr/lib/jvm/java-6-openjdk-amd64/bin/policytool
+    |- icon: openjdk-6
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: OpenJDK Java 7 Policy Tool
+    |- file: /usr/share/applications/openjdk-7-policytool.desktop
+    |- exec: /usr/bin/policytool
+    |- icon: openjdk-7
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Openbox Configuration Manager
+    |- file: /usr/share/applications/obconf.desktop
+    |- exec: obconf %f
+    |- icon: obconf
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Panneau tint2
+    |- file: /usr/share/applications/tint2conf.desktop
+    |- exec: tint2conf
+    |- icon: taskbar
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Paramètres Qt 4
+    |- file: /usr/share/applications/qtconfig-qt4.desktop
+    |- exec: /usr/bin/qtconfig-qt4
+    |- icon: qtconfig-qt4
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Qt3 Configuration
+    |- file: /usr/share/applications/qt3config.desktop
+    |- exec: qtconfig-qt3
+    |- icon: qtconfig
+    |- term: False
+    +- viz: True
+    +==APP
+    |- name: Économiseur d'écran
+    |- file: /usr/share/applications/xscreensaver-properties.desktop
+    |- exec: xscreensaver-demo
+    |- icon: xscreensaver
+    |- term: False
+    +- viz: True

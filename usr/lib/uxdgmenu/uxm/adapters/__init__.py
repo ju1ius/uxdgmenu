@@ -35,3 +35,65 @@ def get_adapter(name):
         module = sys.modules[adapter_name]
         adapter = getattr(module, adapter_class)
         return adapter()
+
+def get_by_precedence(names):
+    for name in names:
+        try:
+            return get_adapter(name)
+        except:
+            continue
+
+
+class Adapter(object):
+    def __init__(self, adaptee):
+        self.adaptee = adaptee
+
+class TreeAdapter(object):
+    def get_type(self):
+        return TYPE_DIRECTORY
+
+    def parse(self, menu_file, flags=NONE):
+        raise NotImplementedError
+
+class DirectoryAdapter(Adapter):
+
+    #def __init__(self, adaptee):
+        #super(DirectoryAdapter, self).__init__(adaptee)
+
+    def get_type(self):
+        return TYPE_DIRECTORY
+
+    def get_menu_id(self):
+        raise NotImplementedError
+    def get_name(self):
+        raise NotImplementedError
+    def get_icon(self):
+        raise NotImplementedError
+
+    def __iter__(self):
+        raise NotImplementedError
+    def iter(self):
+        return self.__iter__()
+    def get_contents(self):
+        return self.__iter__()
+
+class EntryAdapter(Adapter):
+    
+    def get_type(self):
+        return TYPE_ENTRY;
+
+    def get_desktop_file_path(self):
+        raise NotImplementedError
+    def get_display_name(self):
+        raise NotImplementedError
+    def get_icon(self):
+        raise NotImplementedError
+    def get_exec(self):
+        raise NotImplementedError
+    def get_launch_in_terminal(self):
+        raise NotImplementedError
+
+
+class SeparatorAdapter(Adapter):
+    def get_type(self):
+        return TYPE_SEPARATOR;

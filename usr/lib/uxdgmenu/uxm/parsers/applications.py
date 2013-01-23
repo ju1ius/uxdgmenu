@@ -19,10 +19,11 @@ class Parser(parser.BaseParser):
         self.terminal_emulator = self.preferences.get('General', 'terminal')
 
     def parse_menu_file(self, menu_file):
-        root = self.adapter.get_root_directory(menu_file, self.show_flags)
+        root = self.adapter.parse(menu_file, self.show_flags)
         return {
             "type": "menu",
-            "id": root.get_menu_id().encode('utf-8'),
+            "id": root.get_name().encode('utf-8'),
+            "label": root.get_display_name().encode('utf8'),
             "items": [ i for i in self.parse_directory(root) ]
         }
 
@@ -38,37 +39,34 @@ class Parser(parser.BaseParser):
                 yield self.parse_submenu(child, level)
             elif t == adapters.TYPE_ENTRY:
                 data = self.parse_application(child, level)
-                if data is not None: yield data
+                if data is not None:
+                    yield data
 
     def parse_submenu(self, entry, level):
-        id = entry.get_menu_id()
-        name = entry.get_name()
         icon = self.icon_finder.find_by_name(entry.get_icon()) if self.show_icons else ''
         return {
             "type": "menu",
-            "id": id.encode('utf-8'),
-            "label": name.encode('utf-8'),
+            "id": entry.get_name().encode('utf-8'),
+            "label": entry.get_display_name().encode('utf-8'),
             "icon": icon.encode('utf-8'),
             "items": [ i for i in self.parse_directory(entry) ]
         }
 
     def parse_application(self, entry, level):
         # Skip Debian specific menu entries
-        filepath = entry.get_desktop_file_path()
+        filepath = entry.get_filename()
         if self.filter_debian and "/.local/share/applications/menu-xdg/" in filepath:
             return None
-        # Escape entry name
-        name = entry.get_display_name()
         # Strip command arguments
         cmd = self.exe_regex.sub('', entry.get_exec())
-        if entry.get_launch_in_terminal():
+        if entry.is_terminal():
             cmd = '%s -e "%s"' % (self.terminal_emulator, cmd)
         # Get icon
         icon = self.icon_finder.find_by_name(entry.get_icon()) if self.show_icons else ''
 
         return {
             "type": "application",
-            "label": name.encode('utf-8'),
+            "label": entry.get_display_name().encode('utf-8'),
             "command": cmd.encode('utf-8'),
             "icon": icon.encode('utf-8')
         }
