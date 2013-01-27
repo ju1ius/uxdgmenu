@@ -9,6 +9,8 @@ import uxm.utils as utils
 import uxm.dialogs.progress as progress
 import uxm.daemon as daemon
 import uxm.dialogs.menu
+from uxm.dialogs.helpers import ComboBoxTextDecorator
+
 
 class Options(object):
     """Mock OptionsParser options"""
@@ -21,32 +23,6 @@ class Options(object):
         # Overrides
         for prop, val in kwargs.iteritems():
             self.__dict__[prop] = val
-
-class ComboBoxTextDecorator(object):
-    """Decorator for simple text comboboxes"""
-    def __init__(self, cb):
-        self.cb = cb
-        self.model = gtk.ListStore(gobject.TYPE_STRING)
-        self.cb.set_model(self.model)
-        cell = gtk.CellRendererText()
-        self.cb.pack_start(cell, True)
-        self.cb.add_attribute(cell, 'text', 0)
-
-    def append_text(self, text):
-        self.model.append([str(text)])
-
-    def get_active_text(self):
-        i = self.cb.get_active()
-        row = self.model[i]
-        return row[0]
-
-    def set_active(self, idx):
-        self.cb.set_active(idx)
-
-    def set_active_text(self, text):
-        for i, row in enumerate(self.model):
-            if row[0] == text:
-                self.cb.set_active(i)
 
 
 class DaemonStatusMonitor(threading.Thread, gobject.GObject):
@@ -97,7 +73,7 @@ class ConfigEditor(object):
     def _load_ui(self):
         builder = gtk.Builder()
         builder.add_from_file(
-            os.path.join(os.path.dirname(__file__), "uxm-config.glade")
+            os.path.join(os.path.dirname(__file__), "config.ui")
         )
         self.window = builder.get_object('main_window')
         self.save_btn = builder.get_object('save_btn')

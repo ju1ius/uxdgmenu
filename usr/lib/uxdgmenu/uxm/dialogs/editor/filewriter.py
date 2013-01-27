@@ -21,7 +21,7 @@ import gobject, gtk
 
 import uxm.config
 _ = uxm.config.translate
-from . import treemodel_gtk2
+from . import treemodel
 
 DTD_DECLARATION = '<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"\n' \
                   ' "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">\n\n'
@@ -146,7 +146,7 @@ class MenuFileWriter:
 
     def sync (self, iter):
         menu_file = self.model.get_value (iter, self.model.COLUMN_MENU_FILE)
-        system_menu_file = treemodel_gtk2.lookup_menu_files(menu_file)
+        system_menu_file = treemodel.lookup_menu_files(menu_file)
         
         (contents, has_changes) = self.__append_menu (DTD_DECLARATION,
                                                       "",

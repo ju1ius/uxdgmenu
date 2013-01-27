@@ -51,18 +51,12 @@ class Adapter(object):
 class TreeAdapter(object):
     def get_type(self):
         return TYPE_DIRECTORY
-
     def parse(self, menu_file, flags=NONE):
         raise NotImplementedError
 
 class DirectoryAdapter(Adapter):
-
-    #def __init__(self, adaptee):
-        #super(DirectoryAdapter, self).__init__(adaptee)
-
     def get_type(self):
         return TYPE_DIRECTORY
-
     def get_menu_id(self):
         raise NotImplementedError
     def get_name(self):
@@ -72,16 +66,10 @@ class DirectoryAdapter(Adapter):
 
     def __iter__(self):
         raise NotImplementedError
-    def iter(self):
-        return self.__iter__()
-    def get_contents(self):
-        return self.__iter__()
 
 class EntryAdapter(Adapter):
-    
     def get_type(self):
         return TYPE_ENTRY;
-
     def get_desktop_file_path(self):
         raise NotImplementedError
     def get_display_name(self):
@@ -92,7 +80,6 @@ class EntryAdapter(Adapter):
         raise NotImplementedError
     def get_launch_in_terminal(self):
         raise NotImplementedError
-
 
 class SeparatorAdapter(Adapter):
     def get_type(self):
