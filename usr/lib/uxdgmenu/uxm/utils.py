@@ -2,7 +2,7 @@ import os, re, pwd, shlex, subprocess
 import xdg.BaseDirectory
 
 
-EXE_REGEX = re.compile(r' [^ ]*%[fFuUdDnNickvm]')
+EXE_REGEX = re.compile(r' (\s*["\'])?(?:\s*%[a-zA-Z])+\1?')
 
 __filesize_fmt = [
     (1000 ** 5, 'PB'),
@@ -28,6 +28,12 @@ def format_filesize(size):
 def clean_exec(cmd):
     """Cleans commands found in Desktop entries"""
     return EXE_REGEX.sub('', cmd)
+    #clean = []
+    #for arg in shlex.split(cmd):
+        #if '%' == arg[0]:
+            #continue
+        #clean.append(arg)
+    #return ' '.join(clean)
 
 def sort_ci(inlist, minisort=True):
     """
@@ -122,6 +128,10 @@ def guess_file_manager():
             return fm
     return 'xdg-open'
 
+def guess_terminal():
+    if which('x-terminal-emulator'):
+        return 'x-terminal-emulator'
+
 def find_desktop_file(filename):
     if os.path.isabs(filename):
         return filename
@@ -187,7 +197,6 @@ def check_xfce():
         return False
     if ' = "xfce4"' in r[0]:
         return True
-
 
 
 def pgrep(pattern, **kwargs):

@@ -1,4 +1,3 @@
-import re
 import uxm.config as config
 import uxm.cache as cache
 import uxm.icon_finder as icon_finder   
@@ -8,7 +7,6 @@ class BaseParser(object):
     def __init__(self):
         self.preferences = config.preferences()
         self.parse_config()
-        self.exe_regex = re.compile(r' [^ ]*%[fFuUdDnNickvm]')
         if self.show_icons:
             if self.use_gtk_theme:
                 t = icon_finder.get_gtk_theme()

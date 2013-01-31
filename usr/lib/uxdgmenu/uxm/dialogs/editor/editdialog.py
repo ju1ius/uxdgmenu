@@ -88,12 +88,10 @@ class EditDialog(helpers.BuildableWidgetDecorator):
     # SIGNALS
 
     def on_response(self, widget, response_id):
-        print "response %s from dialog" % response_id
         if response_id == gtk.RESPONSE_ACCEPT:
             #FIXME: handle new objects
             newdata = self.__gather_data()
             self.__data.update(newdata)
-            print self.__data
             self.widget.hide()
         elif response_id == gtk.RESPONSE_REJECT:
             self.__data = None

@@ -29,7 +29,7 @@ def get_adapter(name):
     if not name in['gmenu', 'xdg']:
         raise ValueError
     else:
-        adapter_name = "uxdgmenu.adapters.%s_adapter" % name
+        adapter_name = "uxm.adapters.%s_adapter" % name
         adapter_class = "%sAdapter" % (name[0].upper() + name[1:])
         __import__(adapter_name)
         module = sys.modules[adapter_name]

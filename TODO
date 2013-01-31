@@ -3,10 +3,27 @@ release v0.4
 menus:
   compatibility with gnome categories, implies renaming of .directory files
 icons:
+  what about symlinks:
+	if we want them to be displayed correctly in the menu,
+	we have to find the icon by mime-type,
+	then composite it with the symlink icon and save the result.
+	so we should add a mime-type cache to icon_finder with a is_symlink column
   compatibility with GTK3 themes
 
-GUI menu editor:
-  fork alacarte ???
+performance:
+	consider using GIO for finding mime-type of files (2x improvement)
+    improve directory listing (/usr/bin)
+
+GUI menu editor
+
+launcher:
+	search in $PATH
+	duckduckgo like hashbangs:
+		$ => run command
+		!w => open url
+		!s => search the web
+		!py => python docs
+		etc...
 
 l10n for config editor...
 
@@ -14,3 +31,5 @@ update wiki:
   howto debugging
 
 unit tests...
+
+later gir/GTK3 branch

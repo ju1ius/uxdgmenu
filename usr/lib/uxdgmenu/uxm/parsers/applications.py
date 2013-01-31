@@ -2,6 +2,7 @@ import os
 
 import uxm.parser as parser
 import uxm.adapters as adapters
+import uxm.utils as utils
 
 class Parser(parser.BaseParser):
 
@@ -31,7 +32,7 @@ class Parser(parser.BaseParser):
         return { "type": "separator" }
 
     def parse_directory(self, entry, level=0):
-        for child in entry.get_contents():
+        for child in entry:
             t = child.get_type()
             if t == adapters.TYPE_SEPARATOR:
                 yield self.parse_separator(child, level)
@@ -58,7 +59,7 @@ class Parser(parser.BaseParser):
         if self.filter_debian and "/.local/share/applications/menu-xdg/" in filepath:
             return None
         # Strip command arguments
-        cmd = self.exe_regex.sub('', entry.get_exec())
+        cmd = utils.clean_exec(entry.get_exec())
         if entry.is_terminal():
             cmd = '%s -e "%s"' % (self.terminal_emulator, cmd)
         # Get icon
