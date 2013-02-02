@@ -13,14 +13,11 @@ class Parser(parser.BaseParser):
 
     def parse_config(self):
         super(Parser, self).parse_config()
-        show_all = self.preferences.getboolean('Applications', 'show_all')
-        self.show_flags = adapters.NONE
-        if show_all:
-            self.show_flags = adapters.SHOW_EMPTY
+        self.show_all = self.preferences.getboolean('Applications', 'show_all')
         self.terminal_emulator = self.preferences.get('General', 'terminal')
 
     def parse_menu_file(self, menu_file):
-        root = self.adapter.parse(menu_file, self.show_flags)
+        root = self.adapter.parse(menu_file, self.show_all)
         return {
             "type": "menu",
             "id": root.get_name().encode('utf-8'),
@@ -59,7 +56,7 @@ class Parser(parser.BaseParser):
         if self.filter_debian and "/.local/share/applications/menu-xdg/" in filepath:
             return None
         # Strip command arguments
-        cmd = utils.clean_exec(entry.get_exec())
+        cmd = utils.shell.clean_exec(entry.get_exec())
         if entry.is_terminal():
             cmd = '%s -e "%s"' % (self.terminal_emulator, cmd)
         # Get icon

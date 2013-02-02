@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import uxm.config as config
 import uxm.daemon as daemon
@@ -14,9 +15,11 @@ def check_formatter(fatal=True):
         else:
             pass
 
+
 def progress_dialog(msg, func, *args, **kwargs):
     import uxm.dialogs.progress as progress
     progress.indeterminate(msg, func, *args, **kwargs)
+
 
 def die():
     parser.print_help()
@@ -63,10 +66,7 @@ if __name__ == '__main__':
   debug:rootmenu
 
 """
-    
-    parser = config.OptionParser(
-        usage = usage, epilog = description      
-    )
+    parser = config.OptionParser(usage=usage, epilog=description)
     parser.add_option(
         '-v', '--verbose', action='store_true',
         help="be verbose and log inotify events to syslog"
@@ -100,11 +100,10 @@ Defaults to 'uxm-applications.menu'"""
         '-p', '--progress', action='store_true',
         help="Display a GTK progress bar dialog"
     )
-    ( options, args ) = parser.parse_args()
+    (options, args) = parser.parse_args()
 
     if len(args) == 0:
         die()
-
 
     if options.verbose:
         import time

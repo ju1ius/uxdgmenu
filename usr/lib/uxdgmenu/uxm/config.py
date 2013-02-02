@@ -4,7 +4,7 @@ import cStringIO as StringIO
 import xdg.BaseDirectory
 
 import uxm.utils as utils
-
+from uxm.utils.proc import pgrep
 
 
 ############################################################
@@ -37,9 +37,9 @@ def check():
 
 def guess():
     import uxm.icon_finder
-    open_cmd = utils.guess_open_cmd()
+    open_cmd = utils.env.guess_open_cmd()
     __parser.set('General', 'open_cmd', open_cmd)
-    fm = utils.guess_file_manager()
+    fm = utils.env.guess_file_manager()
     __parser.set('General', 'filemanager', fm)
     theme = uxm.icon_finder.get_gtk_theme()
     __parser.set('Icons', 'theme', theme)
@@ -77,7 +77,7 @@ def guess_wm():
                 name,_ = os.path.splitext(os.path.basename(f))
                 formatters.add(name)
     for formatter in formatters:
-        if utils.pgrep(formatter, user=os.environ['USER']):
+        if pgrep(formatter, user=os.environ['USER']):
             return formatter
 
 #########################################################

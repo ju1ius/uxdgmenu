@@ -1,36 +1,12 @@
-import os, sqlite3, stat, atexit
+import os
+import sqlite3
+import stat
+import atexit
 from collections import OrderedDict
+
 import uxm.config as config
 
-
-class Cache(object):
-
-    def __init__(self):
-        self.connection = None
-        self.cursor = None
-        self.db_file = config.CACHE_DB
-
-    def get_connexion(self):
-        return self.connection
-
-    def get_cursor(self):
-        return self.cursor
-
-    def save(self):
-        if self.connection.total_changes > 0:
-            self.connection.commit()
-        return self
-
-    def close(self):
-        self.save()
-        self.connection.close()
-
-    def open(self):
-        if not os.path.isfile(self.db_file):
-            os.mknod(self.db_file, 0755|stat.S_IFREG)
-        if not isinstance(self.connection, sqlite3.Connection):
-            self.connection = sqlite3.connect(self.db_file)
-            self.connection.executescript("""
+CREATE_TABLES_QUERY = """
 CREATE TABLE IF NOT EXISTS icon(
     name TEXT NOT NULL,
     theme TEXT NOT NULL,
@@ -60,7 +36,36 @@ CREATE TABLE IF NOT EXISTS i18n(
 );
 CREATE INDEX IF NOT EXISTS i18n_key_idx ON i18n(key);
 """
-            )
+
+
+class Cache(object):
+
+    def __init__(self):
+        self.connection = None
+        self.cursor = None
+        self.db_file = config.CACHE_DB
+
+    def get_connexion(self):
+        return self.connection
+
+    def get_cursor(self):
+        return self.cursor
+
+    def save(self):
+        if self.connection.total_changes > 0:
+            self.connection.commit()
+        return self
+
+    def close(self):
+        self.save()
+        self.connection.close()
+
+    def open(self):
+        if not os.path.isfile(self.db_file):
+            os.mknod(self.db_file, 0755 | stat.S_IFREG)
+        if not isinstance(self.connection, sqlite3.Connection):
+            self.connection = sqlite3.connect(self.db_file)
+            self.connection.executescript(CREATE_TABLES_QUERY)
             self.connection.row_factory = sqlite3.Row
             self.cursor = self.connection.cursor()
         return self
@@ -95,7 +100,7 @@ WHERE m.type = ? AND i.theme = ? AND i.size = ?
         row = self.cursor.execute(q, (mimetype, theme, size)).fetchone()
         if not row:
             return
-        return {k:row[k] for k in row.keys() if k not in ('im_mt_id','im_icn_id')}
+        return {k: row[k] for k in row.keys() if k not in ('im_mt_id','im_icn_id')}
 
     def find_one_by_name_with_mimetypes(self, name, theme, size):
         q = """
@@ -116,9 +121,10 @@ WHERE name = ? AND theme = ? AND size = ?
             icn_id = row['icon_id']
             if icn_id not in icons:
                 icons[icn_id] = {
-                    k:row[i] for i,k in enumerate(row.keys()) if k not in (
-                        'im_icn_id', 'im_mt_id', 'mimetype_id', 'mimetype')
-                    }
+                    k: row[i] for i, k in enumerate(row.keys()) if k not in (
+                        'im_icn_id', 'im_mt_id', 'mimetype_id', 'mimetype'
+                    )
+                }
                 icons[icn_id]['mimetypes'] = []
             if row['mimetype']:
                 icon = icons[icn_id]
@@ -164,7 +170,7 @@ WHERE m.type = ? AND i.theme = ? AND i.size = ?
 
     def save_icon(self, name, theme, size, path, symlink=None, mimetype=None):
         q = "INSERT INTO icon(name,theme,size,path,symlink) VALUES(?,?,?,?,?)"
-        self.cursor.execute(q, (name,theme,size,path,symlink))
+        self.cursor.execute(q, (name, theme, size, path, symlink))
         icon_id = self.cursor.lastrowid
         if not mimetype:
             return
@@ -173,8 +179,10 @@ WHERE m.type = ? AND i.theme = ? AND i.size = ?
             (mimetype,)
         ).fetchone()
         if m is None:
-            self.cursor.execute("INSERT INTO mimetype(type) VALUES(?)",
-                    (mimetype,))
+            self.cursor.execute(
+                "INSERT INTO mimetype(type) VALUES(?)",
+                (mimetype,)
+            )
             mt_id = self.cursor.lastrowid
         else:
             mt_id = m['rowid']
@@ -202,20 +210,22 @@ WHERE m.type = ? AND i.theme = ? AND i.size = ?
             (mimetype,)
         ).fetchone()
         if m is None:
-            self.cursor.execute("INSERT INTO mimetype(type) VALUES(?)",
-                    (mimetype,))
+            self.cursor.execute(
+                "INSERT INTO mimetype(type) VALUES(?)",
+                (mimetype,)
+            )
             mt_id = self.cursor.lastrowid
         else:
             mt_id = m['rowid']
-        self.cursor.execute("""
-            INSERT INTO icon_mime(icon_id,mimetype_id) VALUES(?,?)""",
+        self.cursor.execute(
+            "INSERT INTO icon_mime(icon_id,mimetype_id) VALUES(?,?)",
             (obj['icon_id'], mt_id)
         )
 
     def get_translation(self, key):
         self.cursor.execute("""
-    SELECT i18n.key, i18n.translation FROM i18n
-    WHERE i18n.key = ?""",
+            SELECT i18n.key, i18n.translation FROM i18n
+            WHERE i18n.key = ?""",
             [key]
         )
         return self.cursor.fetchone()
@@ -230,16 +240,19 @@ WHERE m.type = ? AND i.theme = ? AND i.size = ?
 
 __cache = None
 
+
 def open():
     global __cache
     if __cache is None:
         __cache = Cache().open()
     return __cache
 
+
 @atexit.register
 def close():
     if __cache:
         __cache.close()
+
 
 def clear():
     if os.path.isfile(config.CACHE_DB):

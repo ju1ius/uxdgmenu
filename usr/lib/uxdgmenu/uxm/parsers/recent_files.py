@@ -1,27 +1,36 @@
-import os, re, urllib
+import os
+import re
+import urllib
 
 import uxm.parser as parser
 import uxm.config as config
+from uxm.utils import shell
+from uxm.utils import mime
 
 try:
-    from xml.etree import cElementTree as ElementTree
-except:
-    from xml.etree import ElementTree
+    from lxml import etree
+except ImportError:
+    try:
+        import xml.etree.cElementTree as etree
+    except:
+        import xml.etree.ElementTree as etree
 
 _ = config.translate
 
 MIME_TYPE_NS = 'http://www.freedesktop.org/standards/shared-mime-info'
-BOOKMARK_NS  = 'http://www.freedesktop.org/standards/desktop-bookmarks' 
-MIME_EXPR    = 'info/metadata/{%s}mime-type' % MIME_TYPE_NS
+BOOKMARK_NS = 'http://www.freedesktop.org/standards/desktop-bookmarks'
+MIME_EXPR = 'info/metadata/{%s}mime-type' % MIME_TYPE_NS
 BOOKMARK_EXPR = 'info/metadata/{%(ns)s}applications/{%(ns)s}application' % {
     "ns": BOOKMARK_NS
 }
+
 
 class Parser(parser.BaseParser):
 
     def __init__(self):
         super(Parser, self).__init__()
-        self.exe_regex = re.compile(r"'(.*) %[a-zA-Z]'")
+        #self.exe_regex = re.compile(r"'(.*) %[a-zA-Z]'")
+        self.exe_regex = re.compile(r"'.* (%[ufUF])'")
         self.max_items = self.preferences.getint("Recent Files", "max_items")
         if self.show_icons:
             self.clear_icon = self.icon_finder.find_by_name('gtk-clear')
@@ -31,13 +40,21 @@ class Parser(parser.BaseParser):
     def parse_bookmarks(self):
         if not os.path.exists(config.RECENT_FILES_FILE):
             self.create_default()
-        tree = ElementTree.parse(config.RECENT_FILES_FILE)
-        last_index = - (self.max_items -1)
-        bookmarks = tree.findall('./bookmark')[last_index:-1]
+        tree = etree.parse(config.RECENT_FILES_FILE)
+        bookmarks = tree.findall('./bookmark')
         bookmarks.reverse()
-        items = map(self.parse_item, bookmarks)
+        items = []
+        count = 1
+        for el in bookmarks:
+            item = self.parse_item(el)
+            if item is None:
+                continue
+            items.append(item)
+            if count == self.max_items:
+                break
+            count += 1
         items.extend([
-            { "type": "separator" },
+            {"type": "separator"},
             {
                 "type": "application",
                 "label": _('Clear List'),
@@ -48,24 +65,85 @@ class Parser(parser.BaseParser):
         return {
             "type": "menu",
             "label": "Recently Used",
-            "id": "uxdgmenu-recent-files",
+            "id": "uxm-recent-files",
             "icon": "",
             "items": items
         }
 
     def parse_item(self, el):
-        href = el.get('href')
-        label = urllib.unquote( href.rsplit('/',1)[1] )
-        cmd = el.find(BOOKMARK_EXPR).get('exec')
-        cmd = self.exe_regex.sub(r'\1', cmd)
-        cmd = '%s "%s"' % (cmd, href)
         mime_type = el.find(MIME_EXPR).get('type')
+        href = urllib.unquote(el.get('href'))
+        protocol, url = href.split('://', 1)
+        last_sep = url.rfind('/')
+        if last_sep == -1:
+            label = url
+        else:
+            label = url[last_sep+1:]
+        commands = []
+        # first try using GIO to get all relevant apps
+        if protocol == 'file':
+            if not os.path.exists(url):
+                return None
+            id = url
+            apps = mime.get_apps_for_type(mime_type)
+            url = shell.quote(url)
+            for app in apps:
+                cmd = re.sub(r'(%[fFuU])', url, app.get_commandline())
+                icon = ''
+                if self.show_icons:
+                    gicon = app.get_icon()
+                    if gicon:
+                        if hasattr(gicon, 'get_file'):
+                            name = gicon.get_file().get_path()
+                        else:
+                            name = gicon.get_names()
+                    icon = self.icon_finder.find_by_name(name) if gicon else ''
+                commands.append({
+                    'type': 'application',
+                    'label': app.get_name(),
+                    'icon': icon,
+                    'command': cmd
+                })
+        else:
+            id = href
+            app = mime.get_default_for_uri_scheme(protocol)
+            if app:
+                cmd = re.sub(r'(%[fFuU])', href, app.get_commandline())
+                icon = ''
+                if self.show_icons:
+                    gicon = app.get_icon()
+                    icon = self.icon_finder.find_by_name(gicon.get_names()) if gicon else ''
+                commands.append({
+                    'type': 'application',
+                    'label': app.get_name(),
+                    'icon': icon,
+                    'command': cmd
+                })
+        # fallback to provided apps
+        if not commands:
+            apps = el.findall(BOOKMARK_EXPR)
+            href = shell.quote(href)
+            for app in reversed(apps):
+                cmd = re.sub(r'(%[fFuU])', href, app.get('exec').strip('"\''))
+                icon = ''
+                commands.append({
+                    'type': 'application',
+                    'label': app.get('name'),
+                    'icon': icon,
+                    'command': cmd
+                })
         icon = self.icon_finder.find_by_mime_type(mime_type) if self.show_icons else ''
+        items = [
+            {"type": "text", "label": "Open with..."},
+            {"type": "separator"}
+        ] + commands
         return {
-            "type": "application",
-            "label": label.encode('utf-8'),
-            "icon": icon.encode('utf-8'),
-            "command": cmd.encode('utf-8')
+            "type": "menu",
+            "id": id,
+            "label": label,
+            "icon": icon,
+            "mimetype": mime_type,
+            "items": items
         }
 
     def create_default(self):

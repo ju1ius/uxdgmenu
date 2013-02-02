@@ -43,7 +43,7 @@ class DaemonStatusMonitor(threading.Thread, gobject.GObject):
 
     def run(self):
         while not self.stopevent.isSet():
-            pids = utils.pgrep('uxdgmenud', exact=True, user=os.environ['USER'])
+            pids = utils.proc.pgrep('uxdgmenud', exact=True, user=os.environ['USER'])
             if pids:
                 if self.status is False:
                     self.emit('status-change', True)
@@ -160,7 +160,7 @@ class ConfigEditor(object):
         s = self.prefs.getint('Icons', 'size')
         if s < 16: s = 16
         # ---------- round to the nearest multiple of 8
-        icon_size = utils.round_base(s, 8)
+        icon_size = utils.fmt.round_base(s, 8)
         # ---------- compute index
         self.icons_size_select.set_active((icon_size / 8) - 2)
         # ----- theme

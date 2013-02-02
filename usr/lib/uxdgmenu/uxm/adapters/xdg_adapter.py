@@ -11,12 +11,13 @@ def factory(entry):
         return XdgEntryAdapter(entry)
 
 class XdgAdapter(TreeAdapter):
-    def parse(self, menu_file, flags=NONE):
-        return XdgDirectoryAdapter(xdg.Menu.parse(menu_file))
+    def parse(self, menu_file, show_hidden=True):
+        return XdgDirectoryAdapter(xdg.Menu.parse(menu_file), show_hidden)
 
 class XdgDirectoryAdapter(DirectoryAdapter):
-    def __init__(self, adaptee):
+    def __init__(self, adaptee, show_hidden=True):
         self.adaptee = adaptee
+        self.show_hidden = show_hidden
 
     def get_name(self):
         return self.adaptee.Name
@@ -31,7 +32,7 @@ class XdgDirectoryAdapter(DirectoryAdapter):
         self.adaptee.getComment()
 
     def __iter__(self):
-        for entry in self.adaptee.getEntries():
+        for entry in self.adaptee.getEntries(self.show_hidden):
             if isinstance(entry, xdg.Menu.Separator):
                 yield XdgSeparatorAdapter(entry)
             elif isinstance(entry, xdg.Menu.Menu):

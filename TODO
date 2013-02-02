@@ -17,6 +17,7 @@ performance:
 GUI menu editor
 
 launcher:
+    implement the new lexer
 	search in $PATH
 	duckduckgo like hashbangs:
 		$ => run command

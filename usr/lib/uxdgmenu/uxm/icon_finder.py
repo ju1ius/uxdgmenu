@@ -1,9 +1,9 @@
 import os
 import xdg.IconTheme
-import xdg.Mime
 
 import uxm.config as config
 import uxm.cache
+import uxm.utils.mime
 
 import gio
 import gtk
@@ -27,8 +27,8 @@ class IconFinder(object):
         self.default_icon = default_icon
         self.cache = cache and cache or uxm.cache.open()
         self.theme_fallbacks = ['gnome', 'oxygen']
-        self.symlink_icon = self.find_by_name('emblem-symbolic-link')
         self.symlink_pixbuf = None
+        self.symlink_icon = self.find_by_name('emblem-symbolic-link')
 
     def find_by_name(self, names, default=None):
         """Finds an icon by its name and cache it"""
@@ -53,8 +53,7 @@ class IconFinder(object):
         raise IconLookupError("No icon found. Try to adjust the default icon in your config file")
 
     def find_by_file_path(self, filepath, default='gtk-file'):
-        #mime_type = gio.content_type_guess(filepath)
-        mime_type = xdg.Mime.get_type(filepath)
+        mime_type = uxm.utils.mime.guess(filepath)
         is_link = os.path.islink(filepath)
         return self.find_by_mime_type(str(mime_type), is_link, default)
 

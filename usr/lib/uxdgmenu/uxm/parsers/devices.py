@@ -42,7 +42,7 @@ class Parser(parser.BaseParser):
             )
         label = "%s (%s - %s)" % (
             device_name,
-            utils.format_filesize(int(device.size)),
+            utils.fmt.filesize(int(device.size)),
             device.id_type
         )
         if device.is_mounted:

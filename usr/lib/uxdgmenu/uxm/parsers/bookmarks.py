@@ -1,6 +1,8 @@
-import os, urllib
+import os
+import urllib
 
 import uxm.parser as parser
+
 
 class Parser(parser.BaseParser):
 
@@ -13,9 +15,8 @@ class Parser(parser.BaseParser):
         else:
             self.bookmark_icon = ''
 
-
     def parse_bookmarks(self):
-        bookmarks = [ (os.path.expanduser('~'), 'Home') ]
+        bookmarks = [(os.path.expanduser('~'), 'Home')]
         append = bookmarks.append
         with open(os.path.expanduser('~/.gtk-bookmarks')) as f:
             for line in f:
@@ -35,7 +36,7 @@ class Parser(parser.BaseParser):
         for path, label in bookmarks:
             label = urllib.unquote(label)
             cmd = '%s "%s"' % (fm, path)
-            path = path.replace('file://', '')
+            path = urllib.unquote(path.replace('file://', ''))
             icon = self.icon_finder.find_by_file_path(path) if self.show_icons else ''
             item = {
                 "type": "application",
@@ -45,4 +46,3 @@ class Parser(parser.BaseParser):
             }
             append(item)
         return menu
-

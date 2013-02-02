@@ -1,4 +1,6 @@
-import os, sys, subprocess
+import os
+import sys
+import subprocess
 
 import uxm.config as config
 import uxm.cache as cache

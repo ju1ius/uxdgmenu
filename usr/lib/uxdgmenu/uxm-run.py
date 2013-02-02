@@ -1,10 +1,8 @@
+#! /usr/bin/env python
+
 import sys
 import os.path as path
-sys.path.insert(0,
-    path.abspath(
-        path.dirname(path.abspath(__file__)) + '/../usr/lib/uxdgmenu'
-    )
-)
+sys.path.insert(0, path.abspath(path.dirname(path.abspath(__file__))))
 
 import uxm.bench as bench
 
