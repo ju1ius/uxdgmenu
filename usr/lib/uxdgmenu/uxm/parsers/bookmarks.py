@@ -20,11 +20,11 @@ class Parser(parser.BaseParser):
         append = bookmarks.append
         with open(os.path.expanduser('~/.gtk-bookmarks')) as f:
             for line in f:
-                path, label = line.strip().partition(' ')[::2]
-                path = urllib.unquote(path)
+                uri, label = line.strip().partition(' ')[::2]
                 if not label:
+                    path = urllib.unquote(uri)
                     label = os.path.basename(os.path.normpath(path))
-                append((path.encode('utf-8'), label))
+                append((uri, label))
         menu = {
             "type": "menu",
             "id": "uxdgmenu-bookmarks",
@@ -33,16 +33,17 @@ class Parser(parser.BaseParser):
         }
         append = menu['items'].append
         fm = self.file_manager
-        for path, label in bookmarks:
+        for uri, label in bookmarks:
             label = urllib.unquote(label)
-            cmd = '%s "%s"' % (fm, path)
-            path = urllib.unquote(path.replace('file://', ''))
+            cmd = '%s "%s"' % (fm, uri)
+            path = urllib.unquote(uri.replace('file://', ''))
             icon = self.icon_finder.find_by_file_path(path) if self.show_icons else ''
             item = {
                 "type": "application",
                 "label": label.encode('utf-8'),
                 "command": cmd.encode('utf-8'),
-                "icon": icon.encode('utf-8')
+                "icon": icon.encode('utf-8'),
+                "url": uri
             }
             append(item)
         return menu

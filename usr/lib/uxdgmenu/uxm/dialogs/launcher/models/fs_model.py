@@ -2,9 +2,13 @@ import os
 import locale
 from collections import OrderedDict
 
+import gtk
+import gio
+
 import uxm.cache as cache
 import uxm.icon_finder as icon_finder
-import uxm.bench as bench
+import uxm.utils
+#import uxm.bench as bench
 
 from . import model
 from . import utils
@@ -43,6 +47,7 @@ class FileSystemModel(model.Model):
         self.folder_icon = self.icon_finder.find_by_mime_type('inode/directory', False)
 
         self.current_search = ""
+        self.last_visited = ""
         self.model_filter = self.model.filter_new()
         self.model_filter.set_visible_func(self.search_callback)
 
@@ -80,6 +85,12 @@ class FileSystemModel(model.Model):
         if not os.path.isdir(path):
             return False
 
+        # Don't load the same path twice in a row
+        if path == self.last_visited:
+            return True
+        else:
+            self.last_visited = path
+
         if path in PATH_CACHE:
             for column in PATH_CACHE[path]:
                 self.model.append(column)
@@ -91,15 +102,17 @@ class FileSystemModel(model.Model):
                 filepath = os.path.join(path, name)
                 if os.path.isdir(filepath):
                     t = model.TYPE_DIR
+                    mimetype = uxm.utils.mime.INODE_DIR
                     if os.path.islink(filepath):
                         icon = self.folder_symlink
                     else:
                         icon = self.folder_icon
                 elif os.path.isfile(filepath):
                     t = model.TYPE_FILE
-                    icon = self.icon_finder.find_by_file_path(filepath)
+                    mimetype = uxm.utils.mime.guess(filepath)
+                    icon = self.icon_finder.find_by_mime_type(mimetype)
                 icon = utils.load_icon(icon, self.icon_size)
-                column = (i, t, name, icon)
+                column = (i, t, name, icon, mimetype)
                 columns.append(column)
                 self.model.append(column)
             PATH_CACHE[path] = columns
@@ -107,3 +120,31 @@ class FileSystemModel(model.Model):
         self.new_filter()
 
         return True
+
+    def get_action_menu(self, it):
+        filename, mimetype = self.model_filter.get(it, model.COLUMN_NAME, model.COLUMN_MIMETYPE)
+        filepath = os.path.join(self.last_visited, filename)
+        gfile = gio.File(path=filepath)
+        menu = gtk.Menu()
+        menu.append(gtk.MenuItem('Open with...'))
+        menu.append(gtk.SeparatorMenuItem())
+        for app_info in gio.app_info_get_all_for_type(mimetype):
+            gicon = app_info.get_icon()
+            if gicon:
+                if hasattr(gicon, 'get_file'):
+                    name = gicon.get_file().get_path()
+                else:
+                    name = gicon.get_names()
+            icon = self.icon_finder.find_by_name(name) if gicon else ''
+            if icon:
+                img = gtk.Image()
+                img.set_from_file(icon)
+                menuitem = gtk.ImageMenuItem(gtk.STOCK_EXECUTE)
+                menuitem.set_image(img)
+                menuitem.set_label(app_info.get_name())
+            else:
+                menuitem = gtk.MenuItem(app_info.get_name())
+            menuitem.appinfo = app_info
+            menuitem.file = gfile
+            menu.append(menuitem)
+        return menu

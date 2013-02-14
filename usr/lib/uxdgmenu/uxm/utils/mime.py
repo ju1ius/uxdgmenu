@@ -15,10 +15,12 @@ INODE_SOCKET = str(xdg.Mime.inode_socket)
 INODE_SYMLINK = str(xdg.Mime.inode_symlink)
 INODE_DOOR = str(xdg.Mime.inode_door)
 APP_EXE = str(xdg.Mime.app_exe)
+APP_OCTET_STREAM = 'application/octet-stream'
 
 
-def guess(filepath):
+def guess(filepath, use_contents=True):
     data, is_file = None, False
+    mime_type = APP_OCTET_STREAM
     try:
         st = os.stat(filepath)
         st_mode = st.st_mode
@@ -39,11 +41,12 @@ def guess(filepath):
     except:
         pass
     if is_file:
-        try:
-            with open(filepath, 'rb') as fp:
-                data = fp.read(MIME_MAGIC_MAX_BUF_SIZE)
-        except:
-            pass
+        if use_contents:
+            try:
+                with open(filepath, 'rb') as fp:
+                    data = fp.read(MIME_MAGIC_MAX_BUF_SIZE)
+            except:
+                pass
         # Removed in favor of gio, this was way too sloooow !
         #mime_type = xdg.Mime.get_type(filepath)
         mime_type = gio.content_type_guess(filepath, data, False)

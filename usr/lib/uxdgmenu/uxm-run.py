@@ -2,18 +2,31 @@
 
 import sys
 import os.path as path
+import logging
+
+import gtk
+
 sys.path.insert(0, path.abspath(path.dirname(path.abspath(__file__))))
 
 import uxm.bench as bench
-
-import gtk
+import uxm.config
 from uxm.dialogs.launcher.dialog import LauncherDialog
 
-bench.step('dialog init')
-launcher = LauncherDialog()
-bench.endstep('dialog init')
 
-gtk.main()
+if __name__ == "__main__":
 
-bench.stop()
-bench.results()
+    logger = logging.getLogger('uxm-run')
+    logger.addHandler(uxm.config.make_log_handler('uxm-run'))
+    logger.setLevel(logging.ERROR)
+
+    try:
+        bench.step('dialog init')
+        launcher = LauncherDialog()
+        bench.endstep('dialog init')
+        gtk.main()
+    except Exception, e:
+        logger.exception(e)
+        raise
+
+    bench.stop()
+    bench.results()

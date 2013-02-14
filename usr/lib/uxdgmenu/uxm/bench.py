@@ -72,11 +72,16 @@ def results():
 
 @atexit.register
 def close():
+    """Close the timer and print results if it has not been called,
+    for example in case an exception occured"""
     t = _bench.timer()
+    closed = True
     for id, step in _bench.steps.iteritems():
         if 'end' not in step:
+            closed = False
             step['end'] = {
                 'time': t,
                 'message': 'Step automatically closed by program exit.'
             }
-    results()
+    if not closed:
+        results()

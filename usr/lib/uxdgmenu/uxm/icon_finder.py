@@ -66,8 +66,7 @@ class IconFinder(object):
                 if cached['symlink']:
                     return cached['symlink']
                 # the cached icon doesn't have a symlink version
-                path = self.create_symlink_icon(cached['name'],
-                        cached['path'])
+                path = self.create_symlink_icon(cached['name'], cached['path'])
                 self.cache.update_icon(cached, symlink=path)
                 return path
             return cached['path']

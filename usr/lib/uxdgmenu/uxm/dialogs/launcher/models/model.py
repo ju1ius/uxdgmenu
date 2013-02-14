@@ -7,18 +7,19 @@ import uxm.icon_finder as icon_finder
     COLUMN_ID,
     COLUMN_TYPE,
     COLUMN_NAME,
-    COLUMN_ICON
-) = range(4)
+    COLUMN_ICON,
+    COLUMN_MIMETYPE
+) = range(5)
 
-COLUMNS = (int, int, str, gtk.gdk.Pixbuf)
+COLUMNS = (int, int, str, gtk.gdk.Pixbuf, str)
 
 # types are sorted in this order in search results when in MODE_APPS
 # in reverse order when in MODE_BROWSE
 (
     TYPE_APP,   # an app having a .desktop file
-    TYPE_CMD,   # something found in $PATH
-    TYPE_FILE,  # a file
     TYPE_DIR,   # a directory or bookmark
+    TYPE_FILE,  # a file
+    TYPE_CMD,   # something found in $PATH
     TYPE_DEV    # a device
 ) = range(5)
 

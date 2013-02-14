@@ -2,6 +2,8 @@
 
 import os
 import sys
+import logging
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import uxm.config as config
 import uxm.daemon as daemon
@@ -27,6 +29,11 @@ def die():
 
 
 if __name__ == '__main__':
+
+    logger = logging.getLogger('uxm-daemon')
+    logger.addHandler(config.make_log_handler('uxm-daemon'))
+    logger.setLevel(logging.ERROR)
+
     usage = "%prog [options] command"
     description = """Commands:
   help                  Prints the help message and exits
@@ -107,7 +114,8 @@ Defaults to 'uxm-applications.menu'"""
 
     if options.verbose:
         import time
-        start_t = time.clock()
+        start_t = time.time()
+        logger.setLevel(logging.DEBUG)
 
     ns = None
     action = None
@@ -129,7 +137,8 @@ Defaults to 'uxm-applications.menu'"""
 
     try:
         action = getattr(daemon, action.replace('-', '_'))
-    except:
+    except Exception, e:
+        logger.exception(e)
         die()
 
     use_progress = options.progress
@@ -138,15 +147,24 @@ Defaults to 'uxm-applications.menu'"""
         if options.progress:
             progress_dialog("", action, args[1])
         else:
-            action(args[1])
+            try:
+                action(args[1])
+            except Exception, e:
+                logger.exception(e)
+                sys.exit(1)
+
     else:
         if options.progress:
             progress_dialog("", action, options)
         else:
-            action(options)
+            try:
+                action(options)
+            except Exception, e:
+                logger.exception(e)
+                sys.exit(1)
 
     if options.verbose:
-        end_t = time.clock()
-        print "Executed in %s seconds" % str(end_t - start_t)
+        end_t = time.time()
+        logger.debug("Updated in %s seconds" % str(end_t - start_t))
 
     sys.exit(0)

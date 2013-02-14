@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS icon(
     name TEXT NOT NULL,
     theme TEXT NOT NULL,
     size INTEGER NOT NULL,
-    path TEXT UNIQUE NOT NULL,
-    symlink TEXT UNIQUE
+    path TEXT NOT NULL,
+    symlink TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS name_theme_size_idx
     ON icon(name, theme, size);
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS icon_mime(
     mimetype_id INTEGER REFERENCES mimetype(rowid)
 );
 CREATE INDEX IF NOT EXISTS icon_mime_idx
-    ON icon_mime(icon_id,mimetype_id);
+    ON icon_mime(icon_id, mimetype_id);
 
 CREATE TABLE IF NOT EXISTS i18n(
     key TEXT UNIQUE NOT NULL,
@@ -223,17 +223,14 @@ WHERE m.type = ? AND i.theme = ? AND i.size = ?
         )
 
     def get_translation(self, key):
-        self.cursor.execute("""
-            SELECT i18n.key, i18n.translation FROM i18n
-            WHERE i18n.key = ?""",
-            [key]
-        )
+        q = "SELECT i18n.key, i18n.translation FROM i18n WHERE i18n.key = ?"
+        self.cursor.execute(q, (key,))
         return self.cursor.fetchone()
 
     def add_translation(self, key, trans):
         self.cursor.execute(
             'INSERT INTO i18n(key, translation) VALUES(?,?)',
-            [unicode(key), unicode(trans)]
+            (unicode(key), unicode(trans))
         )
         return self
 

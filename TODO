@@ -17,8 +17,26 @@ performance:
 GUI menu editor
 
 launcher:
-    implement the new lexer
-	search in $PATH
+    integrate with config & config app
+    TAB actions:
+        show popup if not visible (use token_under_cursor)
+        for MODE_APPS ???
+    Shift_Tab:
+        use token_under_cursor
+    ENTER actions:
+        ok for basic commands
+        think about hashbangs
+        launch in terminal:
+            Ctrl+Enter (and right-click-on-entry menu) ?
+    global edit queue
+    performance:
+        profile on FIRST RUN, ie after a reboot
+        think about running an initialization thread/process in order not to block
+        the input while fetching data
+    action menus:
+        close with LEFT arrow
+        actually execute actions
+        actions for MODE_BROWSE
 	duckduckgo like hashbangs:
 		$ => run command
 		!w => open url

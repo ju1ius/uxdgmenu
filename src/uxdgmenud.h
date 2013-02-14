@@ -23,7 +23,7 @@
 #define UXM_BOOKMARKS_EVENTS      IN_CLOSE_WRITE
 #define UXM_EXCLUDE_PATTERN				"/.local/share/applications/menu-xdg/"
 
-#define UXM_OPTS_VERBOSE						0x01
+#define UXM_OPTS_VERBOSE			0x01
 #define UXM_OPTS_DAEMONIZE          0x02
 #define UXM_OPTS_WATCH_APPLICATIONS	0x04
 #define UXM_OPTS_WATCH_BOOKMARKS    0x08
@@ -34,27 +34,29 @@
  * Shared data between threads
  **/
 typedef struct UxmSharedData {
-	GAsyncQueue *queue;
-	char *formatter;
-	int flags;
+    GAsyncQueue *queue;
+    char        *formatter;
+    int         flags;
 } UxmSharedData;
 
 /**
  * Constructs a UxmSharedData object
  **/
 static UxmSharedData *
-uxm_shared_data_new(GAsyncQueue *queue,
-                    int flags,
-                    char *formatter);
+uxm_shared_data_new(
+    GAsyncQueue *queue,
+    int         flags,
+    char        *formatter
+);
 
 /**
  * Types of messages emitted by the monitor worker
  **/
 enum UxmMessageType {
-  UXM_MSG_TYPE_APPLICATION	= 0x01,
-  UXM_MSG_TYPE_BOOKMARK			= 0x02,
-  UXM_MSG_TYPE_RECENT_FILE	= 0x04,
-  UXM_MSG_TYPE_DEVICE       = 0x08
+    UXM_MSG_TYPE_APPLICATION    = 0x01,
+    UXM_MSG_TYPE_BOOKMARK		= 0x02,
+    UXM_MSG_TYPE_RECENT_FILE	= 0x04,
+    UXM_MSG_TYPE_DEVICE         = 0x08
 };
 typedef enum UxmMessageType UxmMessageType;
 
@@ -62,8 +64,8 @@ typedef enum UxmMessageType UxmMessageType;
  * The message object emitted by the monitor worker
  **/
 typedef struct UxmMessage {
-  char *data;
-  UxmMessageType type;
+    char            *data;
+    UxmMessageType  type;
 } UxmMessage;
 
 /**
@@ -73,11 +75,13 @@ static UxmMessage *
 uxm_msg_new(UxmMessageType type);
 
 static void
-uxm_msg_dispatch(GAsyncQueue *queue,
-                  struct inotify_event *event,
-                  UxmMessageType type,
-                  char *msg_buf,
-                  int verbose);
+uxm_msg_dispatch(
+    GAsyncQueue     *queue,
+    struct          inotify_event *event,
+    UxmMessageType  type,
+    char            *msg_buf,
+    int             verbose
+);
 /**
  * Monitors directories
  **/
@@ -88,11 +92,13 @@ static int
 uxm_udisks_worker(UxmSharedData *data);
 
 static void
-uxm_udisks_signal_handler(GDBusProxy *proxy,
-                          gchar      *sender_name,
-                          gchar      *signal_name,
-                          GVariant   *parameters,
-                          gpointer    user_data);
+uxm_udisks_signal_handler(
+    GDBusProxy *proxy,
+    gchar      *sender_name,
+    gchar      *signal_name,
+    GVariant   *parameters,
+    gpointer    user_data
+);
 
 /**
  * Listens to messages emitted by uxm_inotify_worker
@@ -106,6 +112,14 @@ uxm_monitor_listener(UxmSharedData *data);
  **/
 static void
 uxm_signal_handler(int signum);
+
+static void
+uxm_log_handler(
+    const gchar     *log_domain,
+    GLogLevelFlags  log_level,
+    const gchar     *message,
+    gpointer        user_data
+);
 
 /**
  * Cleans up memory before shutdown
@@ -121,6 +135,9 @@ uxm_get_monitored_directories(void);
 
 static gchar *
 uxm_get_recent_files_path(void);
+
+static gchar *
+uxm_get_logfile_path(void);
 
 /**
  * Compatibility with glib < 2.28

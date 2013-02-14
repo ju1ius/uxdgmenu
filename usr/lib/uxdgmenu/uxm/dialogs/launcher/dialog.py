@@ -1,7 +1,12 @@
 import os
 import subprocess
+import collections
+import re
+
 import glib
 import gtk
+import gio
+
 import uxm.bench as bench
 from .models import model
 from .models.apps_model import AppsModel
@@ -12,23 +17,26 @@ from .models.pathfinder import PathFinder
     MODE_APPS,
     MODE_BROWSE
 ) = range(2)
+DIRECTION_FWD = 1
+DIRECTION_BWD = -1
+URL_RX = re.compile(r'^\w+://')
 
 
 class LauncherDialog(object):
 
     def __init__(self):
+#{{{
         self.pathfinder = PathFinder()
         self.apps_model = AppsModel()
         self.fs_model = FileSystemModel()
         glib.idle_add(self.apps_model.load)
+        #self.apps_model.load()
         self.mode = MODE_APPS
 
         self.keymap = {
             gtk.keysyms.Escape:       self.on_key_press_escape,
             gtk.keysyms.Tab:          self.on_key_press_tab,
             gtk.keysyms.ISO_Left_Tab: self.on_key_press_shift_tab,
-            gtk.keysyms.BackSpace:    self.on_key_press_backspace,
-            gtk.keysyms.Delete:       self.on_key_press_backspace,
             gtk.keysyms.Return:       self.on_key_press_enter,
             gtk.keysyms.Down:         self.on_key_press_down,
             gtk.keysyms.Up:           self.on_key_press_up,
@@ -80,89 +88,219 @@ class LauncherDialog(object):
         scrolled.add(self.treeview)
         self.popup.add(scrolled)
 
+        # just for testing !!!
+        self.entry.set_text('hello  world')
+        self.set_cursor_position(6)
+
+        self.current_token = None
+        self.current_search = ""
+        self.current_search_pos = -1
+
+        # we queue insert/delete events with a small timeout
+        # for fast typers, repeated keys, etc...
+        self.insert_queue = collections.deque()
+        self.delete_queue = collections.deque()
+
         self.SIGNAL_INSERT_TEXT = self.entry.connect('insert-text', self.on_insert_text)
+        self.SIGNAL_DELETE_TEXT = self.entry.connect('delete-text', self.on_delete_text)
         self.SIGNAL_ENTRY_CHANGED = self.entry.connect_after('changed', self.on_entry_changed)
         #self.entry.connect_after('insert-text', self.on_entry_text_inserted)
         self.entry_window.connect('delete-event', gtk.main_quit)
         self.entry_window.connect('key-press-event', self.on_key_press)
+        self.treeview.connect('button-release-event', self.on_treeview_mouse_click)
 
         self.entry_window.show_all()
+#}}}
 
-    def toggle_mode(self, mode):
-        self.popup.hide()
+    def token_under_cursor(self, text=None, pos=None):
+#{{{
+        if text is None:
+            text = self.entry.get_text()
+        if pos is None:
+            pos = self.entry.get_position()
+        if not text:
+            return None
+        tokens = self.pathfinder.search(text)
+        num_tokens = len(tokens)
+        if num_tokens == 0:
+            return None
+        # quick checks to speedup the most usual cases
+        if num_tokens == 1 or pos <= tokens[0].end:
+            return tokens[0]
+        if pos > tokens[-1].start:
+            return tokens[-1]
+        # if cursor is inside a token return it
+        # else return the nearest token on the left
+        for i, t in enumerate(tokens):
+            if t.end >= pos:
+                if t.start < pos:
+                    return t
+                elif i > 0:
+                    return tokens[i - 1]
+        raise RuntimeError("This should never happen")
+#}}}
+
+    def token_before_cursor(self, text=None, pos=None):
+#{{{
+        if text is None:
+            text = self.entry.get_text()
+        if pos is None:
+            pos = self.entry.get_position()
+        if not text:
+            return
+        tokens = self.pathfinder.search(text[:pos])
+        if tokens:
+            return tokens[-1]
+#}}}
+
+    def set_mode(self, mode):
+#{{{
+        current_model = self.treeview.get_model()
         if mode == MODE_APPS:
-            pass
-
-    def execute_action(self, data):
-        t = data['type']
-        if model.TYPE_APP == t:
-            self.execute_command(data['command'])
+            if current_model is not self.apps_model.get_model():
+                self.treeview.set_model(self.apps_model.get_model())
+            self.mode = MODE_APPS
+        elif mode == MODE_BROWSE:
+            if current_model is not self.fs_model.get_model():
+                self.treeview.set_model(self.fs_model.get_model())
+            self.mode = MODE_BROWSE
+#}}}
 
     def execute_command(self, cmd):
         subprocess.Popen(cmd, shell=True)
         self.quit()
 
+    def handle_url(self, url):
+        scheme = url.split(':')[0]
+        app_info = gio.app_info_get_default_for_uri_scheme(scheme)
+        app_info.launch_uris([url], None)
+
+    def launch_selected(self, mdl, it):
+#{{{
+        t = mdl.get_value(it, model.COLUMN_TYPE)
+        if mdl is self.apps_model.get_model():
+            id = mdl.get_value(it, model.COLUMN_ID)
+            item = self.apps_model.data[id]
+            if t == model.TYPE_APP:
+                self.execute_command(item['command'])
+            elif t == model.TYPE_DIR:
+                self.execute_command(item['command'])
+            elif t == model.TYPE_FILE:
+                appinfo = gio.app_info_get_default_for_type(item['mimetype'], False)
+                if appinfo:
+                    appinfo.launch_uris([item['url']], None)
+            elif t == model.TYPE_CMD:
+                pass
+        elif mdl is self.fs_model.get_model():
+            name, mimetype = mdl.get(it, model.COLUMN_NAME, model.COLUMN_MIMETYPE)
+            path = self.fs_model.last_visited
+            filepath = os.path.join(path, name)
+            appinfo = gio.app_info_get_default_for_type(mimetype, False)
+            gfile = gio.File(filepath)
+            if appinfo:
+                appinfo.launch([gfile], None)
+#}}}
+
+    def insert_text(self, text, pos):
+        """Insert text without calling our handlers"""
+#{{{
+        self.entry.handler_block(self.SIGNAL_INSERT_TEXT)
+        self.entry.insert_text(text, pos)
+        self.entry.handler_unblock(self.SIGNAL_INSERT_TEXT)
+#}}}
+
+    def set_entry_text(self, text):
+        """Sets the entry's text without calling our handlers"""
+#{{{
+        self.entry.handler_block(self.SIGNAL_ENTRY_CHANGED)
+        self.entry.handler_block(self.SIGNAL_INSERT_TEXT)
+        self.entry.handler_block(self.SIGNAL_DELETE_TEXT)
+
+        self.entry.set_text(text)
+
+        self.entry.handler_unblock(self.SIGNAL_ENTRY_CHANGED)
+        self.entry.handler_unblock(self.SIGNAL_INSERT_TEXT)
+        self.entry.handler_unblock(self.SIGNAL_DELETE_TEXT)
+#}}}
+
     def set_cursor_position(self, position):
+        """Sets the cursor position by calling glib.idle_add
+        To be used when we insert/remove text without blocking handlers
+        """
         glib.idle_add(
             lambda: self.entry.set_position(position),
             priority=glib.PRIORITY_HIGH
         )
 
-    def replace_text(self, text):
-        self.entry.set_text(text)
-        self.set_cursor_position(-1)
+    def replace_text(self, start, end, newtext):
+        """Replace text from start to end by newtext, without calling our handlers"""
+#{{{
+        oldtext = self.entry.get_text()
+        prefix, suffix = oldtext[:start], oldtext[end:]
+        before_cursor = prefix + newtext
+        self.set_entry_text(before_cursor + suffix)
+        self.entry.set_position(len(before_cursor))
+#}}}
 
     def suggest(self, mdl, it):
         """Autosuggest of the treeview's selected row"""
+#{{{
+        #print "SUGGEST"
         # prevent our on_entry_changed handler to be called
         self.entry.handler_block(self.SIGNAL_ENTRY_CHANGED)
+        self.entry.handler_block(self.SIGNAL_DELETE_TEXT)
 
         # first clear previous selection
         selection = self.entry.get_selection_bounds()
         if selection:
             self.entry.delete_selection()
+
         # get the text
         text = self.entry.get_text()
-        text_len = len(text)
-        last_index = text_len - 1
+        pos = self.entry.get_position()
+        search = self.current_search
+        search_pos = self.current_search_pos
+        search_len = len(search)
+        endpos = search_pos + search_len
+
+        if pos != search_pos and not selection:
+            # user has moved the cursor between row selection
+            # let's try to remember the previously inserted suggestion
+            tokens = self.pathfinder.search(text[endpos:])
+            if tokens:
+                token = tokens[0]
+                if token.start == 0:
+                    self.entry.delete_text(endpos, endpos + token.length)
 
         if self.mode == MODE_BROWSE:
             filename = mdl.get_value(it, model.COLUMN_NAME)
-            pos = text.rfind('/')
-            prefix = text[pos+1:]
-            suffix = filename[len(prefix):]
-            self.entry.insert_text(suffix, -1)
-            glib.idle_add(
-                lambda: self.entry.select_region(last_index+1, -1),
-                priority=glib.PRIORITY_HIGH
-            )
+            suffix = filename[search_len:]
+            self.insert_text(suffix, endpos)
+            self.entry.select_region(endpos, endpos + len(suffix))
         elif self.mode == MODE_APPS:
-            name, id = mdl.get(it, model.COLUMN_NAME, model.COLUMN_ID)
-            if name.lower().startswith(text.lower()):
+            id, type, name = mdl.get(it, model.COLUMN_ID, model.COLUMN_TYPE, model.COLUMN_NAME)
+            if type == model.TYPE_APP:
                 pass
             else:
-                item = self.apps_model.data[id]
-                name = item['command']
-            prefix = text
-            suffix = name[text_len:]
-            self.entry.insert_text(suffix, -1)
-            glib.idle_add(
-                lambda: self.entry.select_region(last_index+1, -1),
-                priority=glib.PRIORITY_HIGH
-            )
+                suffix = name[search_len:]
+                #print search, suffix, search_pos, repr(self.current_token), endpos
+                self.insert_text(suffix, search_pos)
+                self.entry.select_region(search_pos, search_pos + len(suffix))
+
         # unblock on_entry_changed handler
+        self.entry.handler_unblock(self.SIGNAL_DELETE_TEXT)
         self.entry.handler_unblock(self.SIGNAL_ENTRY_CHANGED)
+#}}}
 
     def load_directory(self, directory):
-        #self.treeview.freeze_child_notify()
-        #self.treeview.set_model(None)
+#{{{
         bench.step('Load dir %s' % directory)
         r = self.fs_model.browse(directory)
         bench.endstep('Load dir %s' % directory)
         if r:
             self.treeview.set_model(self.fs_model.get_model())
             self.show_popup()
-        #self.treeview.thaw_child_notify()
+#}}}
 
     def quit(self):
         gtk.main_quit()
@@ -173,127 +311,354 @@ class LauncherDialog(object):
         self.popup.show_all()
 
     def position_popup(self):
+#{{{
         ox, oy = self.entry.window.get_origin()
         w, h = self.entry.window.get_size()
         self.popup.move(ox, oy + h)
         self.popup.set_size_request(w, 256)
+#}}}
+
+    def show_action_menu(self):
+#{{{
+        sel = self.treeview.get_selection()
+        mdl, it = sel.get_selected()
+        if it is None:
+            # no selection: execute the command in text entry
+            return
+        # selection: execute chosen command
+        id, type = mdl.get(it, model.COLUMN_ID, model.COLUMN_TYPE)
+        if type == model.TYPE_APP:
+            return
+        if MODE_APPS == self.mode:
+            menu = self.apps_model.get_action_menu(id)
+        elif MODE_BROWSE == self.mode:
+            menu = self.fs_model.get_action_menu(it)
+        menu.foreach(lambda item: item.connect('activate', self.on_menuitem_activate))
+        menu.show_all()
+        menu.popup(None, None, self.position_action_menu, 0, 0, mdl.get_path(it))
+#}}}
+
+    def position_action_menu(self, menu, path):
+        cell_rect = self.treeview.get_cell_area(path, self.treeview.get_column(0))
+        ox, oy = self.popup.window.get_origin()
+        w, h = self.popup.window.get_size()
+        return (ox + w, oy + cell_rect.y, True)
 
     ##########################################################################
     # ---------- SIGNALS
     ##########################################################################
 
-    def on_insert_text(self, entry, new_text, new_text_len, pos, *args):
-        # handle pasted text
-        pass 
-        if new_text_len > 1:
-            first = new_text[0]
-            print new_text, entry.get_position(), new_text_len
-            #entry.stop_emission('insert-text')
-            #if first is '~' or first is '/':
-                #self.mode = MODE_BROWSE
-                #self.current_range = (pos, pos+new_text_len)
+    def on_menuitem_activate(self, menuitem, *args):
+        if hasattr(menuitem, 'appinfo'):
+            menuitem.appinfo.launch([menuitem.file])
+        else:
+            self.execute_command(menuitem.command)
 
+    #FIXME: There is one drawback to setting timeouts on these events:
+    # if the user quickly interleaves them or moves the cursor in between
+    # two quick insertions/deletions, then the text and positions
+    # reported by the original event handler become invalid...
+    # => Maybe use a single queue, pass it to a single callback
+    # that determines what action to execute,
+    # along with the correct text and positions ?
+
+    def on_insert_text(self, *args):
+        self.insert_queue.append(args)
+        glib.timeout_add(250, self.on_insert_text_callback)
+
+    def on_delete_text(self, entry, start, end, *args):
+        text = self.entry.get_text()
+        self.delete_queue.append((entry, start, end, text[start]))
+        glib.timeout_add(250, self.on_delete_text_callback)
+
+    def on_insert_text_callback(self, *args):
+#{{{
+        # args passed to the queue are those of on_insert_text
+        # entry, new_text, new_text_len, pos, *user_params
+        if len(self.insert_queue) == 0:
+            # we return here because the function is
+            # still called even if there are no events in the queue
+            return
+        entry = self.insert_queue[0][0]
+        new_text, new_text_len = "", 0
+        for event in self.insert_queue:
+            new_text += event[1]
+            new_text_len += event[2]
+        self.insert_queue.clear()
+
+        print "INSERT"
+        text = entry.get_text()
+        pos = entry.get_position()
+        token = self.token_before_cursor(text, pos)
+        if not token:
+            self.popup.hide()
+            self.set_mode(MODE_APPS)
+            return
+        # Check what mode we're in
+        if pos > token.end:
+            # if cursor is in between tokens,
+            # it means we inserted some sort of unescaped whitespace
+            return
+        #print repr(token)
+        # If the current token looks like a path...
+        if "~" == token[0]:
+            print "I see a path:", token
+            self.mode = MODE_BROWSE
+            path = os.path.expanduser(token.value)
+            if len(token) == 1:
+                path += '/'
+            #entry.stop_emission('insert-text')
+            #self.insert_text(path, token.start)
+            #self.set_cursor_position(token.start + len(path))
+            self.replace_text(token.start, token.end, path)
+            token.value = path
+        elif token.absolute:
+            print "I see a path:", token
+            self.mode = MODE_BROWSE
+        #elif token.value.find('/') != -1:
+            #path = os.path.expanduser('~/%s' % token.value)
+            #if os.path.exists(path):
+                #self.mode = MODE_BROWSE
+                #token.value = path
+        else:
+            print "I see a search:", token
+            self.mode = MODE_APPS
+        # setup variables for suggest & complete
+        self.current_token = token
+        self.current_search = token.value
+        self.current_search_pos = token.end
+
+        if self.mode == MODE_APPS:
+            docs = self.apps_model.find(token.value)
+            if docs:
+                self.treeview.set_model(self.apps_model.get_model())
+                self.show_popup()
+                self.info_label.set_text('%s matche(s)' % len(docs))
+            else:
+                self.info_label.set_text('No matches')
+                self.popup.hide()
+        elif self.mode == MODE_BROWSE:
+            if "/" == token[-1]:
+                self.load_directory(token.value)
+                self.current_search = ""
+                self.current_search_pos = token.end
+            else:
+                pos = token.value.rfind('/')
+                name = token[pos + 1:]
+                self.current_search = name
+                self.current_search_pos = token.start + pos + 1
+                self.fs_model.filter(name)
+
+        mdl = self.treeview.get_model()
+        num_rows = mdl.iter_n_children(None)
+        if num_rows == 0:
+            self.info_label.set_text('No matches')
+        elif num_rows == 1:
+            self.info_label.set_text('Unique match')
+            glib.idle_add(self.suggest, mdl, mdl.get_iter_root())
+        else:
+            self.info_label.set_text('%s matches' % num_rows)
+#}}}
+
+    def on_delete_text_callback(self, *args):
+#{{{
+        # args passed to the queue are those of on_delete_text
+        # entry, start, end, + last_deleted_char
+        if len(self.delete_queue) == 0:
+            # we return here because the function is
+            # still called even if there are no events in the queue
+            return
+        unzipped = zip(*self.delete_queue)
+        entry = unzipped[0][0]
+        start, end = min(unzipped[1]), max(unzipped[2])
+        last_deleted_char = unzipped[3][-1]
+        self.delete_queue.clear()
+
+        text = entry.get_text()
+        pos = entry.get_position()
+        print "DELETE FROM %s to %s, %s" % (start, end, last_deleted_char)
+        #print text[start - 1]
+        token = self.token_before_cursor(text, pos)
+        if not token:
+            self.popup.hide()
+            self.set_mode(MODE_APPS)
+            return
+        if pos > token.end:
+            return
+
+        if token.absolute:
+            print "I see a path:", token
+            self.mode == MODE_BROWSE
+        else:
+            print "I see a search:", token
+            self.mode == MODE_APPS
+
+        self.current_token = token
+        self.current_search = token.value
+        self.current_search_pos = token.end
+
+        if self.mode == MODE_BROWSE:
+            pos = token.rfind('/')
+            if pos == 0:
+                parent_dir = '/'
+                search = token[1:] if len(token) > 1 else ''
+            else:
+                parent_dir, search = token[:pos], token[pos + 1:]
+            self.current_search = search
+            self.current_search_pos = token.start + pos + 1
+            self.load_directory(parent_dir)
+            self.fs_model.filter(search)
+        elif self.mode == MODE_APPS:
+            docs = self.apps_model.find(token.value)
+            if docs:
+                self.treeview.set_model(self.apps_model.get_model())
+                self.show_popup()
+                self.info_label.set_text('%s matche(s)' % len(docs))
+            else:
+                self.info_label.set_text('No matches')
+                self.popup.hide()
+#}}}
 
     def on_key_press(self, widget, event, data=None):
         key = event.keyval
+        #print "Result: %s" % self.token_under_cursor()
         if key in self.keymap:
-            self.keymap[key]()
+            self.keymap[key](event)
         else:
             for keysym in dir(gtk.keysyms):
                 keyval = getattr(gtk.keysyms, keysym)
                 if keyval == key:
                     print keysym, key
+                    pass
 
-    def on_key_press_escape(self):
+    def on_key_press_escape(self, event):
         sel = self.treeview.get_selection()
-        md, it = sel.get_selected()
-        if it is not None:
+        #md, it = sel.get_selected()
+        if self.popup.get_visible():  # or it is not None:
             sel.unselect_all()
             self.popup.hide()
-            self.set_cursor_position(-1)
+            #self.set_cursor_position(-1)
         else:
             self.quit()
 
-    def on_key_press_enter(self):
-        if not self.popup.get_visible():
+    def on_key_press_enter(self, event):
+#{{{
+        text = self.entry.get_text()
+        if not text:
             return
+        if event.state & gtk.gdk.CONTROL_MASK:
+            # launch in terminal
+            self.execute_command('x-terminal-emulator -e "%s"' % text)
+            return
+        tokens = self.pathfinder.search(text)
+        if len(tokens) == 1:
+            if URL_RX.match(tokens[0].value):
+                self.handle_url(tokens[0].value)
+                return
         sel = self.treeview.get_selection()
         mdl, it = sel.get_selected()
         if it is None:
-            it = mdl.get_iter_first()
-            if it is None:
-                return
-        id = mdl.get_value(it, 0)
-        if MODE_APPS == self.mode:
-            data = self.apps_model.data[id]
-            self.execute_action(data)
-        elif MODE_BROWSE == self.mode:
-            pass
+            self.execute_command(text)
+            return
+        self.launch_selected(mdl, it)
+#}}}
 
-    def on_key_press_tab(self):
+    def on_key_press_tab(self, event):
+#{{{
         if not self.popup.get_visible():
             return
+        self.entry_window.stop_emission('key-press-event')
+
         sel = self.treeview.get_selection()
         mdl, it = sel.get_selected()
         if it is None:
             it = mdl.get_iter_root()
+            self.suggest(mdl, it)
+        #FIXME: do we really need the selection bounds ?
+        bounds = self.entry.get_selection_bounds()
         t = mdl.get_value(it, model.COLUMN_TYPE)
-        print t
-        if t == model.TYPE_DIR:
-            if self.mode == MODE_BROWSE:
+        if mdl == self.fs_model.get_model():
+            if bounds:
+                if t == model.TYPE_DIR:
+                    # insert a / at the end, causing the directory to be loaded
+                    self.entry.insert_text('/', bounds[1])
+                    self.set_cursor_position(bounds[1] + 1)
+                else:
+                    # position cursor at end and close popup
+                    self.set_cursor_position(bounds[1])
+                    self.popup.hide()
+        elif mdl == self.apps_model.get_model():
+            if t == model.TYPE_DIR or t == model.TYPE_FILE:
                 # complete the path
-                self.complete(mdl, it)
-                # insert a / at the end, causing the directory to be loaded
-                self.entry.insert_text('/', -1)
-                # position the cursor at the end
-                self.set_cursor_position(-1)
-            elif self.mode == MODE_APPS:
+                # could also be an url so handle this case too ?
                 id = mdl.get_value(it, model.COLUMN_ID)
                 item = self.apps_model.data[id]
-        elif t == model.TYPE_FILE:
-            pass
-            # complete the path
-            # maybe show an action dialog ?
-        elif t == model.TYPE_DEV:
-            pass
-            # complete the path
-            # show an action menu (mount/mount and browse)
-        elif t == model.TYPE_APP:
-            # complete the app command
-            id = mdl.get_value(it, model.COLUMN_ID)
-            item = self.apps_model.data[id]
-            self.entry.set_text(item['command'])
-            self.set_cursor_position(-1)
+                url = item['url']
+                if url.startswith('file://'):
+                    url = url.replace('file://', '')
+                self.entry.delete_selection()
+                txt = self.entry.get_text()
+                token = self.current_token
+                prefix, suffix = txt[:token.start], txt[:token.end]
+                self.set_entry_text(prefix + url + txt[token.end:])
+                endpos = len(prefix) + len(url)
+                self.set_cursor_position(endpos)
+                if t == model.TYPE_DIR:
+                    # insert a / at the end, causing the directory to be loaded
+                    self.entry.insert_text('/', endpos)
+                    self.set_cursor_position(endpos + 1)
+            elif t == model.TYPE_DEV:
+                pass
+            elif t == model.TYPE_APP:
+                # complete the app command
+                id = mdl.get_value(it, model.COLUMN_ID)
+                item = self.apps_model.data[id]
+                txt = self.entry.get_text()
+                token = self.current_token
+                prefix, suffix = txt[:token.start], txt[:token.end]
+                self.set_entry_text(prefix + item['command'] + txt[token.end:])
+                self.set_cursor_position(len(prefix) + len(item['command']))
+            elif t == model.TYPE_CMD:
+                if bounds:
+                    self.set_cursor_position(bounds[1])
+#}}}
 
-    def on_key_press_shift_tab(self):
+    def on_key_press_shift_tab(self, event):
+#{{{
         if not self.popup.get_visible():
             return
-        if self.mode == MODE_BROWSE:
-            text = self.entry.get_text()
-            last_sep = text.rfind('/')
+        text = self.entry.get_text()
+        if not text:
+            return
+        pos = self.entry.get_position()
+        search_range = text[:pos]
+        if not search_range:
+            return
+        tokens = self.pathfinder.search(search_range)
+        if not tokens:
+            return
+        token = tokens[-1]
+        if token.absolute:
+            self.mode = MODE_BROWSE
+            last_sep = token.rfind('/')
             if last_sep < 1:
                 # no parent dir or at root
                 return
-            elif last_sep == len(text) - 1:
+            elif last_sep == token.length - 1:
                 # path ends with a slash, find previous one
-                last_sep = text.rfind('/', 0, -1)
-            parent_dir = text[0:last_sep]
+                last_sep = token.rfind('/', 0, -1)
             # load parent dir
-            self.entry.set_text("%s/" % parent_dir)
-            self.set_cursor_position(-1)
+            delete_pos = token.start + last_sep + 1
+            self.entry.delete_text(delete_pos, token.end)
+            self.set_cursor_position(delete_pos)
+            #parent_dir = token[:last_sep]
+            #self.entry.delete_text(token.start, token.end)
+            #self.entry.insert_text("%s/" % parent_dir, token.start)
+            #self.set_cursor_position(token.start + len(parent_dir) + 1)
+#}}}
 
-    def on_key_press_backspace(self):
-        if self.mode == MODE_BROWSE:
-            text = self.entry.get_text()
-            if text[-1] != '/':
-                return
-            last_sep = text.rfind('/', 0, -1)
-            if last_sep < 0:
-                return
-            parent_dir = text[0:last_sep+1]
-            self.load_directory(parent_dir)
-
-    def on_key_press_down(self):
+    def on_key_press_down(self, event):
+#{{{
         if not self.popup.get_visible():
             return
         sel = self.treeview.get_selection()
@@ -304,14 +669,14 @@ class LauncherDialog(object):
         else:
             next = mdl.iter_next(it)
             if next is None:
-                sel.select_path((0,))
-                self.treeview.scroll_to_cell((0,))
-            else:
-                sel.select_iter(next)
-                self.treeview.scroll_to_cell(mdl.get_path(next))
+                next = mdl.get_iter_root()
+            sel.select_iter(next)
+            self.treeview.scroll_to_cell(mdl.get_path(next))
             self.suggest(mdl, next)
+#}}}
 
-    def on_key_press_up(self):
+    def on_key_press_up(self, event):
+#{{{
         if not self.popup.get_visible():
             return
         sel = self.treeview.get_selection()
@@ -324,70 +689,34 @@ class LauncherDialog(object):
             path = mdl.get_path(it)
             if 0 == path[0]:
                 l = mdl.iter_n_children(None)
-                it = mdl.iter_nth_child(None, l-1)
+                it = mdl.iter_nth_child(None, l - 1)
                 last = mdl.get_path(it)
             else:
-                last = (path[0] - 1, )
+                last = (path[0] - 1,)
             sel.select_path(last)
             self.treeview.scroll_to_cell(last)
             self.suggest(mdl, mdl.get_iter(last))
+#}}}
 
-    def on_key_press_left(self):
-        pass
+    def on_key_press_left(self, event):
+        #TODO: close action menu if visible
+        if self.popup.get_visible():
+            self.popup.hide()
+            return
 
-    def on_key_press_right(self):
-        pass
+    def on_key_press_right(self, event):
+        if not self.popup.get_visible():
+            return
+        self.entry_window.stop_emission('key-press-event')
+        self.show_action_menu()
+
+    def on_treeview_mouse_click(self, treeview, event, *args):
+        if event.button == 1:  # left click
+            #TODO: complete
+            pass
+        elif event.button == 3:  # right click
+            self.show_action_menu()
 
     def on_entry_changed(self, widget, data=None):
-        text = widget.get_text()
-        if not text:
-            self.popup.hide()
-            self.mode = MODE_APPS
-            self.treeview.set_model(self.apps_model.get_model())
-            return
-        cursor_pos = widget.get_position()
-        search_range = text[:cursor_pos+1]
-        tokens = self.pathfinder.search(search_range)
-        if not tokens:
-            self.popup.hide()
-            self.mode = MODE_APPS
-            self.treeview.set_model(self.apps_model.get_model())
-            return
-        token, token_pos = tokens[-1]
-        if len(token) == 1:
-            if "~" == token:
-                self.mode = MODE_BROWSE
-                home = "%s/" % os.path.expanduser(token)
-                prefix, suffix = text[:token_pos], text[token_pos + len(token):]
-                self.replace_text(prefix + home + suffix)
-                return
-            if "/" == text:
-                self.mode = MODE_BROWSE
-                self.load_directory(text)
-                num_rows = self.treeview.get_model().iter_n_children(None)
-                self.info_label.set_text('%s matche(s)' % num_rows)
-                return
-            if "!" == text:
-                return
-            if "$" == text:
-                return
-        if self.mode == MODE_APPS:
-            docs = self.apps_model.find(text)
-            if docs:
-                self.show_popup()
-                self.info_label.set_text('%s matche(s)' % len(docs))
-            else:
-                self.info_label.set_text('No matches')
-                self.popup.hide()
-        elif self.mode == MODE_BROWSE:
-            if "/" == text[-1]:
-                self.load_directory(text)
-            else:
-                pos = text.rfind('/')
-                name = text[pos+1:]
-                self.fs_model.filter(name)
-        num_rows = self.treeview.get_model().iter_n_children(None)
-        if num_rows:
-            self.info_label.set_text('%s matche(s)' % num_rows)
-        else:
-            self.info_label.set_text('No matches')
+        pass
+        #print "changed"

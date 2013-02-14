@@ -4,10 +4,13 @@ ABSPATH_RX = re.compile(r'(?:/(?:\\.|[^\s/"\'])*)+')
 RELPATH_RX = re.compile(r'(?:\\.|[^"\'\s])+(?:/(?:\\.|[^"\'\s])*)*')
 DQUOTE_RX = re.compile(r'"(?:\\.|[^"])*(?:"|$)')
 QUOTE_RX = re.compile(r"'(?:\\.|[^'])*(?:'|$)")
+WHITESPACE_RX = re.compile(r'\s+')
 
 
 class State(object):
     """A bitmask class that stores the state of the path finder"""
+
+    __slots__ = ('value')
 
     INITIAL = 0x0
     NONE = 0x1
@@ -16,10 +19,10 @@ class State(object):
     DQUOTE = 0x8
 
     def __init__(self):
-        self.value = self.INITIAL
+        self.value = State.INITIAL
 
     def reset(self):
-        self.value = self.INITIAL
+        self.value = State.INITIAL
 
     def set(self, state):
         self.value = state
@@ -57,6 +60,66 @@ class State(object):
         return "<State: %s>" % self.value
 
 
+class Token(object):
+
+    __slots__ = ('_value', 'start', 'end', 'length', 'absolute')
+
+    def __init__(self, value, start, absolute=False):
+        self._value = value
+        self.start = start
+        self.length = len(value)
+        self.end = self.start + self.length
+        self.absolute = absolute
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, v):
+        self._value = v
+        l = len(v)
+        self.length = l
+        self.end = self.start + l
+
+    def __getitem__(self, idx):
+        return self._value[idx]
+
+    def __len__(self):
+        return self.length
+
+    def __contains__(self, other):
+        if isinstance(other, int):
+            return self.start <= other <= self.end
+        return str(other) in self._value
+
+    def __add__(self, string):
+        self._value += string
+        l = len(string)
+        self.length += l
+        self.end += l
+        return self
+
+    def __eq__(self, other):
+        if isinstance(other, Token):
+            for attr in self.__slots__:
+                if getattr(self, attr) != getattr(other, attr):
+                    return False
+            return True
+        return self._value == other
+
+    def __getattr__(self, attr):
+        return getattr(self._value, attr)
+
+    def __str__(self):
+        return self._value
+
+    def __repr__(self):
+        return '<Token: %s, %s, %s, %s, %s>' % (
+            self._value, self.start, self.end, self.length, self.absolute
+        )
+
+
 class PathFinder(object):
     """Extracts unix paths from strings"""
 
@@ -70,22 +133,20 @@ class PathFinder(object):
         self.length = len(text)
         self.pos = 0
         self.state.reset()
-        self.paths = [""]
-        self.tokens = [["", 0]]
-        self.quotes = 0
-        self.dquotes = 0
+        self.tokens = []
 
-    def push_token(self, text, pos):
-        self.tokens.append([text, pos])
+    def push_token(self, text, pos, absolute=False):
+        self.tokens.append(Token(text, pos, absolute))
+        #self.tokens.append([text, pos])
 
-    def update_token(self, text):
-        self.tokens[-1][0] += text
+    def update_current_token(self, text):
+        #self.tokens[-1][0] += text
+        self.tokens[-1] += text
 
     def search(self, text):
         self.reset(text)
         self.lex()
-        return [t for t in self.tokens if t[0]]
-        #return [p for p in self.paths if p]
+        return self.tokens
 
     def lex(self):
         s = self.state
@@ -94,12 +155,11 @@ class PathFinder(object):
             pos = self.pos
             if pos >= l:
                 break
+            in_path = State.PATH in s
             char = self.input[pos]
             if char is '\\':
-                print "got \\"
-                if State.PATH in s:
-                    self.paths[-1] += '\\'
-                    self.update_token(char)
+                if in_path:
+                    self.update_current_token(char)
                     self.pos += 1
                 # antislash at last position
                 elif pos == self.length - 1:
@@ -107,76 +167,62 @@ class PathFinder(object):
                 else:
                     self.pos += 2
             elif char is '/':
+                if not in_path:
+                    self.push_token('', pos, True)
                 s += State.PATH
                 self.consume_path()
             elif char is '~':
-                if State.PATH in s:
-                    self.paths[-1] += char
-                    self.update_token(char)
+                if in_path:
+                    self.update_current_token(char)
                     self.pos += 1
                 else:
-                    self.paths.append("~")
-                    self.push_token(char, pos)
+                    self.push_token(char, pos, True)
                     self.pos += 1
                     s += State.PATH
                     self.consume_path()
             elif char is '"':
-                if State.PATH in s:
+                if in_path:
                     string = self.consume_quotes(char)
-                    self.paths[-1] += string
-                    self.update_token(string)
+                    self.update_current_token(string)
                     continue
-                if self.dquotes > 0:
-                    self.dquotes -= 1
+                if State.DQUOTE in s:
                     s -= State.DQUOTE
                 else:
-                    self.dquotes += 1
                     s += State.DQUOTE
                 self.pos += 1
             elif char is "'":
-                if State.PATH in s:
+                if in_path:
                     string = self.consume_quotes(char)
-                    self.paths[-1] += string
-                    self.update_token(string)
+                    self.update_current_token(string)
                     continue
-                if self.quotes > 0:
-                    self.quotes -= 1
+                if State.QUOTE in s:
                     s -= State.QUOTE
                 else:
-                    self.quotes += 1
                     s += State.QUOTE
                 self.pos += 1
-            elif char is ' ':
+            elif char in ' \t\n\r\f\v':
                 # state is in PATH and (QUOTE or DQUOTE)
-                if State.PATH in s and (State.QUOTE in s or State.DQUOTE in s):
-                    self.paths[-1] += char
-                    self.update_token(char)
+                ws = self.consume_whitespace()
+                if in_path and (State.QUOTE in s or State.DQUOTE in s):
+                    self.update_current_token(ws)
                 else:
-                    self.paths.append("")
-                    self.push_token("", pos)
                     s -= State.PATH
-                self.pos += 1
             else:
                 rest = self.consume_relpath()
-                if not self.absolute:
-                    self.state += State.PATH
                 if not rest:
                     self.pos += 1
                     continue
                 if State.PATH in self.state:
-                    self.paths[-1] += rest
-                    self.update_token(rest)
+                    self.update_current_token(rest)
                 elif not self.absolute:
                     self.state += State.PATH
-                    self.paths.append(rest)
                     self.push_token(rest, pos)
 
     def consume_path(self):
         m = ABSPATH_RX.match(self.input, self.pos)
         if m:
             path = m.group(0)
-            self.paths[-1] += path
-            self.update_token(path)
+            self.update_current_token(path)
             self.pos += len(path)
         else:
             self.pos += 1
@@ -197,49 +243,62 @@ class PathFinder(object):
         # if len(text) == 1, we found a quote at EOF
         return text_l > 1 and text or ""
 
+    def consume_whitespace(self):
+        m = WHITESPACE_RX.match(self.input, self.pos)
+        if m:
+            res = m.group(0)
+            self.pos += len(res)
+            return res
+
 
 if __name__ == "__main__":
     paths = [
         # Escaped whitespace
-        ('/bin/foo\ bar', ['/bin/foo\ bar']),
+        ('/bin/foo\ bar', [Token('/bin/foo\ bar', 0, True)]),
         # Escaped whitespace with trailing slash
-        ('/bin/foo\ bar/', ['/bin/foo\ bar/']),
+        ('/bin/foo\ bar/', [Token('/bin/foo\ bar/', 0, True)]),
         # Escaped whitespace with trailing backslash
-        ('/bin/foo\ bar/\\', ['/bin/foo\ bar/\\']),
-        ('/bin/foo\ bar/\\ baz', ['/bin/foo\ bar/\\ baz']),
+        ('/bin/foo\ bar/\\', [Token('/bin/foo\ bar/\\', 0, True)]),
+        ('/bin/foo\ bar/\\ baz', [Token('/bin/foo\ bar/\\ baz', 0, True)]),
         # Escaped whitespace with trailing whitespace
-        ('/bin/foo\ bar/\\ baz\\ ', ['/bin/foo\ bar/\\ baz\\ ']),
+        ('/bin/foo\ bar/\\ baz\\ ', [Token('/bin/foo\ bar/\\ baz\\ ', 0, True)]),
         # tilde
-        ('cmd ~/.config/foo/bar.cfg', ['~/.config/foo/bar.cfg']),
+        ('cmd ~/.config/foo/bar.cfg', [Token('~/.config/foo/bar.cfg', 4, True)]),
         # Unescaped whitespace
-        ('cmd ~/My Music/Stairway To Heaven.mp3', ['~/My']),
+        ('cmd ~/My Music/Stairway To Heaven.mp3', [Token('~/My', 4, True)]),
         # tilde and escaped whitespace
-        ('cmd ~/Documents/Dossier\ de\ Presse.doc', ['~/Documents/Dossier\ de\ Presse.doc']),
+        ('cmd ~/Documents/Dossier\ de\ Presse.doc',
+            [Token('~/Documents/Dossier\ de\ Presse.doc', 4, True)]),
         # path in double quotes
-        ('cmd "/home/johndoe/new stuff"', ['/home/johndoe/new stuff']),
+        ('cmd "/home/johndoe/new stuff"', [Token('/home/johndoe/new stuff', 5, True)]),
         # path in unterminated double quotes
-        ('cmd "~/music/foo bar', ['~/music/foo bar']),
+        ('cmd "~/music/foo bar', [Token('~/music/foo bar', 5, True)]),
         # path containing double quotes
-        ('cmd ~/music/Some\ "Album"', ['~/music/Some\ "Album"']),
+        ('cmd ~/music/Some\ "Album"', [Token('~/music/Some\ "Album"', 4, True)]),
         # path in single quotes containing double quotes
-        ('cmd \'~/music/An "Album"\'', ['~/music/An "Album"']),
+        ('cmd \'~/music/An "Album"\'', [Token('~/music/An "Album"', 5, True)]),
         # path in unterminated single quotes containing unterminated double quotes
-        ('cmd \'~/music/An "Album', ['~/music/An "Album']),
+        ('cmd \'~/music/An "Album', [Token('~/music/An "Album', 5, True)])
     ]
 
     finder = PathFinder(absolute=True)
     for path, expected in paths:
         result = finder.search(path)
         try:
-            assert result == expected
+            for i, r in enumerate(result):
+                assert r == expected[i]
         except AssertionError, e:
             print "Error finding absolute paths in", path
             print ">>> got", result, ', expected', expected
     paths = [
-        ('foo/bar\ baz/boo', ['foo/bar\ baz/boo']),
-        ('vim src/foo\ bar/', ['vim', 'src/foo\ bar/']),
-        ('diff src/foo\ bar/ "baba/wa ow"', ['diff', 'src/foo\ bar/', 'baba/wa ow']),
-        ('diff src/foo\ bar/ ~', ['diff', 'src/foo\ bar/', '~']),
+        ('foo/bar\ baz/boo', [Token('foo/bar\ baz/boo', 0)]),
+        ('vim src/foo\ bar/', [Token('vim', 0), Token('src/foo\ bar/', 4)]),
+        ('diff src/foo\ bar/ "baba/wa ow"',
+            [Token('diff', 0), Token('src/foo\ bar/', 5), Token('baba/wa ow', 20)]),
+        ('diff src/foo\ bar/ ~',
+            [Token('diff', 0), Token('src/foo\ bar/', 5), Token('~', 19, True)]),
+        ('iceweasel http://duckduckgo.org/search?q=debian',
+            [Token('iceweasel', 0), Token('http://duckduckgo.org/search?q=debian', 10)])
     ]
     finder = PathFinder(absolute=False)
     for path, expected in paths:

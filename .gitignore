@@ -12,3 +12,4 @@ usr/share/locale/*
 
 # Crash dumps
 /core
+*.pyprof

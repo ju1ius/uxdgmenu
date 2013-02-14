@@ -58,7 +58,7 @@ class Parser(parser.BaseParser):
             {
                 "type": "application",
                 "label": _('Clear List'),
-                "command": "uxm-daemon clear-recent-files",
+                "command": "uxm-daemon clear:recent-files",
                 "icon": self.clear_icon
             }
         ])
