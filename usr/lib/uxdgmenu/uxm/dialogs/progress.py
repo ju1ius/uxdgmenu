@@ -75,7 +75,7 @@ class IndeterminateListener(Listener):
             except Queue.Empty:
                 self.emit('updated', 0, "")
                 continue
-            # Check if fin)shed                                                                       
+            # Check if finished                                                                       
             if data[0] == 1.0:
                 self.emit("finished")
                 self.stop()
@@ -128,7 +128,6 @@ class GeneratorWorker(BlockingWorker):
 
 
 class Dialog(gtk.MessageDialog):
-
 
     def __init__(self, message, worker, listener, parent=None):
         flags = gtk.DIALOG_MODAL if parent else 0

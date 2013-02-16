@@ -4,8 +4,13 @@ import shlex
 import cPickle as pickle
 import operator
 import multiprocessing
+import threading
+
+import gobject
+import glib
 import gtk
 
+import uxm.cache
 import uxm.bench as bench
 import uxm.config as config
 import uxm.utils
@@ -23,11 +28,23 @@ class AppsModel(model.Model):
     def __init__(self):
         super(AppsModel, self).__init__()
         self.index = Index()
-        self.data = []
+        self.data = {}
         self.stemmer = SimpleStemmer(self.terminal)
 
     def configure(self):
         self.terminal = self.prefs.get('General', 'terminal')
+        self.dir_icon = self.icon_finder.find_by_mime_type(
+            uxm.utils.mime.INODE_DIR, False
+        )
+        self.dir_link_icon = self.icon_finder.find_by_mime_type(
+            uxm.utils.mime.INODE_DIR, True
+        )
+        self.exe_icon = self.icon_finder.find_by_mime_type(
+            'application/x-executable', False
+        )
+        self.exe_link_icon = self.icon_finder.find_by_mime_type(
+            'application/x-executable', True
+        )
 
     def find(self, query):
         terms = self.parse_query(query)
@@ -80,10 +97,12 @@ class AppsModel(model.Model):
         bench.step('Load apps')
         count = len(self.data)
         apps = self.load_pickle(APPS_MENU)
+        apps_cmds = set()
         for item in self.iter_menu(apps):
             item['type'] = model.TYPE_APP
             item['mimetype'] = uxm.utils.mime.APP_EXE
             self.append_item(item, count, True)
+            apps_cmds.add(item['command'])
             count += 1
         bookmarks = self.load_pickle(BOOK_MENU)
         for item in self.iter_bookmarks(bookmarks):
@@ -97,27 +116,40 @@ class AppsModel(model.Model):
             item['url'] = item['id']
             self.append_item(item, count, False)
             count += 1
-        # Fetching infos for all files in PATH can take quite a long time,
-        # so we try to parallelize that
-        pool = multiprocessing.Pool()
-        app_infos = pool.map(_get_content_type, [p for p in self.iter_path()], 16)
-        for path, mt in app_infos:
-            name = os.path.basename(path)
+        # Fetching mimetype for all files in PATH can take quite a long time,
+        # if the disk cache is empty, eg on a fresh start
+        # so we just get basic info and fetch the real mimetype later
+        path_cmds = []
+        for app_path in self.iter_path():
+            name = os.path.basename(app_path)
+            # don't index executables found in desktop apps
+            if name in apps_cmds or app_path in apps_cmds:
+                continue
+            if name.startswith('less'):
+                print name, app_path
             self.index.add(name, {'id': count})
-            icon = self.icon_finder.find_by_mime_type(
-                mt,
-                os.path.islink(path),
-                uxm.utils.mime.APP_EXE
-            )
-            self.data.append({
+            is_link = os.path.islink(app_path)
+            if os.path.isdir(app_path):
+                icon = self.dir_link_icon if is_link else self.dir_icon
+                type = model.TYPE_DIR
+                mt = uxm.utils.mime.INODE_DIR
+            if os.path.isfile(app_path):
+                type = model.TYPE_CMD
+                icon = self.exe_link_icon if is_link else self.exe_icon
+                mt = uxm.utils.mime.APP_EXE
+                path_cmds.append((app_path, name, is_link, count))
+            else:
+                continue
+            self.data[count] = {
                 'id': count,
-                'type': model.TYPE_CMD,
+                'type': type,
                 'label': name,
                 'command': name,
                 'icon': icon,
                 'mimetype': mt
-            })
+            }
             count += 1
+        self.reload_path_info_async(path_cmds)
         bench.endstep('Load apps')
 
     def append_item(self, item, id, stem_command=False):
@@ -128,7 +160,7 @@ class AppsModel(model.Model):
         if stem_command:
             for word in self.stemmer.stem_command(item['command']):
                 self.index.add(word, doc)
-        self.data.append(item)
+        self.data[id] = item
 
     def load_pickle(self, filepath):
         f = os.path.expanduser(filepath)
@@ -154,10 +186,14 @@ class AppsModel(model.Model):
                 yield child
 
     def iter_path(self):
-        for d in os.environ['PATH'].split(':'):
+        cmds = set()
+        for d in reversed(os.environ['PATH'].split(':')):
             for f in os.listdir(d):
+                if f in cmds:
+                    continue
                 fp = os.path.join(d, f)
                 if os.path.isfile(fp):
+                    cmds.add(f)
                     yield fp
 
     def find_app_in_path(self, path):
@@ -168,10 +204,35 @@ class AppsModel(model.Model):
         for word in self.stemmer.stem_phrase(terms, 0):
             yield word
 
+    def reload_path_info_async(self, apps):
+        manager = multiprocessing.Manager()
+        queue = manager.Queue()
+        pool = multiprocessing.Pool()
+        num_apps = len(apps)
+        for app in apps:
+            pool.apply_async(_get_content_type, (app, queue))
+        pool.close()
+        self.listener = QueueListener(queue, num_apps)
+        self.listener.connect('updated', self.on_path_info_updated)
+        # Starting Listener
+        thread = threading.Thread(target=self.listener.run, args=())
+        thread.start()
 
-def _get_content_type(path):
-    t = uxm.utils.mime.guess(path)
-    return path, t
+    def kill_threads(self):
+        self.listener.stop()
+
+    def on_path_info_updated(self, listener, data):
+        mimetype, path, name, is_link, id = data
+        icon = self.icon_finder.find_by_mime_type(mimetype, is_link)
+        self.data[id]['icon'] = icon
+        self.data[id]['mimetype'] = mimetype
+
+
+def _get_content_type(appinfo, queue):
+    path, name, is_link, id = appinfo
+    mimetype = uxm.utils.mime.guess(path)
+    result = (mimetype, path, name, is_link, id)
+    queue.put(result)
 
 
 WORD_RX = re.compile(r'[-_\W]*', re.L | re.U)
@@ -204,3 +265,56 @@ class SimpleStemmer(object):
             for word in WORD_RX.split(exe):
                 if len(word) > self.MIN_WORD_LEN:
                     yield word
+
+
+class QueueListener(gobject.GObject):
+    __gsignals__ = {
+        'updated': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.TYPE_PYOBJECT,)
+        ),
+        'error': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.TYPE_STRING,)
+        ),
+        'finished': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            ()
+        )
+    }
+
+    def __init__(self, queue, max_results):
+        gobject.GObject.__init__(self)
+        self.queue = queue
+        self.max_results = max_results
+        self.num_results = 0
+        self.stopevent = threading.Event()
+
+    def emit(self, *args):
+        """Ensures signals are emitted in the main thread"""
+        glib.idle_add(gobject.GObject.emit, self, *args)
+
+    def run(self):
+        if self.queue is None:
+            raise RuntimeError('Listener must be associated with a Queue')
+        bench.step('Load path')
+        while not self.stopevent.isSet():
+            # Listen for results on the queue and process them accordingly
+            data = self.queue.get()
+            # Check if finished
+            self.num_results += 1
+            if self.num_results == self.max_results:
+                bench.endstep('Load path')
+                self.emit("finished")
+                self.stop()
+            elif data[0] == "error":
+                self.emit('error', data[1])
+                self.stop()
+            else:
+                self.emit('updated', data)
+
+    def stop(self):
+        self.stopevent.set()

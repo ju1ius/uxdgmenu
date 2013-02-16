@@ -1,23 +1,42 @@
-release v0.4
+release v1.0:
+    launcher (+ menu editor)?
+    documentation on readthedocs
+release v1.1:
+    default mimeapps editor
+release v2.0:
+    gir glib/gtk3
+    rewrite performance sensitive code in C/C++ ???
+
+Unicode sandwich
 
 menus:
   compatibility with gnome categories, implies renaming of .directory files
 icons:
-  what about symlinks:
-	if we want them to be displayed correctly in the menu,
-	we have to find the icon by mime-type,
-	then composite it with the symlink icon and save the result.
-	so we should add a mime-type cache to icon_finder with a is_symlink column
   compatibility with GTK3 themes
+
+implement proper logging
 
 performance:
 	consider using GIO for finding mime-type of files (2x improvement)
-    improve directory listing (/usr/bin)
 
-GUI menu editor
+GUI menu editor:
+    separate app & menu edit dialogs
+    iconchooser:
+        reset the icon preview when the dialog is closed (or set it when opened)
+        IconField class (extends HBox) Entry + IconChooserButton
+    advanced editing:
+        apps:
+            categories
+        menus:
+            rules
+        both:
+            direct editing of inifile
 
 launcher:
     integrate with config & config app
+    use icon size from config
+    code cleanup
+    Ctrl+H toggles show hidden files
     TAB actions:
         show popup if not visible (use token_under_cursor)
         for MODE_APPS ???
@@ -25,24 +44,15 @@ launcher:
         use token_under_cursor
     ENTER actions:
         ok for basic commands
-        think about hashbangs
         launch in terminal:
-            Ctrl+Enter (and right-click-on-entry menu) ?
+            Ctrl+Enter?
     global edit queue
-    performance:
-        profile on FIRST RUN, ie after a reboot
-        think about running an initialization thread/process in order not to block
-        the input while fetching data
     action menus:
+        actions for TYPE_CMD && TYPE_APP:
+            run, run in terminal, infos?
         close with LEFT arrow
         actually execute actions
         actions for MODE_BROWSE
-	duckduckgo like hashbangs:
-		$ => run command
-		!w => open url
-		!s => search the web
-		!py => python docs
-		etc...
 
 l10n for config editor...
 
@@ -50,5 +60,3 @@ update wiki:
   howto debugging
 
 unit tests...
-
-later gir/GTK3 branch

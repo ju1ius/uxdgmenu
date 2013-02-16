@@ -1,28 +1,14 @@
-#
-# Copyright(C) 2005 Red Hat, Inc.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-#
-
-import xdg.BaseDirectory, xdg.MenuEditor
-import gtk, gio
+import xdg.BaseDirectory
+import xdg.MenuEditor
+import gtk
+import gio
 import uxm.adapters as adapters
 from uxm.adapters import xdg_adapter
 
+
 def lookup_menu_files(filename):
-    return [f for f in xdg.BaseDirectory.load_config_paths('menus/'+filename)]
+    return [f for f in xdg.BaseDirectory.load_config_paths('menus/' + filename)]
+
 
 class MenuTreeModel(gtk.TreeStore):
     (
@@ -58,10 +44,12 @@ class MenuTreeModel(gtk.TreeStore):
         types = self.COLUMN_TYPES + (str,)
         store = gtk.ListStore(*types)
         columns = range(self.get_n_columns())
+
         def add(model, path, it):
             path = self.path_to_string(path)
             row = self.get_row(it, columns) + (path,)
             store.append(row)
+
         self.foreach(add)
         return store
 
@@ -69,6 +57,7 @@ class MenuTreeModel(gtk.TreeStore):
         if isinstance(path, str):
             return path
         return ':'.join((str(p) for p in path))
+
     def string_to_path(self, path):
         if isinstance(path, tuple):
             return path
@@ -85,26 +74,27 @@ class MenuTreeModel(gtk.TreeStore):
         if adapters.TYPE_ENTRY == t:
             self.menu_editor.editMenuEntry(
                 data['object'].adaptee,
-                name = data['name'],
+                name=data['name'],
                 #genericname = data['name'],
-                comment = data['comment'],
-                command = data['command'],
-                icon = data['icon'],
-                terminal = data['terminal']
+                comment=data['comment'],
+                command=data['command'],
+                icon=data['icon'],
+                terminal=data['terminal']
             )
         elif adapters.TYPE_DIRECTORY == t:
             self.menu_editor.editMenu(
                 data['object'].adaptee,
-                name = data['name'],
+                name=data['name'],
                 #genericname = data['name'],
-                comment = data['comment'],
-                icon = data['icon'],
+                comment=data['comment'],
+                icon=data['icon'],
             )
         # update treemodel
         it = self.get_iter_from_string(data['_path'])
         obj = self.get_value(it, self.COLUMN_OBJECT)
         icon = gio.ThemedIcon(str(obj.get_icon()), True)
-        self.set(it,
+        self.set(
+            it,
             self.COLUMN_ID, obj.get_filename(),
             self.COLUMN_NAME, obj.get_display_name(),
             self.COLUMN_ICON, icon
@@ -120,29 +110,32 @@ class MenuTreeModel(gtk.TreeStore):
                 parent_entry and parent_entry.adaptee or None,
                 data['name'],
                 #genericname = data['name'],
-                comment = data['comment'],
-                command = data['command'],
-                icon = data['icon'],
-                terminal = data['terminal']
+                comment=data['comment'],
+                command=data['command'],
+                icon=data['icon'],
+                terminal=data['terminal']
             )
         elif adapters.TYPE_DIRECTORY == t:
             entry = self.menu_editor.createMenu(
                 parent_entry and parent_entry.adaptee or None,
                 data['name'],
                 #genericname = data['name'],
-                comment = data['comment'],
-                icon = data['icon'],
+                comment=data['comment'],
+                icon=data['icon'],
             )
         obj = xdg_adapter.factory(entry)
         icon = gio.ThemedIcon(str(obj.get_icon()), True)
         #FIXME: this doesn't update the view ???
-        self.append(parent_iter, (
-            t == adapters.TYPE_DIRECTORY,
-            obj.get_type(), obj.get_display_name(),
-            obj.get_display_name(), icon,
-            None, True, True,
-            obj
-        ))
+        self.append(
+            parent_iter,
+            (
+                t == adapters.TYPE_DIRECTORY,
+                obj.get_type(), obj.get_display_name(),
+                obj.get_display_name(), icon,
+                None, True, True,
+                obj
+            )
+        )
 
     def __append_directory(self, directory, parent_iter, system, menu_file):
         if not directory:
@@ -175,14 +168,12 @@ class MenuTreeModel(gtk.TreeStore):
 
             if current_type == adapters.TYPE_DIRECTORY:
                 self.__append_directory(entry, iter, system, None)
-                
             if current_type != adapters.TYPE_ENTRY:
                 continue
-            
             child_iter = self.iter_children(iter)
             while child_iter is not None:
                 if self.get_value(child_iter, self.COLUMN_TYPE) == adapters.TYPE_ENTRY and (
-                   self.get_value(child_iter, self.COLUMN_ID) == entry.get_filename()
+                    self.get_value(child_iter, self.COLUMN_ID) == entry.get_filename()
                 ):
                     break
                 child_iter = self.iter_next(child_iter)

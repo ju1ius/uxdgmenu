@@ -4,8 +4,6 @@ import sys
 import os.path as path
 import logging
 
-import gtk
-
 sys.path.insert(0, path.abspath(path.dirname(path.abspath(__file__))))
 
 import uxm.bench as bench
@@ -23,7 +21,7 @@ if __name__ == "__main__":
         bench.step('dialog init')
         launcher = LauncherDialog()
         bench.endstep('dialog init')
-        gtk.main()
+        launcher.start()
     except Exception, e:
         logger.exception(e)
         raise

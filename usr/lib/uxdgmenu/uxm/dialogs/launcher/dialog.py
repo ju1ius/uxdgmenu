@@ -1,7 +1,9 @@
 import os
+import sys
 import subprocess
 import collections
 import re
+import threading
 
 import glib
 import gtk
@@ -29,10 +31,21 @@ class LauncherDialog(object):
         self.pathfinder = PathFinder()
         self.apps_model = AppsModel()
         self.fs_model = FileSystemModel()
-        glib.idle_add(self.apps_model.load)
         #self.apps_model.load()
         self.mode = MODE_APPS
+        gtk.gdk.threads_init()
+        glib.idle_add(self.apps_model.load)
 
+        self.init_gui()
+#}}}
+
+    def start(self):
+        gtk.gdk.threads_enter()
+        gtk.main()
+        gtk.gdk.threads_leave()
+
+    def init_gui(self):
+#{{{
         self.keymap = {
             gtk.keysyms.Escape:       self.on_key_press_escape,
             gtk.keysyms.Tab:          self.on_key_press_tab,
@@ -303,6 +316,7 @@ class LauncherDialog(object):
 #}}}
 
     def quit(self):
+        self.apps_model.kill_threads()
         gtk.main_quit()
         #sys.exit(0)
 

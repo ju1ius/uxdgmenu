@@ -6,7 +6,7 @@ from collections import OrderedDict
 class Bench(object):
     def __init__(self):
         self.steps = OrderedDict()
-        self.timer = time.clock
+        self.timer = time.time
 
     def start(self):
         self.start = self.timer()
@@ -63,7 +63,7 @@ def stop():
 
 
 def id():
-    return hex(UID+1)
+    return hex(UID + 1)
 
 
 def results():

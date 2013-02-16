@@ -2,11 +2,14 @@ import os
 import time
 import stat
 import multiprocessing
+import threading
+import gobject
 import gio
 import xdg.Mime
 
 xdg.Mime.update_cache()
 MIME_MAGIC_MAX_BUF_SIZE = xdg.Mime.magic.maxlen
+print MIME_MAGIC_MAX_BUF_SIZE
 
 # Some well-known types
 INODE_BLOCK = str(xdg.Mime.inode_block)
@@ -64,57 +67,102 @@ def list_path():
             yield fp
 
 
-def do_guess(fp):
-    mt = guess(fp)
-    return fp, mt
+class Queueable(object):
+
+    @property
+    def queue(self):
+        return self._queue
+
+    @queue.setter
+    def queue(self, queue):
+        self._queue = queue
+
+
+class Listener(Queueable, gobject.GObject):
+    __gsignals__ = {
+        'updated': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.TYPE_PYOBJECT,)
+        ),
+        'error': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.TYPE_STRING,)
+        ),
+        'finished': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            ()
+        )
+    }
+
+    def __init__(self, queue, max_results):
+        gobject.GObject.__init__(self)
+        self.queue = queue
+        self.max_results = max_results
+        self.num_results = 0
+        self.stopevent = threading.Event()
+
+    def run(self):
+        if self.queue is None:
+            raise RuntimeError('Listener must be associated with a Queue')
+        while not self.stopevent.isSet():
+            # Listen for results on the queue and process them accordingly
+            data = self.queue.get()
+            # Check if finished
+            self.num_results += 1
+            if self.num_results == self.max_results:
+                self.emit("finished")
+                self.stop()
+            elif data[0] == "error":
+                self.emit('error', data[1])
+                self.stop()
+            else:
+                self.emit('updated', data)
+
+    def stop(self):
+        self.stopevent.set()
+
+
+def do_guess(path, queue):
+    mimetype = guess(path)
+    queue.put((path, mimetype))
 
 
 def get_mimetypes_async():
-    pool = multiprocessing.Pool(processes=4)
-    res = []
+    manager = multiprocessing.Manager()
+    queue = manager.Queue()
+    pool = multiprocessing.Pool()
+    num_apps = 0
     for app in list_path():
-        pool.apply_async(do_guess, (app,), {}, res.append)
+        num_apps += 1
+        pool.apply_async(do_guess, (app, queue))
     pool.close()
-    pool.join()
-    return res
+    listener = Listener(queue, num_apps)
+    listener.connect('updated', on_result)
+    # Starting Listener
+    thread = threading.Thread(target=listener.run, args=())
+    thread.start()
+    thread.join()
 
 
-def get_mimetypes_async2():
-    pool = multiprocessing.Pool(processes=4)
-    paths = [a for a in list_path()]
-    return pool.map(do_guess, paths, 64)
+def on_result(self, result):
+    return
+    print result
 
 
-def get_mimetypes_async3():
-    pool = multiprocessing.Pool(processes=4)
-    paths = [a for a in list_path()]
-    return pool.map_async(do_guess, paths, 64)
-
-
-def get_mimetypes():
-    res = []
+def get_mimetypes_sync():
     for app in list_path():
-        mt = guess(app)
-        res.append((app, mt))
-    return res
+        mimetype = guess(app)
 
 
-start = time.time()
-r1 = get_mimetypes()
-end = time.time() - start
-print "Sync: %s" % end
-
+#start = time.time()
+#r1 = get_mimetypes_sync()
+#end = time.time() - start
+#print "Sync: %s" % end
 
 start = time.time()
-r2 = get_mimetypes_async()
+r1 = get_mimetypes_async()
 end = time.time() - start
 print "Async: %s" % end
-
-
-start = time.time()
-r3 = get_mimetypes_async2()
-end = time.time() - start
-print "Async 2: %s" % end
-
-assert r1 == r2
-assert r1 == r3
