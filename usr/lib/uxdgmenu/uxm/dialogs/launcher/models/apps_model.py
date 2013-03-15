@@ -13,7 +13,8 @@ import gtk
 import uxm.cache
 import uxm.bench as bench
 import uxm.config as config
-import uxm.utils
+import uxm.utils.mime
+import uxm.utils.fs
 from . import model
 from . import utils
 from .index import Index
@@ -117,8 +118,8 @@ class AppsModel(model.Model):
             self.append_item(item, count, False)
             count += 1
         # Fetching mimetype for all files in PATH can take quite a long time,
-        # if the disk cache is empty, eg on a fresh start
-        # so we just get basic info and fetch the real mimetype later
+        # especially if the disk cache is empty, eg on a fresh start.
+        # So we just get basic info and fetch the real mimetype later
         path_cmds = []
         for app_path in self.iter_path():
             name = os.path.basename(app_path)
@@ -149,6 +150,7 @@ class AppsModel(model.Model):
                 'mimetype': mt
             }
             count += 1
+        # now reload mimetypes asynchronously
         self.reload_path_info_async(path_cmds)
         bench.endstep('Load apps')
 
@@ -205,20 +207,24 @@ class AppsModel(model.Model):
             yield word
 
     def reload_path_info_async(self, apps):
+        """Reloads mime type information for apps in PATH asynchronously"""
         manager = multiprocessing.Manager()
         queue = manager.Queue()
-        pool = multiprocessing.Pool()
+        pool = multiprocessing.Pool(processes=2)
         num_apps = len(apps)
-        for app in apps:
-            pool.apply_async(_get_content_type, (app, queue))
-        pool.close()
         self.listener = QueueListener(queue, num_apps)
         self.listener.connect('updated', self.on_path_info_updated)
         # Starting Listener
         thread = threading.Thread(target=self.listener.run, args=())
         thread.start()
+        for app in apps:
+            pool.apply_async(_get_content_type, (app, queue))
+        pool.close()
 
     def kill_threads(self):
+        """This MUST be called on program exit or the background thread(s)
+        will block until finished
+        """
         self.listener.stop()
 
     def on_path_info_updated(self, listener, data):
@@ -229,25 +235,27 @@ class AppsModel(model.Model):
 
 
 def _get_content_type(appinfo, queue):
+    """The actual mimetype worker"""
     path, name, is_link, id = appinfo
     mimetype = uxm.utils.mime.guess(path)
     result = (mimetype, path, name, is_link, id)
     queue.put(result)
 
 
-WORD_RX = re.compile(r'[-_\W]*', re.L | re.U)
-
-
 class SimpleStemmer(object):
-
+    """Minimal stemmer for the indexer
+    Just splits words on unicode whitespace characters,
+    plus hyphens and underscores
+    """
     MIN_WORD_LEN = 1
+    WORD_RX = re.compile(r'[-_\W]*', re.L | re.U)
 
     def __init__(self, terminal):
         self.terminal = terminal
 
     def stem_phrase(self, phrase, min_len=None):
         min_len = self.MIN_WORD_LEN if min_len is None else min_len
-        words = WORD_RX.split(phrase)
+        words = self.WORD_RX.split(phrase)
         for word in words:
             if len(word) > min_len:
                 yield word.lower()
@@ -262,7 +270,7 @@ class SimpleStemmer(object):
             if -1 == pos:
                 exe = arg
             exe = arg[pos + 1:]
-            for word in WORD_RX.split(exe):
+            for word in self.WORD_RX.split(exe):
                 if len(word) > self.MIN_WORD_LEN:
                     yield word
 

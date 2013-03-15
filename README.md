@@ -15,8 +15,9 @@ and comes with a standalone GTK app-launcher and a GUI for configuration.
 Install
 =======
 
-[Debian packages are provided](https://github.com/ju1ius/uxdgmenu/downloads),
-but you can also build from source:
+[Debian packages are provided](https://sourceforge.net/projects/uxdgmenu/files/).
+You can also build from source, but please note that as of now (post version 0.7), the master branch will be in an unstable state until the 1.0 release.
+If you want a stable release, please build from the [0.7 source tarball](https://sourceforge.net/projects/uxdgmenu/files/0.7/uxdgmenu_0.7.orig.tar.gz/download).
 
 Install dependencies:
 

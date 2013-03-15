@@ -1,9 +1,8 @@
 import os
-import sys
+#import sys
 import subprocess
 import collections
 import re
-import threading
 
 import glib
 import gtk
@@ -28,15 +27,49 @@ class LauncherDialog(object):
 
     def __init__(self):
 #{{{
+        gtk.gdk.threads_init()
+
+        # ---------- initialize models
         self.pathfinder = PathFinder()
         self.apps_model = AppsModel()
         self.fs_model = FileSystemModel()
-        #self.apps_model.load()
         self.mode = MODE_APPS
-        gtk.gdk.threads_init()
         glib.idle_add(self.apps_model.load)
 
+        # ---------- internal properties
+        self.current_token = None
+        self.current_search = ""
+        self.current_search_pos = -1
+        # we queue insert/delete events with a small timeout
+        # for fast typers, repeated keys, etc...
+        self.insert_queue = collections.deque()
+        self.delete_queue = collections.deque()
+
+        # ---------- initialize GUI
         self.init_gui()
+        # just for testing !!!
+        #self.entry.set_text('hello  world')
+        #self.set_cursor_position(6)
+
+        # ---------- connect events
+        self.SIGNAL_INSERT_TEXT = self.entry.connect('insert-text', self.on_insert_text)
+        self.SIGNAL_DELETE_TEXT = self.entry.connect('delete-text', self.on_delete_text)
+        #self.SIGNAL_ENTRY_CHANGED = self.entry.connect_after('changed', self.on_entry_changed)
+        self.entry_window.connect('delete-event', gtk.main_quit)
+        # keyboard events
+        self.keymap = {
+            gtk.keysyms.Escape:       self.on_key_press_escape,
+            gtk.keysyms.Tab:          self.on_key_press_tab,
+            gtk.keysyms.ISO_Left_Tab: self.on_key_press_shift_tab,
+            gtk.keysyms.Return:       self.on_key_press_enter,
+            gtk.keysyms.Down:         self.on_key_press_down,
+            gtk.keysyms.Up:           self.on_key_press_up,
+            gtk.keysyms.Left:         self.on_key_press_left,
+            gtk.keysyms.Right:        self.on_key_press_right,
+            gtk.keysyms.h:            self.on_key_press_h
+        }
+        self.entry_window.connect('key-press-event', self.on_key_press)
+        self.treeview.connect('button-release-event', self.on_treeview_mouse_click)
 #}}}
 
     def start(self):
@@ -46,17 +79,6 @@ class LauncherDialog(object):
 
     def init_gui(self):
 #{{{
-        self.keymap = {
-            gtk.keysyms.Escape:       self.on_key_press_escape,
-            gtk.keysyms.Tab:          self.on_key_press_tab,
-            gtk.keysyms.ISO_Left_Tab: self.on_key_press_shift_tab,
-            gtk.keysyms.Return:       self.on_key_press_enter,
-            gtk.keysyms.Down:         self.on_key_press_down,
-            gtk.keysyms.Up:           self.on_key_press_up,
-            gtk.keysyms.Left:         self.on_key_press_left,
-            gtk.keysyms.Right:        self.on_key_press_right
-        }
-
         # Text box window
         self.entry_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.entry_window.set_size_request(500, 120)
@@ -100,27 +122,6 @@ class LauncherDialog(object):
 
         scrolled.add(self.treeview)
         self.popup.add(scrolled)
-
-        # just for testing !!!
-        self.entry.set_text('hello  world')
-        self.set_cursor_position(6)
-
-        self.current_token = None
-        self.current_search = ""
-        self.current_search_pos = -1
-
-        # we queue insert/delete events with a small timeout
-        # for fast typers, repeated keys, etc...
-        self.insert_queue = collections.deque()
-        self.delete_queue = collections.deque()
-
-        self.SIGNAL_INSERT_TEXT = self.entry.connect('insert-text', self.on_insert_text)
-        self.SIGNAL_DELETE_TEXT = self.entry.connect('delete-text', self.on_delete_text)
-        self.SIGNAL_ENTRY_CHANGED = self.entry.connect_after('changed', self.on_entry_changed)
-        #self.entry.connect_after('insert-text', self.on_entry_text_inserted)
-        self.entry_window.connect('delete-event', gtk.main_quit)
-        self.entry_window.connect('key-press-event', self.on_key_press)
-        self.treeview.connect('button-release-event', self.on_treeview_mouse_click)
 
         self.entry_window.show_all()
 #}}}
@@ -225,13 +226,13 @@ class LauncherDialog(object):
     def set_entry_text(self, text):
         """Sets the entry's text without calling our handlers"""
 #{{{
-        self.entry.handler_block(self.SIGNAL_ENTRY_CHANGED)
+        #self.entry.handler_block(self.SIGNAL_ENTRY_CHANGED)
         self.entry.handler_block(self.SIGNAL_INSERT_TEXT)
         self.entry.handler_block(self.SIGNAL_DELETE_TEXT)
 
         self.entry.set_text(text)
 
-        self.entry.handler_unblock(self.SIGNAL_ENTRY_CHANGED)
+        #self.entry.handler_unblock(self.SIGNAL_ENTRY_CHANGED)
         self.entry.handler_unblock(self.SIGNAL_INSERT_TEXT)
         self.entry.handler_unblock(self.SIGNAL_DELETE_TEXT)
 #}}}
@@ -260,7 +261,7 @@ class LauncherDialog(object):
 #{{{
         #print "SUGGEST"
         # prevent our on_entry_changed handler to be called
-        self.entry.handler_block(self.SIGNAL_ENTRY_CHANGED)
+        #self.entry.handler_block(self.SIGNAL_ENTRY_CHANGED)
         self.entry.handler_block(self.SIGNAL_DELETE_TEXT)
 
         # first clear previous selection
@@ -302,7 +303,7 @@ class LauncherDialog(object):
 
         # unblock on_entry_changed handler
         self.entry.handler_unblock(self.SIGNAL_DELETE_TEXT)
-        self.entry.handler_unblock(self.SIGNAL_ENTRY_CHANGED)
+        #self.entry.handler_unblock(self.SIGNAL_ENTRY_CHANGED)
 #}}}
 
     def load_directory(self, directory):
@@ -724,13 +725,14 @@ class LauncherDialog(object):
         self.entry_window.stop_emission('key-press-event')
         self.show_action_menu()
 
+    def on_key_press_h(self, event):
+        if event.state & gtk.gdk.CONTROL_MASK:
+            #TODO: toggle show hidden files
+            return
+
     def on_treeview_mouse_click(self, treeview, event, *args):
         if event.button == 1:  # left click
             #TODO: complete
             pass
         elif event.button == 3:  # right click
             self.show_action_menu()
-
-    def on_entry_changed(self, widget, data=None):
-        pass
-        #print "changed"

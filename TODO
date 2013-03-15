@@ -7,17 +7,14 @@ release v2.0:
     gir glib/gtk3
     rewrite performance sensitive code in C/C++ ???
 
+unit tests...
 Unicode sandwich
+implement proper logging
 
 menus:
   compatibility with gnome categories, implies renaming of .directory files
-icons:
-  compatibility with GTK3 themes
+  is this necessary ? better allow users to choose their menu file
 
-implement proper logging
-
-performance:
-	consider using GIO for finding mime-type of files (2x improvement)
 
 GUI menu editor:
     separate app & menu edit dialogs
@@ -33,10 +30,11 @@ GUI menu editor:
             direct editing of inifile
 
 launcher:
+    history
+    Ctrl+H toggles show hidden files
     integrate with config & config app
     use icon size from config
     code cleanup
-    Ctrl+H toggles show hidden files
     TAB actions:
         show popup if not visible (use token_under_cursor)
         for MODE_APPS ???
@@ -46,6 +44,7 @@ launcher:
         ok for basic commands
         launch in terminal:
             Ctrl+Enter?
+        open path if len(tokens) == 1 and tokens[0].absolute
     global edit queue
     action menus:
         actions for TYPE_CMD && TYPE_APP:
@@ -56,7 +55,4 @@ launcher:
 
 l10n for config editor...
 
-update wiki:
-  howto debugging
 
-unit tests...
